@@ -6,12 +6,12 @@ const app = Vue.createApp({
     return {
       // isShowSelect: true,
       // isShowModify: false,
-
+      products: [],
       productsId: "",
       name: "",
       contractsId: "",
       suppliersId: "",
-      products: [],
+     
 
       productsFullData: [],
       findProductsName: "",

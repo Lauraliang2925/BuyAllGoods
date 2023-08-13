@@ -72,7 +72,6 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             <div class="mb-3">
               圖片預覽
               <img
-                
                 :src="previewUrl"
                 alt="Preview"
                 class="preview-image"

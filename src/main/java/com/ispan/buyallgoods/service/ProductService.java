@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ispan.buyallgoods.model.Categories;
 import com.ispan.buyallgoods.model.Product;
 import com.ispan.buyallgoods.model.ProductRepository;
 
@@ -17,10 +18,15 @@ import com.ispan.buyallgoods.model.ProductRepository;
 public class ProductService {
 	@Autowired
 	ProductRepository productRepository;
+	
+	public List<Object[]> findProductsByCategoriesName(String categoriesName){
+		return productRepository.findProductsByCategoriesName(categoriesName);
+		
+	}
+	
 
 	public List<Product> findByCustomQuery(String name, Integer suppliersId, Integer contractsId) {
 		return productRepository.findByCustomQuery(name, suppliersId, contractsId);
-
 	}
 
 	public Page<Product> findAll(Pageable pageable) {
@@ -93,11 +99,6 @@ public class ProductService {
 
 	public Product updateById(Integer id, Product product) {
 		Optional<Product> optional = productRepository.findById(id);
-//		System.out.println(optional.isPresent());
-//		System.out.println(optional.get().toString());
-//		System.out.println(id);
-//		List<Product> productExist = productRepository.findByProductName(product.getName());
-//		&& productExist == null
 		if (optional.isPresent()) {
 			return productRepository.save(product);
 		} else {

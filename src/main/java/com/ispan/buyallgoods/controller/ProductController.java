@@ -43,7 +43,6 @@ public class ProductController {
 			List<Product> list = productService.findByCustomQuery(name, suppliersId, contractsId);
 			responseJson.put("list", list);
 		}
-		
 
 		return responseJson;
 	}
@@ -142,6 +141,25 @@ public class ProductController {
 //		return responseJson;
 //	}
 
+//	使用分類名稱尋找底下所有商品
+	@GetMapping("/product/findByCategoriesName/{name}")
+	public Map<String, Object> findProductsByCategoriesName(@PathVariable(value = "name") String name) {
+
+		Map<String, Object> responseJson = new HashMap<>();
+		List<Object[]> list = productService.findProductsByCategoriesName(name);
+		responseJson.put("list", list);
+		return responseJson;
+	}
+
+//	@PostMapping("/product/findByCategoriesName")
+//	public Map<String, Object> findProductsByCategoriesName(@RequestBody ProductCategoriesPOJO pcPOJO) {
+//		
+//		Map<String, Object> responseJson = new HashMap<>();
+//		List<Object[]> list = productService.findProductsByCategoriesName(pcPOJO.getCategories().getName());
+//		responseJson.put("list", list);
+//		return responseJson;
+//	}
+
 	@GetMapping("/product/findByProductName/{name}")
 	public Map<String, Object> findByProductName(@PathVariable(value = "name") String name) {
 
@@ -170,22 +188,22 @@ public class ProductController {
 
 	@PostMapping("/product/single-file")
 	public Map<String, Object> singleFile(@RequestParam("file") MultipartFile file, @RequestParam("desc") String desc,
-	        @RequestParam("name") String name) {
+			@RequestParam("name") String name) {
 		Map<String, Object> responseJson = new HashMap<>();
-		
+
 //		先確認是否有相同名稱商品
 		boolean check = productService.checkNamePrecise(name);
 		if (check) {
 			responseJson.put("message", "商品名稱不可重複");
 			responseJson.put("success", false);
 			return responseJson;
-		} 
-		
+		}
+
 //		先確認是否有上傳檔案
 		if (file == null || file.isEmpty()) {
 			responseJson.put("message", "圖片不存在");
 			responseJson.put("success", false);
-			
+
 		} else {
 			try {
 				byte[] bytes = file.getBytes(); // 檔案內容
@@ -196,7 +214,7 @@ public class ProductController {
 				String path2 = new File("").getAbsolutePath();
 
 				// 指定本機存儲路徑
-				String uploadPath = path2 + "\\src\\main\\resources\\static\\pic\\product\\" + name+".jpg";
+				String uploadPath = path2 + "\\src\\main\\resources\\static\\pic\\product\\" + name + ".jpg";
 //
 //	            // 寫入圖片到指定路徑
 				Path path = Paths.get(uploadPath);
@@ -209,7 +227,7 @@ public class ProductController {
 
 				responseJson.put("message", "檔案上傳成功");
 				responseJson.put("success", true);
-				responseJson.put("imagePath", "/pic/" + name+".jpg");
+				responseJson.put("imagePath", "/pic/" + name + ".jpg");
 			} catch (Exception e) {
 				responseJson.put("message", "檔案上傳失敗");
 				responseJson.put("success", false);
@@ -219,15 +237,15 @@ public class ProductController {
 	}
 
 	@PostMapping("/product/single-file-update")
-	public Map<String, Object> singleFileUpdate(@RequestParam("file") MultipartFile file, @RequestParam("desc") String desc,
-	        @RequestParam("name") String name) {
+	public Map<String, Object> singleFileUpdate(@RequestParam("file") MultipartFile file,
+			@RequestParam("desc") String desc, @RequestParam("name") String name) {
 		Map<String, Object> responseJson = new HashMap<>();
 
 //		先確認是否有上傳檔案
 		if (file == null || file.isEmpty()) {
 			responseJson.put("message", "圖片不存在");
 			responseJson.put("success", false);
-			
+
 		} else {
 			try {
 				byte[] bytes = file.getBytes(); // 檔案內容
@@ -235,14 +253,14 @@ public class ProductController {
 				String path2 = new File("").getAbsolutePath();
 
 				// 指定本機存儲路徑
-				String uploadPath = path2 + "\\src\\main\\resources\\static\\pic\\product\\" + name+".jpg";
+				String uploadPath = path2 + "\\src\\main\\resources\\static\\pic\\product\\" + name + ".jpg";
 //
 //	            // 寫入圖片到指定路徑
 				Path path = Paths.get(uploadPath);
 				Files.write(path, bytes);
 				responseJson.put("message", "檔案上傳成功");
 				responseJson.put("success", true);
-				responseJson.put("imagePath", "/pic/" + name+".jpg");
+				responseJson.put("imagePath", "/pic/" + name + ".jpg");
 			} catch (Exception e) {
 				responseJson.put("message", "檔案上傳失敗");
 				responseJson.put("success", false);

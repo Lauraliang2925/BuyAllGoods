@@ -30,6 +30,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ "FROM product p " + "LEFT JOIN suppliers s ON p.suppliers_id = s.suppliers_id "
 			+ "WHERE s.suppliers_name = :suppliersName")
 	List<Object[]> findProductsBySupplierName(String suppliersName);
+	
+//	使用分類名稱尋找底下所有商品
+	@Query(nativeQuery = true, value = "SELECT p.products_id, p.name, p.categories_id "
+			+ "FROM product p " + "LEFT JOIN categories c ON p.categories_id = c.categories_id "
+			+ "WHERE c.name = :categoriesName")
+	List<Object[]> findProductsByCategoriesName(String categoriesName);
 
 //	@Query("SELECT p FROM Product p LEFT JOIN Suppliers s ON p.suppliersId = s.suppliersId WHERE s.suppliersName = :suppliersName")
 //	List<ProductDTO> findProductsBySupplierName(@Param("suppliersName") String suppliersName);

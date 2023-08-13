@@ -127,10 +127,10 @@
  
 
         <!-- 中間商品內容起始 -->
-        <div class="album py-5 bg-light">
-          <div class="container">
+        <div class="album py-5 bg-light container"  id="index">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-              <div class="col">
+              <div class="col" v-for="product in products" :key="product.productsId">
+                
                 <div class="card shadow-sm">
                 
                   <svg
@@ -143,12 +143,9 @@
                   preserveAspectRatio="xMidYMid slice"
                   focusable="false"
                 >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/冰箱.jpg'></c:url>"
+                  <title>{{product.name}}</title>
+                  <image                  
+                    :xlink:href="contextPath + '/pic/product/' + product.name + '.jpg'"
                     width="100%"
                     height="100%"
                   />
@@ -156,486 +153,12 @@
 
 
                   <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
+                    <p class="card-text container fs-4 text-center">{{product.name}}</p>
                     <div
                       style="padding: 15px"
                       class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
                     >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
-                      <div class="d-flex flex-wrap align-items-center">
-                        數量<input
-                          type="number"
-                          min="0"
-                          style="width: 50px; height: 30px"
-                        />
-                      </div>
-                    </div>
-                    <div class="container">
-                      <div
-                        class="gap-2 d-flex justify-content-between align-items-center"
-                      >
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入收藏清單
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入購物車
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card shadow-sm">
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/電鍋.jpg'></c:url>"
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-
-                  <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
-                    <div
-                      style="padding: 15px"
-                      class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
-                    >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
-                      <div class="d-flex flex-wrap align-items-center">
-                        數量<input
-                          type="number"
-                          min="0"
-                          style="width: 50px; height: 30px"
-                        />
-                      </div>
-                    </div>
-                    <div class="container">
-                      <div
-                        class="gap-2 d-flex justify-content-between align-items-center"
-                      >
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入收藏清單
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入購物車
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card shadow-sm">
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/快煮壺.jpg'></c:url>"
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-
-                  <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
-                    <div
-                      style="padding: 15px"
-                      class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
-                    >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
-                      <div class="d-flex flex-wrap align-items-center">
-                        數量<input
-                          type="number"
-                          min="0"
-                          style="width: 50px; height: 30px"
-                        />
-                      </div>
-                    </div>
-                    <div class="container">
-                      <div
-                        class="gap-2 d-flex justify-content-between align-items-center"
-                      >
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入收藏清單
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入購物車
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="card shadow-sm">
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/空氣清淨機.jpg'></c:url>"
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-
-                  <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
-                    <div
-                      style="padding: 15px"
-                      class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
-                    >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
-                      <div class="d-flex flex-wrap align-items-center">
-                        數量<input
-                          type="number"
-                          min="0"
-                          style="width: 50px; height: 30px"
-                        />
-                      </div>
-                    </div>
-                    <div class="container">
-                      <div
-                        class="gap-2 d-flex justify-content-between align-items-center"
-                      >
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入收藏清單
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入購物車
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card shadow-sm">
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/電風扇.jpg'></c:url>"
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-
-                  <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
-                    <div
-                      style="padding: 15px"
-                      class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
-                    >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
-                      <div class="d-flex flex-wrap align-items-center">
-                        數量<input
-                          type="number"
-                          min="0"
-                          style="width: 50px; height: 30px"
-                        />
-                      </div>
-                    </div>
-                    <div class="container">
-                      <div
-                        class="gap-2 d-flex justify-content-between align-items-center"
-                      >
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入收藏清單
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入購物車
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card shadow-sm">
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/調理機.jpg'></c:url>"
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-
-                  <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
-                    <div
-                      style="padding: 15px"
-                      class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
-                    >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
-                      <div class="d-flex flex-wrap align-items-center">
-                        數量<input
-                          type="number"
-                          min="0"
-                          style="width: 50px; height: 30px"
-                        />
-                      </div>
-                    </div>
-                    <div class="container">
-                      <div
-                        class="gap-2 d-flex justify-content-between align-items-center"
-                      >
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入收藏清單
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入購物車
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col">
-                <div class="card shadow-sm">
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/掃地機器人.jpg'></c:url>"
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-
-                  <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
-                    <div
-                      style="padding: 15px"
-                      class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
-                    >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
-                      <div class="d-flex flex-wrap align-items-center">
-                        數量<input
-                          type="number"
-                          min="0"
-                          style="width: 50px; height: 30px"
-                        />
-                      </div>
-                    </div>
-                    <div class="container">
-                      <div
-                        class="gap-2 d-flex justify-content-between align-items-center"
-                      >
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入收藏清單
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入購物車
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card shadow-sm">
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/洗碗機.jpg'></c:url>"
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-
-                  <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
-                    <div
-                      style="padding: 15px"
-                      class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
-                    >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
-                      <div class="d-flex flex-wrap align-items-center">
-                        數量<input
-                          type="number"
-                          min="0"
-                          style="width: 50px; height: 30px"
-                        />
-                      </div>
-                    </div>
-                    <div class="container">
-                      <div
-                        class="gap-2 d-flex justify-content-between align-items-center"
-                      >
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入收藏清單
-                        </button>
-                        <button
-                          class="btn btn-sm btn-outline-primary"
-                          type="button"
-                        >
-                          加入購物車
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card shadow-sm">
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>Placeholder</title>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    商品圖片
-                  </text>
-                  <image
-                    xlink:href="<c:url value='/pic/product/除濕機.jpg'></c:url>"
-                    width="100%"
-                    height="100%"
-                  />
-                </svg>
-
-                  <div class="card-body">
-                    <p class="card-text container">商品敘述</p>
-                    <div
-                      style="padding: 15px"
-                      class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
-                    >
-                      <div class="fs-4 fw-bold text-danger">價格</div>
+                      <div class="fs-4 text-danger">價格:{{product.sellingPrice*product.discount}}</div>
                       <div class="d-flex flex-wrap align-items-center">
                         數量<input
                           type="number"
@@ -666,13 +189,30 @@
                 </div>
               </div>
             </div>
-          </div>
+            <div class="container d-flex justify-content-center py-5" >
+              <!-- 我是分頁 -->
+              <paginate 
+                first-last-button="true"
+                first-button-text="&lt;&lt;"
+                last-button-text="&gt;&gt;"
+                prev-text="&lt;"
+                next-text="&gt;"
+                :page-count="pages"
+                :initial-page="current"
+                :click-handler="selectAllproduct"
+              ></paginate>
+              <!-- 我是分頁 -->
+            </div>
         </div>
         <!-- 中間商品內容結束 -->
       </div>
 
     </div>
     <%@ include file="/WEB-INF/views/toolbar/footer.jsp" %>
+    <script
+      type="text/javascript"
+      src="<c:url value='/js/index.js'></c:url>"
+    ></script>
 
   </body>
 </html>
