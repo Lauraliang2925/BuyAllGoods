@@ -14,8 +14,9 @@
   </head>
 
   <body style="padding-top: 8%;" >
+    
       <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
-    <div class="container">
+    <div class="container" >
 
       <!-- 我是上方滑動廣告起始 -->
       <div class="container" style="height: 280px">
@@ -120,14 +121,46 @@
       </div>
       <!-- 我是上方滑動廣告結束 -->
 
-      <div class="d-flex " >
+      <div class="d-flex " id="index">
       
 <!--       插入左邊的工具列要包在 <div class="d-flex "></div> 裡面!! -->
-  <%@ include file="/WEB-INF/views/toolbar/leftbar.jsp" %>
- 
+    <!-- 左列商品分類內容起始 -->
+    <div
+      class="d-flex flex-column flex-shrink-0 p-3 bg-light"
+      style="width: 280px"
+    >
+      <svg class="d-flex align-items-center" width="40" height="32">
+        <use xlink:href="#bootstrap"></use>
+      </svg>
+      <span class="fs-4 text-center">商品分類</span>
+      <hr />
+      <ul
+        class="nav nav-pills  flex-column mb-3 align-items-center fs-5"
+        v-for="category in categories"
+        :key="category.categoriesId"
+      >
+<!-- 
+	  <li class="nav-item ">
+		<a href="#" class="nav-link active" aria-current="page">
+		  <svg class="bi me-2 "  width="16" height="16">
+			<use xlink:href="#home"></use>
+		  </svg>
+		  特價商品
+		</a>
+	  </li> 
+	-->
+	  <li class="nav-item" @click="selectProductByCategoryName(category.name)">
+		<a :href="contextPath + '/product/findByCategoriesName/' + category.name" class="nav-link link-dark" >
+		  {{category.name}}
+		</a>
+	  </li>
+
+      </ul>
+    </div>
+    <!-- 左列商品分類內容結束 -->
 
         <!-- 中間商品內容起始 -->
-        <div class="album py-5 bg-light container"  id="index">
+        <div class="album py-5 bg-light container"  >
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               <div class="col" v-for="product in products" :key="product.productsId">
                 
@@ -208,11 +241,17 @@
       </div>
 
     </div>
+   
+ 
     <%@ include file="/WEB-INF/views/toolbar/footer.jsp" %>
-    <script
-      type="text/javascript"
-      src="<c:url value='/js/index.js'></c:url>"
-    ></script>
+ 
 
   </body>
+  <script type="text/javascript">
+    const contextPath = "${pageContext.request.contextPath}";
+  </script>
+  <script
+  type="text/javascript"
+  src="<c:url value='/js/index.js'></c:url>"
+></script>
 </html>
