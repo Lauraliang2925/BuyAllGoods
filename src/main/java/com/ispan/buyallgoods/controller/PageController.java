@@ -32,9 +32,9 @@ public class PageController {
 		return "/product/product-add";
 	}
 	
-//	@GetMapping("/product-upload")
-//	public String productUupload() {
-//		return "/product/upload";
-//	}
+	@GetMapping("/product-singlePage")
+	public String productSinglePage() {
+		return "/product/product-singlePage";
+	}
 
 }

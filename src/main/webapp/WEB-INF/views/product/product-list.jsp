@@ -9,6 +9,12 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
     <meta charset="UTF-8" />
     <title>商品查詢</title>
   </head>
+  <style>
+    /* 調整預覽圖片顯示的高度 */
+   .productImg {
+      height: 100px;
+    }
+  </style>
   <body style="padding-top: 8%" id="app">
     <%@ include file="/WEB-INF/views/toolbar/navbar.jsp"%>
 
@@ -77,10 +83,11 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             <thead class="table-primary">
               <tr>              
                 <th scope="col">品項編號</th>
+                <th scope="col">商品圖片</th>
                 <th scope="col">商品名稱</th>
                 <th scope="col">廠商ID</th>
                 <th scope="col">合約ID</th>
-                <th scope="col">商品明細</th>
+                <th scope="col">詳細資訊</th>
               </tr>
             </thead>
             <!--~~~~~~~~~~界接後端(用迴圈產出清單)~~~~~~~-->
@@ -88,6 +95,10 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               <!-- <template v-if="findInputsNotEmpty"> -->
               <tr v-for="product in products" :key="product.productsId">          
                 <td>{{ product.productsId }}</td>
+                <td><img                  
+                  :src="contextPath + '/pic/product/' + product.name + '.jpg'"
+                  class="productImg"
+                /></td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.suppliersId }}</td>                
                 <td>{{ product.contractsId }}</td>

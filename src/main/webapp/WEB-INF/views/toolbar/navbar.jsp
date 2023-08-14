@@ -107,7 +107,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="<c:url value='/product-list'/>">檢視商品</a></li>
-                  <li><a class="dropdown-item" href="<c:url value='/product-add'/>">新增商品</a></li>
+                  <li><a class="dropdown-item" href="<c:url value='/product-add'/>">新增商品</a></li>                 
                   <li><hr class="dropdown-divider" /></li>
                   <li><a class="dropdown-item" href="<c:url value='/categories-edit'/>">編輯分類</a></li>
                   <li><hr class="dropdown-divider" /></li>

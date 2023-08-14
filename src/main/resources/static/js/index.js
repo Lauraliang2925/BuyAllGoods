@@ -5,6 +5,8 @@ const index = Vue.createApp({
   data: function () {
     return {
       contextPath: contextPath,
+      categories:[],
+
       products: [],
       productsId: "",
       categoriesId: "",
@@ -29,16 +31,8 @@ const index = Vue.createApp({
       staffId: "",
       createdDate: "",
 
-      categoriesName: "",
-
-      // productsFullData: [],
-      // findProductsName: "",
-      // findSuppliersId: "",
-      // findContractsId: "",
-
-      // suppliersData: [],
-      // suppliersAllData: [],
-
+      categoriesName: "特價商品",
+    
       // showPaginate: true,
 
       // 分頁功能所需參數
@@ -49,31 +43,8 @@ const index = Vue.createApp({
       lastPageRows: 0, //最後一頁資料數量
     };
   },
-  // computed: {
-  //   // 计算属性 filteredSuppliersIds 获取不重复的廠商ID列表
-  //   filteredSuppliersIds() {
-  //     const suppliersIdSet = new Set(); // 使用Set来存储不重复的廠商ID
-  //     this.productsFullData.forEach((product) => {
-  //       suppliersIdSet.add(product.suppliersId);
-  //     });
-  //     return Array.from(suppliersIdSet); // 将Set转换为数组，并返回数组作为计算属性的值
-  //   },
-  //   filteredContractsIds() {
-  //     const contractsIdSet = new Set();
-  //     this.productsFullData.forEach((product) => {
-  //       contractsIdSet.add(product.contractsId);
-  //     });
-  //     return Array.from(contractsIdSet);
-  //   },
-  //   findInputsNotEmpty() {
-  //     return (
-  //       this.findProductsName !== "" ||
-  //       this.findSuppliersId !== "" ||
-  //       this.findContractsId !== ""
-  //     );
-  //   },
-  // },
-  methods: {
+
+   methods: {
     selectAllproduct: function (page) {
       // 在點選分頁(page from 1)時，呼叫出顯示的資料
       if (page) {
@@ -123,6 +94,7 @@ const index = Vue.createApp({
         })
         .then(function (response) {
           vm.products = response.data.list;
+          console.log("selectAllproduct")
 
           let count = response.data.count;
           vm.pages = Math.ceil(count / vm.rows);
@@ -161,7 +133,6 @@ const index = Vue.createApp({
           params: request, // 将请求参数作为 params 对象
         })
         .then(function (response) {
-         
           vm.categories = response.data.list;
         })
         .catch(function (error) {
@@ -169,7 +140,6 @@ const index = Vue.createApp({
         });
     },
     selectProductByCategoryId: function (categoriesId) {
-
       
       let vm = this;
       axios
@@ -196,47 +166,26 @@ const index = Vue.createApp({
         });
     },
 
-    // 查看廠商明細的按鈕，丟productsId
-    //   showDetails: function (productsId) {
-    //     // console.log("productsId:"+productsId)
-    //     // const url = contextPath + "/product/" + productsId;
-    //     // window.location.href = url;
-    //     // 帶著選定的productsId跳轉至編輯頁面
-    //     window.location.href =
-    //       contextPath + "/product-edit?productsId=" + productsId;
-    //   },
-    //   findByCustomQuery: function () {
-    //     this.showPaginate = false;
+    // 查看個別商品的按鈕，丟productsId
+      showDetails: function (productsId) {
+        // 帶著選定的productsId跳轉至個別商品頁面
+        window.location.href =
+          contextPath + "/product-singlePage?productsId=" + productsId;
+      },
 
-    //     if (this.findProductsName === "") {
-    //       this.findProductsName = null;
-    //     }
-    //     if (this.findSuppliersId === "") {
-    //       this.findSuppliersId = null;
-    //     }
-    //     if (this.findContractsId === "") {
-    //       this.findContractsId = null;
-    //     }
-    //     let request = {
-    //       name: this.findProductsName,
-    //       contractsId: this.findContractsId,
-    //       suppliersId: this.findSuppliersId,
-    //     };
-    //     let vm = this;
-    //     axios
-    //       .post(contextPath + "/product/findByCustomQuery", request)
-    //       .then(function (response) {
-    //         vm.products = response.data.list;
-    //       })
-    //       .catch(function (error) {
-    //         console.error("資料請求失敗：", error);
-    //       });
-    //   },
   },
   mounted: function () {
-    //   this.fullData();
-    this.selectAllproduct();
     this.selectAllcategories();
+    //   this.fullData();
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get("categoriesName");
+    
+    if(name==null || name==''){
+      this.selectProductByCategoryId(1)
+    } else{
+      this.selectCategoryIdByCategoryName(name)
+    }
+    
   },
 });
 index.mount("#index");

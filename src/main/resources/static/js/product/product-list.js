@@ -6,6 +6,8 @@ const app = Vue.createApp({
     return {
       // isShowSelect: true,
       // isShowModify: false,
+      contextPath: contextPath,
+
       products: [],
       productsId: "",
       name: "",

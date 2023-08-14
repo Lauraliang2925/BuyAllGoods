@@ -150,7 +150,9 @@
 	  </li> 
 	-->
 	  <li class="nav-item" >
-      <button class="nav-link link-dark " @click="selectCategoryIdByCategoryName(category.name)">
+      <button class="nav-link link-dark " 
+      :class="{ active: categoriesName == category.name }"
+      @click="selectCategoryIdByCategoryName(category.name)">
         {{ category.name }}
       </button>
     </li>
@@ -165,24 +167,29 @@
               <div class="col" v-for="product in products" :key="product.productsId">
                 
                 <div class="card shadow-sm">
-                
-                  <svg
-                  class="bd-placeholder-img card-img-top"
-                  width="100%"
-                  height="225"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>{{product.name}}</title>
-                  <image                  
-                    :xlink:href="contextPath + '/pic/product/' + product.name + '.jpg'"
+                  <button class="btn btn-link" @click="showDetails(product.productsId)">
+
+                    <svg
+                    class="bd-placeholder-img card-img-top"
                     width="100%"
-                    height="100%"
-                  />
-                </svg>
+                    height="225"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="Placeholder: Thumbnail"
+                    preserveAspectRatio="xMidYMid slice"
+                    focusable="false"
+                  >
+                    <title>{{product.name}}</title>
+                    <image                  
+                      :xlink:href="contextPath + '/pic/product/' + product.name + '.jpg'"
+                      width="100%"
+                      height="100%"
+                    />
+                  </svg>
+
+                  </button>
+                
+             
 
 
                   <div class="card-body">

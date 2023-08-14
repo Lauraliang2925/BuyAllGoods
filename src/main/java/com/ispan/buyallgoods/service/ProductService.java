@@ -9,9 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ispan.buyallgoods.model.Categories;
 import com.ispan.buyallgoods.model.Product;
-import com.ispan.buyallgoods.model.ProductCategoriesPOJO;
 import com.ispan.buyallgoods.model.ProductRepository;
 
 @Service
@@ -19,12 +17,11 @@ import com.ispan.buyallgoods.model.ProductRepository;
 public class ProductService {
 	@Autowired
 	ProductRepository productRepository;
-	
-	public List<Object[]> findProductsByCategoriesName(String categoriesName){
+
+	public List<Object[]> findProductsByCategoriesName(String categoriesName) {
 		return productRepository.findProductsByCategoriesName(categoriesName);
-		
+
 	}
-	
 
 	public List<Product> findByCustomQuery(String name, Integer suppliersId, Integer contractsId) {
 		return productRepository.findByCustomQuery(name, suppliersId, contractsId);
@@ -80,7 +77,7 @@ public class ProductService {
 		return null;
 
 	}
-	
+
 //	使用分類ID尋找底下所有商品
 	public List<Product> findAllByCategoriesId(Integer id) {
 		List<Product> findAllByCategoriesId = productRepository.findAllByCategoriesId(id);
@@ -143,7 +140,7 @@ public class ProductService {
 		}
 		return false;
 	}
-	
+
 //	使用商品名稱尋找商品(精確搜尋)	
 	public boolean checkNamePrecise(String name) {
 		if (productRepository.findByPreciseProductName(name) != null) {

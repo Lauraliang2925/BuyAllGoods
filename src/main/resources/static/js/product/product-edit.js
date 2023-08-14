@@ -338,8 +338,6 @@ const app = Vue.createApp({
     // Get the productsId from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const productsId = urlParams.get("productsId");
-    //   console.log(urlParams)
-    //   console.log(productsId)
     this.findById(productsId);
     this.fullData();
   },
