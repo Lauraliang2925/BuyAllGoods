@@ -149,11 +149,15 @@
 		</a>
 	  </li> 
 	-->
-	  <li class="nav-item" @click="selectProductByCategoryName(category.name)">
-		<a :href="contextPath + '/product/findByCategoriesName/' + category.name" class="nav-link link-dark" >
+	  <li class="nav-item" >
+		<!-- <a :href="contextPath + '/product/findByCategoriesName/' + category.name" class="nav-link link-dark" >
 		  {{category.name}}
-		</a>
-	  </li>
+		</a> -->
+
+      <button class="nav-link link-dark" @click="selectProductByCategoryName(category.name)">
+        {{ category.name }}
+      </button>
+    </li>
 
       </ul>
     </div>

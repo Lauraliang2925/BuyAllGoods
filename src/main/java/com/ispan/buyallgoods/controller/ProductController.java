@@ -1,9 +1,11 @@
 package com.ispan.buyallgoods.controller;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ispan.buyallgoods.model.Product;
+import com.ispan.buyallgoods.model.ProductCategoriesPOJO;
 import com.ispan.buyallgoods.service.ProductService;
 
 @RestController
@@ -87,6 +91,52 @@ public class ProductController {
 		return null;
 	}
 
+//	使用分類名稱尋找底下所有商品
+	@GetMapping("/product/findByCategoriesName/{name}")
+	public Map<String, Object> findProductsByCategoriesName(@PathVariable(value = "name") String name) {
+
+		Map<String, Object> responseJson = new HashMap<>();
+		List<Object[]> list = productService.findProductsByCategoriesName(name);
+		responseJson.put("list", list);
+		return responseJson;
+	}
+//	下面使用POJO測試
+//	public ResponseEntity<List<ProductCategoriesPOJO>> findProductsByCategoriesName(
+//			@PathVariable(value = "name") String name) {
+//		List<Object[]> rawList = productService.findProductsByCategoriesName(name);
+//		List<ProductCategoriesPOJO> productList = new ArrayList<>();
+//
+//		for (Object[] row : rawList) {
+//			ProductCategoriesPOJO pojo = new ProductCategoriesPOJO();
+//			pojo.setProductsId((Integer) row[0]);
+//			pojo.setCategoriesId((Integer) row[1]);
+//			pojo.setContractsId((Integer) row[2]);
+//			pojo.setName((String) row[3]);
+//			pojo.setProductsSpecification((String) row[4]);
+//			pojo.setProductsDescription((String) row[5]);
+//			pojo.setImagePath((String) row[6]);
+//			pojo.setSellingPrice((Integer) row[7]);
+//			pojo.setCost((Integer) row[8]);
+//			pojo.setLowestPrice((Integer) row[9]);
+//			pojo.setTotal((Integer) row[10]);
+//			pojo.setOrderQuantity((Integer) row[11]);
+//			pojo.setSoldQuantity((Integer) row[12]);
+//			pojo.setSuppliersId((Integer) row[13]);
+//			pojo.setExpiryDate(((java.sql.Date) row[14]).toLocalDate());
+//			pojo.setSellingStartDate(((java.sql.Date) row[15]).toLocalDate());
+//			pojo.setSellingStopDate(((java.sql.Date) row[16]).toLocalDate());
+//			pojo.setDiscountStartDate(((java.sql.Date) row[17]).toLocalDate());
+//			pojo.setDiscountEndDate(((java.sql.Date) row[18]).toLocalDate());
+//			pojo.setDiscount(((BigDecimal) row[19]).doubleValue());
+//			pojo.setStaffId((Integer) row[20]);
+//			pojo.setCategoriesName((String) row[21]);
+//
+//			productList.add(pojo);
+//		}
+//		System.out.println("findByCategoriesName:" + productList.toString());
+//		return ResponseEntity.ok(productList);
+//	}
+
 	@GetMapping("/product/findAll")
 	public Map<String, Object> findAll(@RequestParam("current") int current, @RequestParam("rows") int rows) {
 
@@ -100,6 +150,7 @@ public class ProductController {
 		Map<String, Object> responseJson = new HashMap<>();
 		responseJson.put("list", list);
 		responseJson.put("count", count);
+		System.out.println("findAll:" + responseJson.toString());
 
 		return responseJson;
 	}
@@ -140,16 +191,6 @@ public class ProductController {
 //		responseJson.put("list", list);
 //		return responseJson;
 //	}
-
-//	使用分類名稱尋找底下所有商品
-	@GetMapping("/product/findByCategoriesName/{name}")
-	public Map<String, Object> findProductsByCategoriesName(@PathVariable(value = "name") String name) {
-
-		Map<String, Object> responseJson = new HashMap<>();
-		List<Object[]> list = productService.findProductsByCategoriesName(name);
-		responseJson.put("list", list);
-		return responseJson;
-	}
 
 //	@PostMapping("/product/findByCategoriesName")
 //	public Map<String, Object> findProductsByCategoriesName(@RequestBody ProductCategoriesPOJO pcPOJO) {

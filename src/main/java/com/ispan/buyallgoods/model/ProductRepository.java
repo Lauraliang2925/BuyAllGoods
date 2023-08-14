@@ -31,11 +31,42 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ "WHERE s.suppliers_name = :suppliersName")
 	List<Object[]> findProductsBySupplierName(String suppliersName);
 	
+	
+	
 //	使用分類名稱尋找底下所有商品
-	@Query(nativeQuery = true, value = "SELECT p.products_id, p.name, p.categories_id "
+	@Query(nativeQuery = true, value = "SELECT p.products_id, p.name, p.categories_id, p.contracts_id, p.products_specification,p.products_description, p.image_path, p.selling_price "
 			+ "FROM product p " + "LEFT JOIN categories c ON p.categories_id = c.categories_id "
 			+ "WHERE c.name = :categoriesName")
 	List<Object[]> findProductsByCategoriesName(String categoriesName);
+//	@Query(nativeQuery = true, value = "SELECT "
+//	        + "p.[products_id], "
+//	        + "p.[categories_id], "
+//	        + "p.[contracts_id], "
+//	        + "p.[name], "
+//	        + "p.[products_specification], "
+//	        + "p.[products_description], "
+//	        + "p.[image_path], "
+//	        + "p.[selling_price], "
+//	        + "p.[cost], "
+//	        + "p.[lowest_price], "
+//	        + "p.[total], "
+//	        + "p.[order_quantity], "
+//	        + "p.[sold_quantity], "
+//	        + "p.[suppliers_id], "
+//	        + "p.[expiry_date], "
+//	        + "p.[selling_start_date], "
+//	        + "p.[selling_stop_date], "
+//	        + "p.[discount_start_date], "
+//	        + "p.[discount_end_date], "
+//	        + "p.[discount], "
+//	        + "p.[members_id] "
+//	        + "FROM product p "
+//	        + "LEFT JOIN categories c ON p.categories_id = c.categories_id "
+//	        + "WHERE c.name = :categoriesName")
+
+	
+	
+	
 
 //	@Query("SELECT p FROM Product p LEFT JOIN Suppliers s ON p.suppliersId = s.suppliersId WHERE s.suppliersName = :suppliersName")
 //	List<ProductDTO> findProductsBySupplierName(@Param("suppliersName") String suppliersName);
