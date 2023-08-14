@@ -123,7 +123,7 @@ const index = Vue.createApp({
         })
         .then(function (response) {
           vm.products = response.data.list;
-          console.log("Test1"+vm.products)
+
           let count = response.data.count;
           vm.pages = Math.ceil(count / vm.rows);
           vm.lastPageRows = count % vm.rows;
@@ -161,22 +161,35 @@ const index = Vue.createApp({
           params: request, // 将请求参数作为 params 对象
         })
         .then(function (response) {
-          
+         
           vm.categories = response.data.list;
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
         });
     },
-    selectProductByCategoryName: function (name) {
+    selectProductByCategoryId: function (categoriesId) {
+
+      
       let vm = this;
       axios
-        .get(contextPath + "/product/findByCategoriesName/" + name)
+        .post(contextPath + "/product/findByCategoriesId/" + categoriesId)
         .then(function (response) {
+          vm.products = response;
           vm.products = response.data.list;
-          // console.log("name:"+vm.products[0][3])
-          console.log("data:"+response)
-          console.log("Test2:"+response.data.list)
+        })
+        .catch(function (error) {
+          console.error("資料請求失敗：", error);
+        });
+    },
+    selectCategoryIdByCategoryName: function (name) {
+      let vm = this;
+      axios
+        .get(contextPath + "/categories/findCategoriesIdByName/" + name)
+        .then(function (response) {
+          vm.categoriesId = response.data.id;
+          vm.selectProductByCategoryId(vm.categoriesId);
+
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -227,4 +240,3 @@ const index = Vue.createApp({
   },
 });
 index.mount("#index");
-

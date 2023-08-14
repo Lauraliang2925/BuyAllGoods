@@ -150,11 +150,7 @@
 	  </li> 
 	-->
 	  <li class="nav-item" >
-		<!-- <a :href="contextPath + '/product/findByCategoriesName/' + category.name" class="nav-link link-dark" >
-		  {{category.name}}
-		</a> -->
-
-      <button class="nav-link link-dark" @click="selectProductByCategoryName(category.name)">
+      <button class="nav-link link-dark " @click="selectCategoryIdByCategoryName(category.name)">
         {{ category.name }}
       </button>
     </li>
@@ -245,10 +241,8 @@
       </div>
 
     </div>
-   
  
     <%@ include file="/WEB-INF/views/toolbar/footer.jsp" %>
- 
 
   </body>
   <script type="text/javascript">

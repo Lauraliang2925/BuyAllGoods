@@ -25,6 +25,14 @@ public class CategoriesController {
 
 	@Autowired
 	CategoriesService categoriesService;
+	
+	@GetMapping("/categories/findCategoriesIdByName/{name}" )
+	public Map<String, Object> findCategoriesIdByName(@PathVariable(name = "name") String name) {
+		Map<String, Object> responseJson = new HashMap<>();
+		Integer findByCategoriesName = categoriesService.findCategoriesIdByName(name);
+		responseJson.put("id", findByCategoriesName);
+		return responseJson;
+	}
 
 	@PostMapping("/categories/{name}" )
 	public Map<String, Object> checkExistsName(@PathVariable(name = "name") String name) {

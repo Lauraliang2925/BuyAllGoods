@@ -100,6 +100,20 @@ public class ProductController {
 		responseJson.put("list", list);
 		return responseJson;
 	}
+	
+	
+//	使用分類ID尋找底下所有商品
+	@PostMapping("/product/findByCategoriesId/{id}")
+	public Map<String, Object> findAllByCategoriesId(@PathVariable(value = "id") Integer id) {
+		if(id ==null){
+			return null;
+		}
+
+		Map<String, Object> responseJson = new HashMap<>();
+		List<Product> list = productService.findAllByCategoriesId(id);
+		responseJson.put("list", list);
+		return responseJson;
+	}
 //	下面使用POJO測試
 //	public ResponseEntity<List<ProductCategoriesPOJO>> findProductsByCategoriesName(
 //			@PathVariable(value = "name") String name) {

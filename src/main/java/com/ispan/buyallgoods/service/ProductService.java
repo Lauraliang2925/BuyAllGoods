@@ -80,7 +80,8 @@ public class ProductService {
 		return null;
 
 	}
-
+	
+//	使用分類ID尋找底下所有商品
 	public List<Product> findAllByCategoriesId(Integer id) {
 		List<Product> findAllByCategoriesId = productRepository.findAllByCategoriesId(id);
 

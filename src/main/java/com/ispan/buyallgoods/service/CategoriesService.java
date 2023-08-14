@@ -78,6 +78,16 @@ public class CategoriesService {
 		categoriesRepository.save(categories);
 		return false;
 	}
+	
+	
+	// 使用商品分類名稱查ID
+	public Integer findCategoriesIdByName(String name) {
+		if (name.length() == 0 || name == null) {
+			return null;
+		}
+		Integer idByName = categoriesRepository.findCategoriesIdByName(name);		
+		return idByName;
+	}
 
 	public boolean checkName(String name) {
 		if (categoriesRepository.findByCategoriesName(name) != null) {
