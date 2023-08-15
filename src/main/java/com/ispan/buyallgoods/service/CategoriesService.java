@@ -1,5 +1,6 @@
 package com.ispan.buyallgoods.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.buyallgoods.model.Categories;
 import com.ispan.buyallgoods.model.CategoriesRepository;
+import com.ispan.buyallgoods.model.Product;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -26,6 +28,11 @@ public class CategoriesService {
 			return optional.get();
 		}
 		return null;
+
+	}
+	
+	public List<Categories> fullData() {
+		return categoriesRepository.findAll();
 
 	}
 

@@ -58,6 +58,7 @@ public class CategoriesController {
 		return null;
 	}
 
+//	有分頁功能
 	@GetMapping("/categories/findAll")
 	public Map<String, Object> findAll(@RequestParam("current") int current,
             @RequestParam("rows") int rows) {
@@ -75,7 +76,24 @@ public class CategoriesController {
 
 		return responseJson;
 	}
+	
+	
+	
+//	沒有分頁功能
+	@GetMapping("/categories/fullData")
+	public Map<String, Object> fullData() {		
+	
+		List<Categories> list = categoriesService.fullData();
+//		long count = categoriesService.count();
 
+		Map<String, Object> responseJson = new HashMap<>();
+		responseJson.put("list", list);
+//		responseJson.put("count", count);
+
+		return responseJson;
+	}
+
+	
 	@PostMapping("/categories/insert")
 	public Map<String, Object> insert(@RequestBody Categories categories) {
 

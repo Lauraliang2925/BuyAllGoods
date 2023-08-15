@@ -96,55 +96,47 @@ public class ProductController {
 		responseJson.put("list", list);
 		return responseJson;
 	}
+	
 
-//	使用分類ID尋找底下所有商品
-	@PostMapping("/product/findByCategoriesId/{id}")
-	public Map<String, Object> findAllByCategoriesId(@PathVariable(value = "id") Integer id) {
+//	使用分類ID尋找底下所有商品 (還要加上分頁功能)
+//	@GetMapping("/product/findByCategoriesId/{id}")
+//	public Map<String, Object> findAllByCategoriesId(@PathVariable(value = "id") Integer id,
+//			@RequestParam("current") int current, @RequestParam("rows") int rows) {
+//		if (id == null) {
+//			return null;
+//		}
+//		// spring boot 分頁API
+//		Pageable pageable = PageRequest.of((current - 1), rows);
+//		List<Product> list = productService.findAllByCategoriesId(id,pageable);
+//		long count = productService.findCountByCategoriesId(id);
+//
+//		Map<String, Object> responseJson = new HashMap<>();
+//		responseJson.put("list", list);
+//		responseJson.put("count", count);
+//		System.out.println("findAllByCategoriesId:" + responseJson.toString());
+//		return responseJson;
+//	}
+	
+//	使用分類ID尋找底下所有商品 (還要加上分頁功能)
+	@GetMapping("/product/findByCategoriesId/{id}")
+	public Map<String, Object> findAllByCategoriesId(@PathVariable(value = "id") Integer id,
+			@RequestParam("current") int current, @RequestParam("rows") int rows) {
 		if (id == null) {
 			return null;
 		}
+		// spring boot 分頁API
+		Pageable pageable = PageRequest.of((current - 1), rows);
+		
+		
+		List<Product> list = productService.findAllByCategoriesId(id,pageable);
+		long count = productService.findCountByCategoriesId(id);
 
 		Map<String, Object> responseJson = new HashMap<>();
-		List<Product> list = productService.findAllByCategoriesId(id);
 		responseJson.put("list", list);
+		responseJson.put("count", count);
 		return responseJson;
 	}
-//	下面使用POJO測試
-//	public ResponseEntity<List<ProductCategoriesPOJO>> findProductsByCategoriesName(
-//			@PathVariable(value = "name") String name) {
-//		List<Object[]> rawList = productService.findProductsByCategoriesName(name);
-//		List<ProductCategoriesPOJO> productList = new ArrayList<>();
-//
-//		for (Object[] row : rawList) {
-//			ProductCategoriesPOJO pojo = new ProductCategoriesPOJO();
-//			pojo.setProductsId((Integer) row[0]);
-//			pojo.setCategoriesId((Integer) row[1]);
-//			pojo.setContractsId((Integer) row[2]);
-//			pojo.setName((String) row[3]);
-//			pojo.setProductsSpecification((String) row[4]);
-//			pojo.setProductsDescription((String) row[5]);
-//			pojo.setImagePath((String) row[6]);
-//			pojo.setSellingPrice((Integer) row[7]);
-//			pojo.setCost((Integer) row[8]);
-//			pojo.setLowestPrice((Integer) row[9]);
-//			pojo.setTotal((Integer) row[10]);
-//			pojo.setOrderQuantity((Integer) row[11]);
-//			pojo.setSoldQuantity((Integer) row[12]);
-//			pojo.setSuppliersId((Integer) row[13]);
-//			pojo.setExpiryDate(((java.sql.Date) row[14]).toLocalDate());
-//			pojo.setSellingStartDate(((java.sql.Date) row[15]).toLocalDate());
-//			pojo.setSellingStopDate(((java.sql.Date) row[16]).toLocalDate());
-//			pojo.setDiscountStartDate(((java.sql.Date) row[17]).toLocalDate());
-//			pojo.setDiscountEndDate(((java.sql.Date) row[18]).toLocalDate());
-//			pojo.setDiscount(((BigDecimal) row[19]).doubleValue());
-//			pojo.setStaffId((Integer) row[20]);
-//			pojo.setCategoriesName((String) row[21]);
-//
-//			productList.add(pojo);
-//		}
-//		System.out.println("findByCategoriesName:" + productList.toString());
-//		return ResponseEntity.ok(productList);
-//	}
+	
 
 	@GetMapping("/product/findAll")
 	public Map<String, Object> findAll(@RequestParam("current") int current, @RequestParam("rows") int rows) {
@@ -319,23 +311,5 @@ public class ProductController {
 		System.out.println(responseJson.toString());
 		return responseJson;
 	}
-//	@DeleteMapping("/product/delete/{id}")
-//	public Map<String, Object> deleteById(@PathVariable(value = "id") Integer id) {
-//		Map<String, Object> responseJson = new HashMap<>();
-//		if (productService.findById(id) == null) {
-//			responseJson.put("msg", "資料不存在");
-//			responseJson.put("success", false);
-//		} else {
-//			if (productService.deleteById(id)) {
-//				responseJson.put("msg", "刪除成功");
-//				responseJson.put("success", true);
-//			} else {
-//				responseJson.put("msg", "刪除失敗");
-//				responseJson.put("success", false);
-//			}
-//		}
-//
-//		return responseJson;
-//	}
 
 }

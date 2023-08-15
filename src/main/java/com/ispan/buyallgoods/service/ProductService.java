@@ -40,6 +40,11 @@ public class ProductService {
 	public long count() {
 		return productRepository.count();
 	}
+	
+//	使用商品分類ID尋找此分類底下所有商品數量
+	public long findCountByCategoriesId(Integer categoriesId) {
+		return productRepository.findCountByCategoriesId(categoriesId);
+	}
 
 //	public List<ProductDTO> findProductsBySupplierName(String suppliersName) {
 //		List<ProductDTO> productDTOList = new ArrayList<>();
@@ -79,8 +84,8 @@ public class ProductService {
 	}
 
 //	使用分類ID尋找底下所有商品
-	public List<Product> findAllByCategoriesId(Integer id) {
-		List<Product> findAllByCategoriesId = productRepository.findAllByCategoriesId(id);
+	public List<Product> findAllByCategoriesId(Integer id,Pageable pageable) {
+		List<Product> findAllByCategoriesId = productRepository.findAllByCategoriesId(id, pageable);
 
 		if (findAllByCategoriesId != null) {
 			return findAllByCategoriesId;

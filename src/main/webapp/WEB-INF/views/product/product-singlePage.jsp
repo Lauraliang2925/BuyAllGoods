@@ -18,12 +18,13 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
         <!-- 上方Breadcrumb起始 -->
         <div aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-center">
-            <li class="breadcrumb-item active"><a href="#">首頁</a></li>
-            <li class="breadcrumb-item active"><a href="#">分類A</a></li>
-            <li class="breadcrumb-item active" aria-current="page">OO商品</li>
+            <li class="breadcrumb-item active"><a href="<c:url value='/'/>">首頁</a></li>
+            <li class="breadcrumb-item active"><a :href="categoriesLink">{{categoriesName}}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{name}}</li>
           </ol>
         </div>
         <!-- 上方Breadcrumb結束 -->
+
 
   <div class="d-flex">
 
@@ -42,18 +43,11 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           v-for="category in categories"
           :key="category.categoriesId"
         >
-  <!-- 
-      <li class="nav-item ">
-      <a href="#" class="nav-link active" aria-current="page">
-        <svg class="bi me-2 "  width="16" height="16">
-        <use xlink:href="#home"></use>
-        </svg>
-        特價商品
-      </a>
-      </li> 
-    -->
+
       <li class="nav-item" >
-        <button class="nav-link link-dark " @click="selectCategoryIdByCategoryName(category.name)">
+        <button class="nav-link link-dark " @click="selectCategoryIdByCategoryName(category.name)"
+        :class="{ 'active bg-info': categoriesName == category.name }"
+        >
           {{ category.name }}
         </button>
       </li>
@@ -87,9 +81,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
         <div class="bg-light card-body py-5 container">
           <div class="container d-flex justify-content-around">
             <div class="container fs-3 fw-bold mb-2">商品名稱: {{name}}</div>
-            <!-- <button class="btn btn-outline-success" type="button">編輯</button>
 
-            <button class="btn btn-outline-danger" type="button">下架</button> -->
           </div>
           <div class="container">商品編號: {{productsId}}</div>
           <br />

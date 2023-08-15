@@ -2,6 +2,7 @@ package com.ispan.buyallgoods.model;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +18,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	Product findByPreciseProductName(@Param("name") String name);
 
 //	使用商品分類ID尋找此分類底下所有商品
-	List<Product> findAllByCategoriesId(Integer categoriesId);
+	List<Product> findAllByCategoriesId(Integer categoriesId,Pageable pageable);
+	
+//	使用商品分類ID尋找此分類底下所有商品數量
+	@Query("SELECT COUNT(p) FROM Product p  WHERE p.categoriesId = :categoriesId")
+	Long findCountByCategoriesId(@Param("categoriesId") Integer categoriesId);
 
 //	使用廠商ID尋找底下所有商品
 	List<Product> findAllBySuppliersId(Integer suppliersId);
@@ -38,35 +43,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ "FROM product p " + "LEFT JOIN categories c ON p.categories_id = c.categories_id "
 			+ "WHERE c.name = :categoriesName")
 	List<Object[]> findProductsByCategoriesName(String categoriesName);
-//	@Query(nativeQuery = true, value = "SELECT "
-//	        + "p.[products_id], "
-//	        + "p.[categories_id], "
-//	        + "p.[contracts_id], "
-//	        + "p.[name], "
-//	        + "p.[products_specification], "
-//	        + "p.[products_description], "
-//	        + "p.[image_path], "
-//	        + "p.[selling_price], "
-//	        + "p.[cost], "
-//	        + "p.[lowest_price], "
-//	        + "p.[total], "
-//	        + "p.[order_quantity], "
-//	        + "p.[sold_quantity], "
-//	        + "p.[suppliers_id], "
-//	        + "p.[expiry_date], "
-//	        + "p.[selling_start_date], "
-//	        + "p.[selling_stop_date], "
-//	        + "p.[discount_start_date], "
-//	        + "p.[discount_end_date], "
-//	        + "p.[discount], "
-//	        + "p.[members_id] "
-//	        + "FROM product p "
-//	        + "LEFT JOIN categories c ON p.categories_id = c.categories_id "
-//	        + "WHERE c.name = :categoriesName")
 
-	
-	
-	
 
 //	@Query("SELECT p FROM Product p LEFT JOIN Suppliers s ON p.suppliersId = s.suppliersId WHERE s.suppliersName = :suppliersName")
 //	List<ProductDTO> findProductsBySupplierName(@Param("suppliersName") String suppliersName);

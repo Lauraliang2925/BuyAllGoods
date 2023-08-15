@@ -31,30 +31,17 @@ const app = Vue.createApp({
 
       categoriesName: "",
 
-      // 分頁功能所需參數
-      start: 0, //起始資料index (from 0)
-      rows: 9, //每頁顯示資料數量
-      pages: 0, //總分頁數量
-      current: 1, //目前頁面 (from 1)
-      lastPageRows: 0, //最後一頁資料數量
+      categoriesLink:"",
     };
   },
   computed: {},
   methods: {
-    selectAllcategories: function () {
-      let request = {
-        categoriesId: this.categoriesId,
-        name: this.name,
-        current: this.current,
-        rows: this.rows,
-      };
-
+    // 沒有分頁功能
+    selectAllcategories: function () { 
       let vm = this;
       // 使用 Axios 進行 API 請求，獲取資料庫中的分類資料
       axios
-        .get(contextPath + "/categories/findAll", {
-          params: request, // 将请求参数作为 params 对象
-        })
+        .get(contextPath + "/categories/fullData")
         .then(function (response) {
           vm.categories = response.data.list;
         })
@@ -105,13 +92,41 @@ const app = Vue.createApp({
           console.error("資料請求失敗：", error);
         });
     },
+    findCategoryIdByProductsId: function (productsId) {
+      let vm = this;
+      axios
+        .get(contextPath + "/product/" + productsId)
+        .then(function (response) {
+          vm.productsId = response.data.productsId;
+          vm.categoriesId = response.data.categoriesId;          
+          vm.findCategoryNameByCategoryId(vm.categoriesId);
+
+        })
+        .catch(function (error) {
+          console.error("資料請求失敗：", error);
+        });
+    },
+    findCategoryNameByCategoryId: function (categoriesId) {
+      let vm = this;
+      axios
+        .get(contextPath + "/categories/" + categoriesId)
+        .then(function (response) {
+          vm.categoriesId = response.data.categoriesId;
+          vm.categoriesName = response.data.name;
+          vm.categoriesLink=contextPath+"/?categoriesName="+vm.categoriesName     
+        })
+        .catch(function (error) {
+          console.error("資料請求失敗：", error);
+        });
+    },
   },
   mounted: function () {
     this.selectAllcategories();
     // Get the productsId from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const productsId = urlParams.get("productsId");
-    this.findById(productsId);    
+    this.findById(productsId);   
+    this.findCategoryIdByProductsId(productsId)    
   },
 });
 app.mount("#app");
