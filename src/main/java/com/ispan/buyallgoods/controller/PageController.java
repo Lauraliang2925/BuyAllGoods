@@ -37,4 +37,8 @@ public class PageController {
 		return "/product/product-singlePage";
 	}
 
+	@GetMapping("/search")
+	public String search() {
+		return "/search";
+	}
 }

@@ -45,66 +45,7 @@ const index = Vue.createApp({
   },
 
    methods: {
-    // selectAllproduct: function (page) {
-    //   // 在點選分頁(page from 1)時，呼叫出顯示的資料
-    //   if (page) {
-    //     // 當點選指定分頁時的動作
-    //     this.start = (page - 1) * this.rows;
-    //     this.current = page;
-    //   } else {
-    //     // 未點選指定分頁時的動作(預設為第一頁)
-    //     this.start = 0;
-    //     this.current = 1;
-    //   }
-
-    //   // 要使用spring boot 的pagable API，所需參數有current(目前頁面)，以及rows(每頁顯示資料數量)
-    //   // 但是current在pagable API預設起始值為0!! 因此傳入後端controller後要再-1，需特別注意
-    //   let request = {
-    //     productsId: "",
-    //     categoriesId: "",
-    //     contractsId: "",
-    //     name: "",
-    //     productsSpecification: "",
-    //     productsDescription: "",
-    //     imagePath: "",
-    //     sellingPrice: "",
-    //     cost: "",
-    //     lowestPrice: "",
-    //     total: "",
-    //     orderQuantity: "",
-    //     soldQuantity: "",
-    //     suppliersId: "",
-    //     expiryDate: "",
-    //     sellingStartDate: "",
-    //     sellingStopDate: "",
-    //     discountStartDate: "",
-    //     discountEndDate: "",
-    //     discount: "",
-    //     staffId: "",
-    //     createdDate: "",
-    //     current: this.current,
-    //     rows: this.rows,
-    //   };
-
-    //   let vm = this;
-    //   // 使用 Axios 進行 API 請求，獲取資料庫中的分類資料
-    //   axios
-    //     .get(contextPath + "/product/findAll", {
-    //       params: request, // 将请求参数作为 params 对象
-    //     })
-    //     .then(function (response) {
-    //       vm.products = response.data.list;
-    //       console.log("selectAllproduct")
-
-    //       let count = response.data.count;
-    //       vm.pages = Math.ceil(count / vm.rows);
-    //       vm.lastPageRows = count % vm.rows;
-    //     })
-    //     .catch(function (error) {
-    //       console.error("資料請求失敗：", error);
-    //     });
-    // },
-
+  
     // 不使用分頁功能查所有資料，for最上方搜尋BAR
     fullData: function () {
       let vm = this;
@@ -135,12 +76,12 @@ const index = Vue.createApp({
 
     // 這段方法可以確保點擊分頁按鈕時，傳遞的參數是page而不是categoriesId!!!!!!!!!!
     handlePaginationClick(page) {
-      this.selectProductByCategoryId(this.categoriesId, page);
+      this.findVaildByCategoriesId(this.categoriesId, page);
       console.log("current t1 = "+this.current)
     },
 
-    // 加上分頁功能
-    selectProductByCategoryId: function (categoriesId,page) {
+    //	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
+    findVaildByCategoriesId: function (categoriesId,page) {
 
       if (page) {
         // 當點選指定分頁時的動作
@@ -161,7 +102,7 @@ const index = Vue.createApp({
       console.log("current t2 = "+this.current)
       let vm = this;
       axios
-        .get(contextPath + "/product/findByCategoriesId/" + categoriesId, {
+        .get(contextPath + "/product/findVaildByCategoriesId/" + categoriesId, {
           params: request, // 将请求参数作为 params 对象
         })
         .then(function (response) {
@@ -183,7 +124,7 @@ const index = Vue.createApp({
         .then(function (response) {
           vm.categoriesId = response.data.id;
           vm.categoriesName = name;
-          vm.selectProductByCategoryId(vm.categoriesId);
+          vm.findVaildByCategoriesId(vm.categoriesId);
           console.log("current t4 = "+vm.current)
 
         })
@@ -207,7 +148,7 @@ const index = Vue.createApp({
   
     if (name == null || name == "") {
       this.categoriesName = '特價商品';
-      this.selectProductByCategoryId(1);
+      this.findVaildByCategoriesId(1);
     } else {
       this.categoriesName = name;
       this.selectCategoryIdByCategoryName(name);

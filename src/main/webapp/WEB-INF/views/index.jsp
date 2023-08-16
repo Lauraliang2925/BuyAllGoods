@@ -48,7 +48,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           </div>
           <!-- !!!!!! -->
 
-          <div class="carousel-inner" style="height: 300px">
+          <div class="carousel-inner" style="height: 250px">
             <!-- 廣告圖1開始 -->
             <div class="carousel-item active">
               <div class="d-flex justify-content-center">
@@ -193,7 +193,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                       class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
                     >
                       <div class="fs-4 text-danger">
-                        價格:{{ product.sellingPrice * product.discount }}
+                        價格:$ {{ product.sellingPrice * product.discount }}
                       </div>
                       <div class="d-flex flex-wrap align-items-center">
                         數量<input

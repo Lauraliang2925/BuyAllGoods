@@ -145,9 +145,14 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           <br />
 
           <!-- 商品價格/數量/優惠券起始 -->
-          <div class="container d-flex justify-content-around align-items-center">
-            <del class="fs-5">原價:$ {{sellingPrice}}</del>
-            <div class="fs-4 fw-bold text-danger">優惠價格:$ {{sellingPrice*discount}}</div>
+          <div class="container d-flex justify-content-around ">
+            <div class="fs-4 fw-bold " v-if="discount>=1">價格:$ {{sellingPrice}}</div>
+
+            <div class="container d-flex justify-content-around align-items-center" v-else>
+              <del class="fs-5">原價:$ {{sellingPrice}}</del>
+              <div class="fs-4 fw-bold text-danger">優惠價格:$ {{sellingPrice*discount}}</div>
+            </div>
+          
             
           </div>
           <br />

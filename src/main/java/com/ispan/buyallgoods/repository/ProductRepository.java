@@ -26,6 +26,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Query("SELECT COUNT(p) FROM Product p  WHERE p.categoriesId = :categoriesId")
 	Long findCountByCategoriesId(@Param("categoriesId") Integer categoriesId);
 
+	//	使用商品分類ID尋找此分類底下"販售中"商品
+	@Query("SELECT p FROM Product p WHERE p.categoriesId = :categoriesId AND p.sellingStopDate > DATEADD(DAY, -1, CURRENT_DATE)")
+	List<Product> findValidByCategoriesId(Integer categoriesId, Pageable pageable);
+
+
+//	使用商品分類ID尋找此分類底下"販售中"商品數量
+	@Query("SELECT COUNT(p) FROM Product p  WHERE p.categoriesId = :categoriesId  AND p.sellingStopDate > DATEADD(DAY, -1, CURRENT_DATE)")
+	Long findVaildCountByCategoriesId(@Param("categoriesId") Integer categoriesId);
+	
+
 //	使用廠商ID尋找底下所有商品
 	List<Product> findAllBySuppliersId(Integer suppliersId);
 

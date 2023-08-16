@@ -85,6 +85,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 <th scope="col">品項編號</th>
                 <th scope="col">商品圖片</th>
                 <th scope="col">商品名稱</th>
+                <th scope="col">商品狀態</th>
                 <th scope="col">廠商ID</th>
                 <th scope="col">合約ID</th>
                 <th scope="col">詳細資訊</th>
@@ -100,6 +101,15 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                   class="productImg"
                 /></td>
                 <td>{{ product.name }}</td>
+                <td>
+                  <div v-if="new Date(product.sellingStopDate)<yesterdayDate">
+                    <i class="fa-regular fa-circle-xmark" style="color: #ff0000;"></i>已下架
+                  </div>
+                  <div v-if="new Date(product.sellingStopDate)>yesterdayDate">
+                    <i class="fa-solid fa-sack-dollar" style="color: #005eff;"></i>販售中
+                  </div>
+                </td>
+    
                 <td>{{ product.suppliersId }}</td>                
                 <td>{{ product.contractsId }}</td>
                 <td>

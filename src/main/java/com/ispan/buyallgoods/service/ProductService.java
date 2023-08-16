@@ -43,30 +43,6 @@ public class ProductService {
 		return productRepository.count();
 	}
 
-//	使用商品分類ID尋找此分類底下所有商品數量
-	public long findCountByCategoriesId(Integer categoriesId) {
-		return productRepository.findCountByCategoriesId(categoriesId);
-	}
-
-//	public List<ProductDTO> findProductsBySupplierName(String suppliersName) {
-//		List<ProductDTO> productDTOList = new ArrayList<>();
-//		List<Object[]> productList = productRepository.findProductsBySupplierName(suppliersName);
-//
-//		for (Object[] obj : productList) {
-//			ProductDTO productDTO = new ProductDTO();
-//			productDTO.setProductsId((Integer) obj[0]);
-//			productDTO.setName((String) obj[1]);
-//			productDTO.setContractsId((Integer) obj[2]);
-//			productDTO.setSuppliersId((Integer) obj[3]);
-//			productDTOList.add(productDTO);
-//		}
-//
-//		return productDTOList;
-//	}
-//    public List<ProductDTO> findProductsBySupplierName(String suppliersName) {
-//        return productRepository.findProductsBySupplierName(suppliersName);
-//    }
-
 	public List<Product> findByProductName(String name) {
 		return productRepository.findByProductName(name);
 	}
@@ -93,9 +69,31 @@ public class ProductService {
 			return findAllByCategoriesId;
 		}
 		return null;
+	}
+	
+	
+//	使用商品分類ID尋找此分類底下所有商品數量
+	public long findCountByCategoriesId(Integer categoriesId) {
+		return productRepository.findCountByCategoriesId(categoriesId);
+	}
+	
+	
+//	使用分類ID尋找底下"販售中"商品
+	public List<Product> findVaildByCategoriesId(Integer id, Pageable pageable) {
+		List<Product> findVaildByCategoriesId = productRepository.findValidByCategoriesId(id, pageable);
 
+		if (findVaildByCategoriesId != null) {
+			return findVaildByCategoriesId;
+		}
+		return null;
 	}
 
+//	使用商品分類ID尋找此分類底下"販售中"商品數量
+	public long findVaildCountByCategoriesId(Integer categoriesId) {
+		return productRepository.findVaildCountByCategoriesId(categoriesId);
+	}
+
+	
 	public Product insert(Product product) {
 		if (product.getName() != null) {
 			return productRepository.save(product);

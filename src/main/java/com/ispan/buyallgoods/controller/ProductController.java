@@ -98,24 +98,6 @@ public class ProductController {
 		return responseJson;
 	}
 
-//	使用分類ID尋找底下所有商品 (還要加上分頁功能)
-//	@GetMapping("/product/findByCategoriesId/{id}")
-//	public Map<String, Object> findAllByCategoriesId(@PathVariable(value = "id") Integer id,
-//			@RequestParam("current") int current, @RequestParam("rows") int rows) {
-//		if (id == null) {
-//			return null;
-//		}
-//		// spring boot 分頁API
-//		Pageable pageable = PageRequest.of((current - 1), rows);
-//		List<Product> list = productService.findAllByCategoriesId(id,pageable);
-//		long count = productService.findCountByCategoriesId(id);
-//
-//		Map<String, Object> responseJson = new HashMap<>();
-//		responseJson.put("list", list);
-//		responseJson.put("count", count);
-//		System.out.println("findAllByCategoriesId:" + responseJson.toString());
-//		return responseJson;
-//	}
 
 //	使用分類ID尋找底下所有商品 (還要加上分頁功能)
 	@GetMapping("/product/findByCategoriesId/{id}")
@@ -136,6 +118,26 @@ public class ProductController {
 		return responseJson;
 	}
 
+	
+//	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
+	@GetMapping("/product/findVaildByCategoriesId/{id}")
+	public Map<String, Object> findVaildByCategoriesId(@PathVariable(value = "id") Integer id,
+			@RequestParam("current") int current, @RequestParam("rows") int rows) {
+		if (id == null) {
+			return null;
+		}
+		// spring boot 分頁API
+		Pageable pageable = PageRequest.of((current - 1), rows);
+
+		List<Product> list = productService.findVaildByCategoriesId(id, pageable);
+		long count = productService.findVaildCountByCategoriesId(id);
+
+		Map<String, Object> responseJson = new HashMap<>();
+		responseJson.put("list", list);
+		responseJson.put("count", count);
+		return responseJson;
+	}
+	
 	@GetMapping("/product/findAll")
 	public Map<String, Object> findAll(@RequestParam("current") int current, @RequestParam("rows") int rows) {
 
