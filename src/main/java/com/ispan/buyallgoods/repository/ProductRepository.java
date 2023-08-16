@@ -1,4 +1,4 @@
-package com.ispan.buyallgoods.model;
+package com.ispan.buyallgoods.repository;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.ispan.buyallgoods.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 

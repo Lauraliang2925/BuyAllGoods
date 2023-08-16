@@ -14,53 +14,43 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ispan.buyallgoods.model.Suppliers;
-import com.ispan.buyallgoods.model.SuppliersContractsOthers;
-import com.ispan.buyallgoods.model.SuppliersRepository;
+import com.ispan.buyallgoods.model.SuppliersBean;
 import com.ispan.buyallgoods.service.SuppliersSrevice;
+import com.ispan.buyallgoods.tools.SuppliersContractsOthers;
 
 @RestController
 @RequestMapping(path = "/suppliers")
 public class SuppliersController {
 
 	@Autowired
-	private SuppliersRepository sRepo;
-
-	@Autowired
 	private SuppliersSrevice sSre;
 
 	// 新增1筆資料
 	@PostMapping("/addSuppliers")
-	public String addSuppliers(@RequestBody Suppliers suppliers) {
-		Suppliers insertOne = sSre.insertOne(suppliers);
-
-		if (insertOne == null) {
-			return "新增失敗";
-		}
-
-		return "新增成功";
+	public String addSuppliers(@RequestBody SuppliersBean suppliers) {
+		return sSre.insertOne(suppliers);
 	}
 
 	// 查詢1筆資料
 	@GetMapping("/findBySuppliersId/{suppliersId}")
-	public Suppliers findBySuppliersId(@PathVariable Integer suppliersId) {
-		System.out.println("addSuppliers");
-		Suppliers findById = sSre.findById(suppliersId);
-		if (findById == null) {
-			return null;
-		}
-		return findById;
+	public SuppliersBean findBySuppliersId(@PathVariable Integer suppliersId) {
+		return sSre.findById(suppliersId);
 	}
 
+	// 修改資料
 	@PostMapping("/updateBySuppliersId")
-	public Suppliers updateBySuppliersId(@RequestBody Suppliers suppliers) {
-		Suppliers updateBysId = sSre.updateBysId(suppliers);
-		if (updateBysId == null) {
-			return null;
-		}
-		return suppliers;
+	public String updateBySuppliersId(@RequestBody SuppliersBean suppliers) {
+		return sSre.updateBysId(suppliers);
+
+	}
+
+	// 修改資料-終止合作
+	@PostMapping("/finishSuppliers")
+	public String finishSuppliers(@RequestBody SuppliersBean suppliers) {
+		return sSre.updateByIdToFinish(suppliers);
 
 	}
 
@@ -76,9 +66,8 @@ public class SuppliersController {
 
 	// 查詢全部
 	@PostMapping("/findAllSuppliers")
-	public ResponseEntity<List<Suppliers>> findAllSuppliers() {
-		System.out.println("findAllSuppliers");
-		List<Suppliers> findAll = sSre.findAll();
+	public ResponseEntity<List<SuppliersBean>> findAllSuppliers() {
+		List<SuppliersBean> findAll = sSre.findAll();
 		if (findAll == null) {
 			return null;
 		}
@@ -107,7 +96,7 @@ public class SuppliersController {
 				map.put("suppliersId", row[0]);
 				map.put("suppliersName", row[1]);
 				map.put("contractsId", row[2]);
-				map.put("contactPerson", row[3]);
+				map.put("contractnumber", row[3]);
 				result.add(map);
 			}
 		}
@@ -129,7 +118,9 @@ public class SuppliersController {
 				map.put("suppliersId", row[0]);
 				map.put("suppliersName", row[1]);
 				map.put("contractsId", row[2]);
-				map.put("contactPerson", row[3]);
+				map.put("contractnumber", row[3]);
+				map.put("suppliersEndDate", row[4]);
+				map.put("contractsEndDate", row[5]);
 				result.add(map);
 			}
 		}
@@ -153,6 +144,52 @@ public class SuppliersController {
 
 		return new ResponseEntity<>(result2, HttpStatus.OK);
 
+	}
+
+	// 測試分頁
+	@GetMapping("/findAllSCPage")
+	public ResponseEntity<List<Map<String, Object>>> findAllSCPage(@RequestParam("offset") int offset) {
+		List<Object> scViewPage = sSre.findAllSCToViewPage(offset);
+		if (scViewPage == null) {
+			return null;
+		}
+		List<Map<String, Object>> result = new ArrayList<>();
+		for (Object obj : scViewPage) {
+			if (obj instanceof Object[]) {
+				Object[] row = (Object[]) obj;
+				Map<String, Object> map = new HashMap<>();
+				map.put("suppliersId", row[0]);
+				map.put("suppliersName", row[1]);
+				map.put("contractsId", row[2]);
+				map.put("contractnumber", row[3]);
+				map.put("suppliersEndDate", row[4]);
+				map.put("contractsEndDate", row[5]);
+				result.add(map);
+			}
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	// 計算資料量
+	@GetMapping("/countAllSC")
+	public ResponseEntity<List<Map<String, Integer>>> countAllSC() {
+
+		Integer total = sSre.countAllSC();
+		Integer row = 5;
+		// 5是設定好的每行顯示5筆，這裡算出來的pages是拿來用在分頁下面的循環
+		double pages = (double) total / row;
+		// 無條件進位
+		double ans = Math.ceil(pages);
+		List<Map<String, Integer>> result = new ArrayList<>();
+		for (int i = 1; i <= ans; i++) {
+			Map<String, Integer> list = new HashMap<>();
+			int offset = (i - 1) * row;
+			list.put("page", i);
+			list.put("offset", offset);
+			result.add(list);
+		}
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 }

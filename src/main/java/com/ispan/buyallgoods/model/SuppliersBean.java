@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "suppliers")
-public class Suppliers {
+public class SuppliersBean {
 
 	@Id
 	@Column(name = "suppliers_id", nullable = false)

@@ -1,5 +1,6 @@
 package com.ispan.buyallgoods.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ispan.buyallgoods.model.ContractsBean;
 import com.ispan.buyallgoods.model.Product;
-import com.ispan.buyallgoods.model.ProductRepository;
+import com.ispan.buyallgoods.repository.ProductRepository;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -40,7 +42,7 @@ public class ProductService {
 	public long count() {
 		return productRepository.count();
 	}
-	
+
 //	使用商品分類ID尋找此分類底下所有商品數量
 	public long findCountByCategoriesId(Integer categoriesId) {
 		return productRepository.findCountByCategoriesId(categoriesId);
@@ -84,7 +86,7 @@ public class ProductService {
 	}
 
 //	使用分類ID尋找底下所有商品
-	public List<Product> findAllByCategoriesId(Integer id,Pageable pageable) {
+	public List<Product> findAllByCategoriesId(Integer id, Pageable pageable) {
 		List<Product> findAllByCategoriesId = productRepository.findAllByCategoriesId(id, pageable);
 
 		if (findAllByCategoriesId != null) {
@@ -154,13 +156,55 @@ public class ProductService {
 		return false;
 	}
 
-//	public String deleteById(Integer id) {
-//
-//		Optional<Product> optional = productRepository.findById(id);
-//		if (optional.isPresent()) {
-//			productRepository.deleteById(id);
-//			return "刪除成功";
-//		}
-//		return "沒有這筆資料";
-//	}
+	// 拋整包合約的json找出所有合約ID去終止商品
+	public String finishProductByCList(List<ContractsBean> CList) {
+		if (!CList.isEmpty()) {
+			for (ContractsBean c : CList) {
+				int contractsId = c.getContractsId();
+				List<Product> findAllByContractsId = productRepository.findAllByContractsId(contractsId);
+				for (Product p : findAllByContractsId) {
+					LocalDate today = LocalDate.now();
+					LocalDate yesterday = today.minusDays(1);
+					p.setSellingStopDate(yesterday);
+					productRepository.save(p);
+				}
+			}
+			return "成功";
+		}
+		return "失敗";
+
+	}
+
+	// 用合約ID找對應合約所有商品，終止商品
+	public String finishProductByCId(ContractsBean contracts) {
+		List<Product> findAllByContractsId = productRepository.findAllByContractsId(contracts.getContractsId());
+
+		// isEmpty是空的會回傳true
+		if (!findAllByContractsId.isEmpty()) {
+			for (Product p : findAllByContractsId) {
+
+				LocalDate today = LocalDate.now();
+				LocalDate yesterday = today.minusDays(1);
+				p.setSellingStopDate(yesterday);
+				productRepository.save(p);
+			}
+			return "成功";
+		}
+		return "失敗";
+
+	}
+
+	// 用商品ID找，終止商品
+	public String finishProductByPId(Product product) {
+		Optional<Product> findById = productRepository.findById(product.getProductsId());
+		// isPresent不是null會回傳true
+		if (findById.isPresent()) {
+			LocalDate today = LocalDate.now();
+			LocalDate yesterday = today.minusDays(1);
+			product.setSellingStopDate(yesterday);
+			productRepository.save(product);
+			return "已成功下架此商品";
+		}
+		return "找不到此商品，請再次確認內容!!";
+	}
 }

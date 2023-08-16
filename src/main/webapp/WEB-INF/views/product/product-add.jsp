@@ -67,20 +67,20 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
 
           <div class="mb-3">
             <label for="suppliersId" class="col-form-label col-sm-4"
-              >廠商編號</label
+              >廠商名稱</label
             >
             <select
               class="col-form-select form-select-sm col-sm-7"
               v-model="suppliersId"
               name="suppliersId"
             >
-              <!-- <option selected>選擇廠商編號</option> -->
+              <!-- <option selected>選擇廠商名稱</option> -->
               <option
-                v-for="suppliersId in filteredSuppliersIds"
-                :key="suppliersId"
-                :value="suppliersId"
+                v-for="supplier in suppliersFullData"
+                :key="supplier.suppliersId"
+                :value="supplier.suppliersId"
               >
-                {{ suppliersId }}
+                {{ supplier.suppliersName }}
               </option>
             </select>
           </div>
@@ -96,11 +96,11 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             >
               <!-- <option selected value="">選擇合約編號</option> -->
               <option
-                v-for="contractsId in filteredContractsIds"
-                :key="contractsId"
-                :value="contractsId"
+                v-for="contract in contractFullData"
+                :key="contract.contractsId"
+                :value="contract.contractsId"
               >
-                {{ contractsId }}
+                {{ contract.contractNumber }}
               </option>
             </select>
           </div>
@@ -116,11 +116,11 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             >
               <!-- <option selected>選擇商品分類</option> -->
               <option
-                v-for="categoriesId in filteredCategoriesIds"
-                :key="categoriesId"
-                :value="categoriesId"
+                v-for="category in categoriesFullData"
+                :key="category.categoriesId"
+                :value="category.categoriesId"
               >
-                {{ categoriesId }}
+                {{ category.name }}
               </option>
             </select>
           </div>
@@ -214,7 +214,11 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               class="col-form-control col-sm-8"
               id="expiryDate"
               v-model="expiryDate"
+              @blur="checkExpiryDate()"
             />
+            <span id="" class="form-text" style="color: red">{{
+              expiryDateMessage
+            }}</span>
           </div>
 
           <div class="mb-3 row">
@@ -226,7 +230,11 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               class="col-form-control col-sm-8"
               id="sellingStartDate"
               v-model="sellingStartDate"
+              @blur="checkSellingStartDate()"
             />
+            <span id="" class="form-text" style="color: red">{{
+              sellingStartDateMessage
+            }}</span>
           </div>
 
           <div class="mb-3 row">
@@ -238,7 +246,32 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               class="col-form-control col-sm-8"
               id="sellingStopDate"
               v-model="sellingStopDate"
+              @blur="checkSellingEndDate()"
             />
+            <span
+              id=""
+              class="form-text"
+              style="color: red"
+              v-if="sellingEndDateMessage!=''&&sellingDateMessage!=''"
+            >
+              1.{{ sellingEndDateMessage }}<br />2.{{ sellingDateMessage }}
+            </span>
+            <span
+              id=""
+              class="form-text"
+              style="color: red"
+              v-if="sellingEndDateMessage==''&&sellingDateMessage!=''"
+            >
+              {{ sellingDateMessage }}</span
+            >
+            <span
+              id=""
+              class="form-text"
+              style="color: red"
+              v-if="sellingEndDateMessage!=''&&sellingDateMessage==''"
+            >
+              {{ sellingEndDateMessage }}</span
+            >
           </div>
 
           <div class="mb-3 row">
@@ -250,7 +283,11 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               class="col-form-control col-sm-8"
               id="discountStartDate"
               v-model="discountStartDate"
+              @blur="checkDiscountStartDate()"
             />
+            <span id="" class="form-text" style="color: red">
+              {{ discountSellingStartDateMessage }}</span
+            >
           </div>
 
           <div class="mb-3 row">
@@ -262,7 +299,34 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               class="col-form-control col-sm-8"
               id="discountEndDate"
               v-model="discountEndDate"
+              @blur="checkDiscountStopDate()"
             />
+            <span
+              id=""
+              class="form-text"
+              style="color: red"
+              v-if="discountDateMessage!=''&&discountSellingStopDateMessage!=''"
+            >
+              1.{{ discountSellingStopDateMessage }}<br />2.{{
+                discountDateMessage
+              }}
+            </span>
+            <span
+              id=""
+              class="form-text"
+              style="color: red"
+              v-if="discountDateMessage==''&&discountSellingStopDateMessage!=''"
+            >
+              {{ discountSellingStopDateMessage }}</span
+            >
+            <span
+              id=""
+              class="form-text"
+              style="color: red"
+              v-if="discountDateMessage!=''&&discountSellingStopDateMessage==''"
+            >
+              {{ discountDateMessage }}</span
+            >
           </div>
 
           <div class="mb-3 row">
@@ -277,7 +341,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             />
           </div>
 
-          <div class="mb-3 row">
+          <div class="mb-3 row" hidden>
             <label for="staffId" class="col-sm-4 col-form-label"
               >新增人員</label
             >
