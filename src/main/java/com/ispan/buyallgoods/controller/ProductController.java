@@ -133,7 +133,7 @@ public class ProductController {
 
 		Map<String, Object> responseJson = new HashMap<>();
 		responseJson.put("list", list);
-		responseJson.put("count", count);
+		responseJson.put("count",count);
 		return responseJson;
 	}
 	

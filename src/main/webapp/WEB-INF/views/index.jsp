@@ -48,58 +48,44 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           </div>
           <!-- !!!!!! -->
 
-          <div class="carousel-inner" style="height: 250px">
-            <div class="carousel-item">
-              <img
-                src="<c:url value='/pic/advertisement/advertisement1.jpg'></c:url>"
-                alt="Slide 1 Image"
-                height="250px"
-              />
-
-              <svg
-                class="bd-placeholder-img"
-                width="100%"
-                height="300px"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-              ></svg>
-            </div>
+          <div class="carousel-inner" style="height: 300px">
+            <!-- 廣告圖1開始 -->
             <div class="carousel-item active">
-              <img
-                src="<c:url value='/pic/advertisement/advertisement2.jpg'></c:url>"
-                alt="Slide 1 Image"
-                height="250px"
-                class="justify-content-center"
-              />
-              <svg
-                class="bd-placeholder-img"
-                width="100%"
-                height="300px"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-              ></svg>
+              <div class="d-flex justify-content-center">
+                <img
+                  src="<c:url value='/pic/advertisement/advertisement1.jpg'></c:url>"
+                  alt="Slide 1 Image"
+                  height="250px"
+                />
+              </div>
             </div>
+            <!-- 廣告圖1結束 -->
+          
+            <!-- 廣告圖2開始 -->
             <div class="carousel-item">
-              <img
-                src="<c:url value='/pic/advertisement/advertisement3.jpg'></c:url>"
-                alt="Slide 1 Image"
-                height="250px"
-              />
-              <svg
-                class="bd-placeholder-img"
-                width="100%"
-                height="300px"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-              ></svg>
+              <div class="d-flex justify-content-center">
+                <img
+                  src="<c:url value='/pic/advertisement/advertisement2.jpg'></c:url>"
+                  alt="Slide 2 Image"
+                  height="250px"
+                />
+              </div>
             </div>
+            <!-- 廣告圖2結束 -->
+          
+            <!-- 廣告圖3開始 -->
+            <div class="carousel-item">
+              <div class="d-flex justify-content-center">
+                <img
+                  src="<c:url value='/pic/advertisement/advertisement3.jpg'></c:url>"
+                  alt="Slide 3 Image"
+                  height="250px"
+                />
+              </div>
+            </div>
+            <!-- 廣告圖3結束 -->
           </div>
+          
           <button
             class="carousel-control-prev"
             type="button"
@@ -126,7 +112,9 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
         <!-- 上方Breadcrumb起始 -->
         <div aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-center">
-            <li class="breadcrumb-item active"><a href="<c:url value='/'/>">首頁</a></li>
+            <li class="breadcrumb-item active">
+              <a href="<c:url value='/'/>">首頁</a>
+            </li>
             <li class="breadcrumb-item active" aria-current="page">
               <a>{{ categoriesName }}</a>
             </li>

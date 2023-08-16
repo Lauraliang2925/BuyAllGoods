@@ -37,7 +37,7 @@ const index = Vue.createApp({
 
       // 分頁功能所需參數
       start: 0, //起始資料index (from 0)
-      rows: 1, //每頁顯示資料數量
+      rows: 6, //每頁顯示資料數量
       pages: 0, //總分頁數量
       current: 1, //目前頁面 (from 1)
       lastPageRows: 0, //最後一頁資料數量
