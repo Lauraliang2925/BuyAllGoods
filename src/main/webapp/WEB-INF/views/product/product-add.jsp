@@ -181,7 +181,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             />
           </div>
 
-          <div class="mb-3 row">
+          <div class="mb-3 row" hidden>
             <label for="lowestPrice" class="col-form-label col-sm-4"
               >最低單價</label
             >
