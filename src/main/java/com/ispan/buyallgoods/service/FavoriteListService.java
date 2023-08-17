@@ -75,8 +75,8 @@ public class FavoriteListService {
 	}
 	
 	public boolean findByFavoriteListCheckId(FavoriteListBean favoriteListBean) {
-		Integer memberId = favoriteListBean.getMembers_id();
-		Integer productId = favoriteListBean.getProducts_id();
+		Integer memberId = favoriteListBean.getMembersId();
+		Integer productId = favoriteListBean.getProductsId();
 		
 		FavoriteListBean checkId = favoriteListRepository.findByFavoriteListCheckId(productId, memberId);
 		

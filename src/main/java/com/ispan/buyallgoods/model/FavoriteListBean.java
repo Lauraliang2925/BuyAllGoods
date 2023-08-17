@@ -16,13 +16,13 @@ public class FavoriteListBean {
 	@Id
 	@Column(name="favorite_list_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer favorite_list_id;
+	private Integer favoriteListId;
 	
 	@Column(name = "members_id")
-	private Integer members_id;
+	private Integer membersId;
 	
 	@Column(name="products_id")
-	private Integer products_id;
+	private Integer productsId;
 	
 
 }

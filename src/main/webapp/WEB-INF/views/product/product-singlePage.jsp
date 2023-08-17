@@ -164,6 +164,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 type="number"
                 min="0"
                 style="width: 50px; height: 30px"
+                v-model="quantity"
               />
             </div>
         </div>
@@ -171,10 +172,12 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
 
           
         <div class="container gap-2 py-3 d-flex justify-content-around">
-          <button class="btn btn-sm btn-outline-primary" type="button">
+          <button class="btn btn-sm btn-outline-primary" type="button"
+          @click="addFavorites(productsId)">
             加入收藏清單
           </button>
-          <button class="btn btn-sm btn-outline-primary" type="button">
+          <button class="btn btn-sm btn-outline-primary" type="button"
+          @click="addShoppingcarts(productsId)">
             加入購物車
           </button>
         </div>

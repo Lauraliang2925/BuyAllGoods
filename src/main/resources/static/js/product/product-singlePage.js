@@ -32,10 +32,54 @@ const app = Vue.createApp({
       categoriesName: "",
 
       categoriesLink:"",
+
+
+      // 目前先把會員寫死~~~~~~~~~~~~~~~~~~~~~
+      membersId: 1,
+      quantity:"",
     };
   },
   computed: {},
   methods: {
+    addFavorites: function (productsId) {
+      let request = {
+        productsId: productsId,
+        membersId: this.membersId,
+      };
+      let vm = this;
+      axios
+        .post(contextPath + "/api/page/favorites/checkin", request)
+        .then(function (response) {
+          console.log("productsId: " + productsId);
+          vm.favoritesFullData = response.data.list;
+          console.log("vm.productsId: " + vm.productsId);
+          console.log("vm.membersId: " + vm.membersId);
+          console.log("vm.favoriteListId: " + vm.favoriteListId);
+        })
+        .catch(function (error) {
+          console.error("資料請求失敗：", error);
+        });
+    },
+      addShoppingcarts: function (productsId) {
+      let request = {
+        productsId: productsId,
+        membersId: this.membersId,
+        quantity:this.quantity
+      };
+      let vm = this;
+      axios
+        .post(contextPath + "/api/page/shoppingcarts/checkin", request)
+        .then(function (response) {
+          console.log("productsId: " + productsId);
+          vm.favoritesFullData = response.data.list;
+          console.log("vm.productsId: " + vm.productsId);
+          console.log("vm.membersId: " + vm.membersId);
+          console.log("vm.quantity: " + vm.quantity);
+        })
+        .catch(function (error) {
+          console.error("資料請求失敗：", error);
+        });
+    },
     // 沒有分頁功能
     selectAllcategories: function () { 
       let vm = this;

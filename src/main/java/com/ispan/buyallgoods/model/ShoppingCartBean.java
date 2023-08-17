@@ -16,13 +16,13 @@ public class ShoppingCartBean {
 	@Id
 	@Column(name="shopping_cart_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer shopping_cart_id;
+	private Integer shoppingCartId;
 	
 	@Column(name = "members_id")
-	private Integer members_id;
+	private Integer membersId;
 	
 	@Column(name="products_id")
-	private Integer products_id;
+	private Integer productsId;
 	
 	@Column(name = "quantity")
 	private Integer quantity;

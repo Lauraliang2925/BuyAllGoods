@@ -63,8 +63,8 @@ public class ShoppingCartService {
 	}
 	
 	public boolean findByShoppingCartCheckId(ShoppingCartBean shoppingCartBean) {
-		Integer memberId = shoppingCartBean.getMembers_id();
-		Integer productId = shoppingCartBean.getProducts_id();
+		Integer memberId = shoppingCartBean.getMembersId();
+		Integer productId = shoppingCartBean.getProductsId();
 		
 		ShoppingCartBean checkId = shoppingCartRepository.findByShoppingCartCheckId(productId, memberId);
 		
