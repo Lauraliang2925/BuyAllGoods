@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "contracts")
-public class Contracts {
+public class ContractsBean {
 
 	@Id
 	@Column(name = "contracts_id", nullable = false)

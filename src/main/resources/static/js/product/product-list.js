@@ -3,9 +3,9 @@ const app = Vue.createApp({
     paginate: VuejsPaginateNext,
   },
   data: function () {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
     return {
-      // isShowSelect: true,
-      // isShowModify: false,
       contextPath: contextPath,
 
       products: [],
@@ -31,6 +31,9 @@ const app = Vue.createApp({
       pages: 0, //總分頁數量
       current: 1, //目前頁面 (from 1)
       lastPageRows: 0, //最後一頁資料數量
+
+      //利用販售終止日判斷商品狀態
+      yesterdayDate: yesterday,
     };
   },
   computed: {

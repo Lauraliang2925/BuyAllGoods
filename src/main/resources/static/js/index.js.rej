@@ -1,0 +1,13 @@
+diff a/src/main/resources/static/js/index.js b/src/main/resources/static/js/index.js	(rejected hunks)
+@@ -37,7 +37,11 @@
+ 
+       // 分頁功能所需參數
+       start: 0, //起始資料index (from 0)
++<<<<<<< HEAD
+       rows: 6, //每頁顯示資料數量
++=======
++      rows: 9, //每頁顯示資料數量
++>>>>>>> master
+       pages: 0, //總分頁數量
+       current: 1, //目前頁面 (from 1)
+       lastPageRows: 0, //最後一頁資料數量

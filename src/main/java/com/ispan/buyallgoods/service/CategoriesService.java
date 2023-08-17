@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.buyallgoods.model.Categories;
-import com.ispan.buyallgoods.model.CategoriesRepository;
 import com.ispan.buyallgoods.model.Product;
+import com.ispan.buyallgoods.repository.CategoriesRepository;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })

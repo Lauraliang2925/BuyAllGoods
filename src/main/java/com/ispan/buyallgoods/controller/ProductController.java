@@ -96,27 +96,7 @@ public class ProductController {
 		responseJson.put("list", list);
 		return responseJson;
 	}
-	
 
-//	使用分類ID尋找底下所有商品 (還要加上分頁功能)
-//	@GetMapping("/product/findByCategoriesId/{id}")
-//	public Map<String, Object> findAllByCategoriesId(@PathVariable(value = "id") Integer id,
-//			@RequestParam("current") int current, @RequestParam("rows") int rows) {
-//		if (id == null) {
-//			return null;
-//		}
-//		// spring boot 分頁API
-//		Pageable pageable = PageRequest.of((current - 1), rows);
-//		List<Product> list = productService.findAllByCategoriesId(id,pageable);
-//		long count = productService.findCountByCategoriesId(id);
-//
-//		Map<String, Object> responseJson = new HashMap<>();
-//		responseJson.put("list", list);
-//		responseJson.put("count", count);
-//		System.out.println("findAllByCategoriesId:" + responseJson.toString());
-//		return responseJson;
-//	}
-	
 //	使用分類ID尋找底下所有商品 (還要加上分頁功能)
 	@GetMapping("/product/findByCategoriesId/{id}")
 	public Map<String, Object> findAllByCategoriesId(@PathVariable(value = "id") Integer id,
@@ -126,9 +106,8 @@ public class ProductController {
 		}
 		// spring boot 分頁API
 		Pageable pageable = PageRequest.of((current - 1), rows);
-		
-		
-		List<Product> list = productService.findAllByCategoriesId(id,pageable);
+
+		List<Product> list = productService.findAllByCategoriesId(id, pageable);
 		long count = productService.findCountByCategoriesId(id);
 
 		Map<String, Object> responseJson = new HashMap<>();
@@ -136,7 +115,25 @@ public class ProductController {
 		responseJson.put("count", count);
 		return responseJson;
 	}
-	
+
+//	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
+	@GetMapping("/product/findVaildByCategoriesId/{id}")
+	public Map<String, Object> findVaildByCategoriesId(@PathVariable(value = "id") Integer id,
+			@RequestParam("current") int current, @RequestParam("rows") int rows) {
+		if (id == null) {
+			return null;
+		}
+		// spring boot 分頁API
+		Pageable pageable = PageRequest.of((current - 1), rows);
+
+		List<Product> list = productService.findVaildByCategoriesId(id, pageable);
+		long count = productService.findVaildCountByCategoriesId(id);
+
+		Map<String, Object> responseJson = new HashMap<>();
+		responseJson.put("list", list);
+		responseJson.put("count", count);
+		return responseJson;
+	}
 
 	@GetMapping("/product/findAll")
 	public Map<String, Object> findAll(@RequestParam("current") int current, @RequestParam("rows") int rows) {
@@ -151,8 +148,6 @@ public class ProductController {
 		Map<String, Object> responseJson = new HashMap<>();
 		responseJson.put("list", list);
 		responseJson.put("count", count);
-		System.out.println("findAll:" + responseJson.toString());
-
 		return responseJson;
 	}
 
@@ -214,8 +209,6 @@ public class ProductController {
 	@PutMapping("/product/update/{id}")
 	public Map<String, Object> updateProduct(@PathVariable(value = "id") Integer id, @RequestBody Product product) {
 
-		System.out.println("id =" + id);
-		System.out.println("product =" + product.toString());
 		Map<String, Object> responseJson = new HashMap<>();
 		if (productService.updateById(id, product) == null) {
 			responseJson.put("message", "更新資料失敗");
@@ -308,8 +301,13 @@ public class ProductController {
 				responseJson.put("success", false);
 			}
 		}
-		System.out.println(responseJson.toString());
 		return responseJson;
+	}
+
+	// 拋一份商品的資料，找出商品後終止商品--for商品明細的下架商品按鈕
+	@PostMapping("/product/finishProductDateByPId")
+	public String finishProductDateByPId(@RequestBody Product product) {
+		return productService.finishProductByPId(product);
 	}
 
 }

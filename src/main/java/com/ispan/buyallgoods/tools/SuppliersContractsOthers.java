@@ -1,4 +1,4 @@
-package com.ispan.buyallgoods.model;
+package com.ispan.buyallgoods.tools;
 
 import lombok.Data;
 

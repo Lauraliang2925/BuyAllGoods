@@ -1,8 +1,10 @@
-package com.ispan.buyallgoods.model;
+package com.ispan.buyallgoods.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.ispan.buyallgoods.model.Categories;
 
 public interface CategoriesRepository extends JpaRepository<Categories, Integer> {
 

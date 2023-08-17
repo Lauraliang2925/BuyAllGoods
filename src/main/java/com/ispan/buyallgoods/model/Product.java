@@ -46,7 +46,7 @@ public class Product {
 	    @Column(name = "cost", nullable = false)
 	    private Integer cost;
 
-	    @Column(name = "lowest_price", nullable = false)
+	    @Column(name = "lowest_price")
 	    private Integer lowestPrice;
 
 	    @Column(name = "total", nullable = false)

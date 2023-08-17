@@ -145,9 +145,14 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           <br />
 
           <!-- 商品價格/數量/優惠券起始 -->
-          <div class="container d-flex justify-content-around align-items-center">
-            <del class="fs-5">原價:$ {{sellingPrice}}</del>
-            <div class="fs-4 fw-bold text-danger">優惠價格:$ {{sellingPrice*discount}}</div>
+          <div class="container d-flex justify-content-around ">
+            <div class="fs-4 fw-bold " v-if="discount>=1">價格:$ {{sellingPrice}}</div>
+
+            <div class="container d-flex justify-content-around align-items-center" v-else>
+              <del class="fs-5">原價:$ {{sellingPrice}}</del>
+              <div class="fs-4 fw-bold text-danger">優惠價格:$ {{sellingPrice*discount}}</div>
+            </div>
+          
             
           </div>
           <br />
@@ -159,6 +164,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 type="number"
                 min="0"
                 style="width: 50px; height: 30px"
+                v-model="quantity"
               />
             </div>
         </div>
@@ -166,10 +172,12 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
 
           
         <div class="container gap-2 py-3 d-flex justify-content-around">
-          <button class="btn btn-sm btn-outline-primary" type="button">
+          <button class="btn btn-sm btn-outline-primary" type="button"
+          @click="addFavorites(productsId)">
             加入收藏清單
           </button>
-          <button class="btn btn-sm btn-outline-primary" type="button">
+          <button class="btn btn-sm btn-outline-primary" type="button"
+          @click="addShoppingcarts(productsId)">
             加入購物車
           </button>
         </div>
