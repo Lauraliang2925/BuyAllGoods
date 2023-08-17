@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ispan.buyallgoods.model.ContractsBean;
 import com.ispan.buyallgoods.model.Product;
 import com.ispan.buyallgoods.service.ProductService;
 
@@ -98,7 +97,6 @@ public class ProductController {
 		return responseJson;
 	}
 
-
 //	使用分類ID尋找底下所有商品 (還要加上分頁功能)
 	@GetMapping("/product/findByCategoriesId/{id}")
 	public Map<String, Object> findAllByCategoriesId(@PathVariable(value = "id") Integer id,
@@ -118,7 +116,6 @@ public class ProductController {
 		return responseJson;
 	}
 
-	
 //	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
 	@GetMapping("/product/findVaildByCategoriesId/{id}")
 	public Map<String, Object> findVaildByCategoriesId(@PathVariable(value = "id") Integer id,
@@ -137,7 +134,7 @@ public class ProductController {
 		responseJson.put("count", count);
 		return responseJson;
 	}
-	
+
 	@GetMapping("/product/findAll")
 	public Map<String, Object> findAll(@RequestParam("current") int current, @RequestParam("rows") int rows) {
 
@@ -151,8 +148,6 @@ public class ProductController {
 		Map<String, Object> responseJson = new HashMap<>();
 		responseJson.put("list", list);
 		responseJson.put("count", count);
-		System.out.println("findAll:" + responseJson.toString());
-
 		return responseJson;
 	}
 
@@ -214,8 +209,6 @@ public class ProductController {
 	@PutMapping("/product/update/{id}")
 	public Map<String, Object> updateProduct(@PathVariable(value = "id") Integer id, @RequestBody Product product) {
 
-		System.out.println("id =" + id);
-		System.out.println("product =" + product.toString());
 		Map<String, Object> responseJson = new HashMap<>();
 		if (productService.updateById(id, product) == null) {
 			responseJson.put("message", "更新資料失敗");
@@ -308,24 +301,11 @@ public class ProductController {
 				responseJson.put("success", false);
 			}
 		}
-		System.out.println(responseJson.toString());
 		return responseJson;
 	}
 
-	// 拋整包合約的json找出所有合約ID去終止商品--for廠商明細的終止合作按鈕
-	@PostMapping("/finishProductDate")
-	public String finishProductDate(@RequestBody List<ContractsBean> CList) {
-		return productService.finishProductByCList(CList);
-	}
-
-	// 拋一份合約的資料，找出所有商品ID去終止商品--for合約明細的終止合約按鈕
-	@PostMapping("/finishProductDate2")
-	public String finishProductDate2(@RequestBody ContractsBean contracts) {
-		return productService.finishProductByCId(contracts);
-	}
-
 	// 拋一份商品的資料，找出商品後終止商品--for商品明細的下架商品按鈕
-	@PostMapping("/finishProductDateByPId")
+	@PostMapping("/product/finishProductDateByPId")
 	public String finishProductDateByPId(@RequestBody Product product) {
 		return productService.finishProductByPId(product);
 	}

@@ -44,7 +44,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               input-id="files"
               input-name="files"
               v-model="files"
-              class="btn btn-success"
+              class="btn btn-outline-success"
               accept=".jpg"
               :disabled="name.length === 0"
               @change="previewImage"
@@ -62,7 +62,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             />
           </div>
 
-          <button class="btn btn-success" @click="doUpload">上傳圖片</button>
+          <button class="btn btn-outline-success" @click="doUpload">上傳圖片</button>
           <hr />
 
           <div class="mb-3">
@@ -358,12 +358,12 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
 
           <div class="container gap-2 py-3 d-flex justify-content-around">
             <a href="<c:url value='/product-list'></c:url>">
-              <button class="btn btn-primary" type="button">
+              <button class="btn btn-outline-primary" type="button">
                 回到商品清單
               </button>
             </a>
 
-            <button class="btn btn-primary" type="button" @click="create()">
+            <button class="btn btn-outline-primary" type="button" @click="create()">
               確定新增
             </button>
           </div>

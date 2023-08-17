@@ -56,17 +56,17 @@ const app = Vue.createApp({
       categoriesName: "",
       categoriesFullData: [],
 
-      //下架商品的訊息
-      finishMessage: "",
+        //下架商品的訊息
+        finishMessage: "",
 
-      //日期比較邏輯之顯示訊息
-      expiryDateMessage: "",
-      sellingStartDateMessage: "",
-      sellingEndDateMessage: "",
-      sellingDateMessage: "",
-      discountDateMessage: "",
-      discountSellingStartDateMessage: "",
-      discountSellingStopDateMessage: "",
+        //日期比較邏輯之顯示訊息
+        expiryDateMessage: "",
+        sellingStartDateMessage: "",
+        sellingEndDateMessage: "",
+        sellingDateMessage: "",
+        discountDateMessage: "",
+        discountSellingStartDateMessage: "",
+        discountSellingStopDateMessage: "",
     };
   },
 
@@ -114,11 +114,12 @@ const app = Vue.createApp({
         callback: (result) => {
           //確認就往下修改
           if (result) {
-            let pika = this;
+            let vm = this;
             axios
               .post(contextPath + "/product/finishProductDateByPId", request)
               .then(function (response) {
-                pika.finishMessage = response.data;
+                console.log(response)
+                vm.finishMessage = response.data;
               })
               .catch(function () {})
               .finally(function () {
@@ -126,7 +127,7 @@ const app = Vue.createApp({
                 bootbox.alert({
                   title: "訊息！",
                   message:
-                    '<div class="text-center">' + pika.finishMessage + "</div>",
+                    '<div class="text-center">' + vm.finishMessage + "</div>",
                   buttons: {
                     ok: { label: "關閉", className: "btn btn-warning" },
                   },
@@ -168,33 +169,33 @@ const app = Vue.createApp({
       let request = {
         contractsId: this.contractsId,
       };
-      let pika = this;
+      let vm = this;
       axios
         .post(contextPath + "/contracts/findProdustByCId", request)
         .then(function (response) {
           // 比较
           let startDate = new Date(response.data.startDate); // 把合約起日轉成日期格式
           let endDate = new Date(response.data.endDate); // 把合約迄日轉成日期格式
-          let sellingStartDate = new Date(pika.sellingStartDate); // 把輸入的日期轉成日期格式
+          let sellingStartDate = new Date(vm.sellingStartDate); // 把輸入的日期轉成日期格式
           if (startDate > sellingStartDate) {
-            pika.sellingStartDateMessage =
+            vm.sellingStartDateMessage =
               "商品販售開始日不得早於該商品之合約起日；合約起日：" +
               formatDate(startDate);
           } else if (endDate < sellingStartDate) {
-            pika.sellingStartDateMessage =
+            vm.sellingStartDateMessage =
               "商品販售開始日不得晚於該商品之合約迄日；合約迄日：" +
               formatDate(endDate);
           } else {
-            pika.sellingStartDateMessage = ""; // 清空消息
+            vm.sellingStartDateMessage = ""; // 清空消息
           }
 
           //販售開始日不得比終止日晚--防止已有終止日後又調整開始日
-          const stopDate = new Date(pika.sellingStopDate); // 把輸入的資料轉成日期格式
+          const stopDate = new Date(vm.sellingStopDate); // 把輸入的資料轉成日期格式
           // 比较
           if (sellingStartDate > stopDate) {
-            pika.sellingDateMessage = "販售停止日不得早於販售開始日！";
+            vm.sellingDateMessage = "販售停止日不得早於販售開始日！";
           } else {
-            pika.sellingDateMessage = ""; // 清空消息
+            vm.sellingDateMessage = ""; // 清空消息
           }
         })
         .catch(function () {})
@@ -207,20 +208,20 @@ const app = Vue.createApp({
       let request = {
         contractsId: this.contractsId,
       };
-      let pika = this;
+      let vm = this;
       axios
         .post(contextPath + "/contracts/findProdustByCId", request)
         .then(function (response) {
           let endDate = new Date(response.data.endDate); // 把合約迄日轉成日期格式
-          let sellingStopDate = new Date(pika.sellingStopDate); // 把輸入的日期轉成日期格式
+          let sellingStopDate = new Date(vm.sellingStopDate); // 把輸入的日期轉成日期格式
 
           // 比较
           if (endDate < sellingStopDate) {
-            pika.sellingEndDateMessage =
+            vm.sellingEndDateMessage =
               "商品販售停止日不得晚於該商品之合約起日；合約迄日：" +
               formatDate(endDate);
           } else {
-            pika.sellingEndDateMessage = ""; // 清空消息
+            vm.sellingEndDateMessage = ""; // 清空消息
           }
         })
         .catch(function () {})

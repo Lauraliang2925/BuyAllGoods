@@ -147,9 +147,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
     </div>
 
     <div class="container d-flex justify-content-center py-3">
-		<div class="">
-      <button class="BackToPage btn btn-outline-warning">回前頁</button>
-	</div>
+
 	<div>
 		<button class="btn btn-outline-success" @click="selectAllproduct()">檢視完整商品清單</button>
 	</div>

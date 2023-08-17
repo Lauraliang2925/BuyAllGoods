@@ -415,6 +415,11 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             >
               確定修改
             </button>
+
+            <button class="btn btn-outline-danger" type="button"
+						@click="callFinishProductDateByPId()">商品下架
+					</button>
+          
           </div>
         </div>
         <!-- 商品表格結束 -->
