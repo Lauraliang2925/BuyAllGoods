@@ -200,7 +200,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                           type="number"
                           min="0"
                           style="width: 50px; height: 30px"
-                          v-model="quantity"
+                          v-model="productQuantities[product.productsId]"
                         />
                       </div>
                     </div>

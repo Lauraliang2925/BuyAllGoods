@@ -42,11 +42,10 @@ const index = Vue.createApp({
       current: 1, //目前頁面 (from 1)
       lastPageRows: 0, //最後一頁資料數量
 
-
-// 目前先把會員寫死~~~~~~~~~~~~~~~~~~~~~
+      // 目前先把會員寫死~~~~~~~~~~~~~~~~~~~~~
       membersId: 1,
-      quantity:"",
-
+      productQuantities: {}, // 以商品ID为键，数量为值的对象
+      quantity: "",
     };
   },
 
@@ -60,33 +59,42 @@ const index = Vue.createApp({
       axios
         .post(contextPath + "/api/page/favorites/checkin", request)
         .then(function (response) {
-          console.log("productsId: " + productsId);
-          vm.favoritesFullData = response.data.list;
-          console.log("vm.productsId: " + vm.productsId);
-          console.log("vm.membersId: " + vm.membersId);
-          console.log("vm.favoriteListId: " + vm.favoriteListId);
+          if (response.data.success) {
+            alert(response.data.message);
+          } else {
+            alert(response.data.message);
+          }
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
         });
     },
-      addShoppingcarts: function (productsId) {
+    addShoppingcarts: function (productsId) {
+      let quantity = this.productQuantities[productsId]; // 获取该商品的数量
+      if (quantity === undefined || quantity <= 0) {
+        alert("請選擇有效的商品數量!");
+        return;
+      }
+
       let request = {
         productsId: productsId,
         membersId: this.membersId,
-        quantity:this.quantity
+        quantity: quantity,
       };
+
       let vm = this;
       axios
         .post(contextPath + "/api/page/shoppingcarts/checkin", request)
         .then(function (response) {
-          console.log("productsId: " + productsId);
-          vm.favoritesFullData = response.data.list;
-          console.log("vm.productsId: " + vm.productsId);
-          console.log("vm.membersId: " + vm.membersId);
-          console.log("vm.quantity: " + vm.quantity);
+          if (response.data.success) {
+            alert(response.data.message);
+          } else {
+            alert(response.data.message);
+          }
+       
         })
         .catch(function (error) {
+          alert("資料請求失敗：" + error);
           console.error("資料請求失敗：", error);
         });
     },
@@ -121,7 +129,6 @@ const index = Vue.createApp({
     // 這段方法可以確保點擊分頁按鈕時，傳遞的參數是page而不是categoriesId!!!!!!!!!!
     handlePaginationClick(page) {
       this.findVaildByCategoriesId(this.categoriesId, page);
-      console.log("current t1 = " + this.current);
     },
 
     //	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
@@ -130,19 +137,16 @@ const index = Vue.createApp({
         // 當點選指定分頁時的動作
         this.start = (page - 1) * this.rows;
         this.current = page;
-        console.log("if page=" + this.page);
       } else {
         // 未點選指定分頁時的動作(預設為第一頁)
         this.start = 0;
         this.current = 1;
-        console.log("else page=" + this.page);
       }
 
       let request = {
         current: this.current,
         rows: this.rows,
       };
-      console.log("current t2 = " + this.current);
       let vm = this;
       axios
         .get(contextPath + "/product/findVaildByCategoriesId/" + categoriesId, {
@@ -154,7 +158,6 @@ const index = Vue.createApp({
           let count = response.data.count;
           vm.pages = Math.ceil(count / vm.rows);
           vm.lastPageRows = count % vm.rows;
-          console.log("current t3 = " + vm.current);
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -168,7 +171,6 @@ const index = Vue.createApp({
           vm.categoriesId = response.data.id;
           vm.categoriesName = name;
           vm.findVaildByCategoriesId(vm.categoriesId);
-          console.log("current t4 = " + vm.current);
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);

@@ -50,17 +50,22 @@ const app = Vue.createApp({
       axios
         .post(contextPath + "/api/page/favorites/checkin", request)
         .then(function (response) {
-          console.log("productsId: " + productsId);
-          vm.favoritesFullData = response.data.list;
-          console.log("vm.productsId: " + vm.productsId);
-          console.log("vm.membersId: " + vm.membersId);
-          console.log("vm.favoriteListId: " + vm.favoriteListId);
+          if (response.data.success) {
+            alert(response.data.message);
+          } else {
+            alert(response.data.message);
+          }
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
         });
     },
       addShoppingcarts: function (productsId) {
+        let quantity = this.quantity;
+        if (quantity === undefined || quantity <= 0) {
+          alert("請選擇有效的商品數量!");
+          return;
+        }
       let request = {
         productsId: productsId,
         membersId: this.membersId,
@@ -70,11 +75,11 @@ const app = Vue.createApp({
       axios
         .post(contextPath + "/api/page/shoppingcarts/checkin", request)
         .then(function (response) {
-          console.log("productsId: " + productsId);
-          vm.favoritesFullData = response.data.list;
-          console.log("vm.productsId: " + vm.productsId);
-          console.log("vm.membersId: " + vm.membersId);
-          console.log("vm.quantity: " + vm.quantity);
+          if (response.data.success) {
+            alert(response.data.message);
+          } else {
+            alert(response.data.message);
+          }
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
