@@ -37,7 +37,7 @@ const index = Vue.createApp({
 
       // 分頁功能所需參數
       start: 0, //起始資料index (from 0)
-      rows: 1, //每頁顯示資料數量
+      rows: 9, //每頁顯示資料數量
       pages: 0, //總分頁數量
       current: 1, //目前頁面 (from 1)
       lastPageRows: 0, //最後一頁資料數量
@@ -135,8 +135,9 @@ const index = Vue.createApp({
 
     // 這段方法可以確保點擊分頁按鈕時，傳遞的參數是page而不是categoriesId!!!!!!!!!!
     handlePaginationClick(page) {
+          console.log("current t1 = "+this.current)
       this.selectProductByCategoryId(this.categoriesId, page);
-      console.log("current t1 = "+this.current)
+  
     },
 
     // 加上分頁功能
