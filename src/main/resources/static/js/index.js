@@ -7,9 +7,12 @@ const index = Vue.createApp({
       contextPath: contextPath,
       categories: [],
 
+    
+
       products: [],
       productsId: "",
-      categoriesId: "",
+      //預設為載入頁面要顯示的商品分類ID
+      categoriesId: 2,
       contractsId: "",
       name: "",
       productsSpecification: "",
@@ -131,6 +134,7 @@ const index = Vue.createApp({
       this.findVaildByCategoriesId(this.categoriesId, page);
     },
 
+ 
     //	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
     findVaildByCategoriesId: function (categoriesId, page) {
       if (page) {
@@ -158,6 +162,7 @@ const index = Vue.createApp({
           let count = response.data.count;
           vm.pages = Math.ceil(count / vm.rows);
           vm.lastPageRows = count % vm.rows;
+         
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);

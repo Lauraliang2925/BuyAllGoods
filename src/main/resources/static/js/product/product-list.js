@@ -13,8 +13,7 @@ const app = Vue.createApp({
       name: "",
       contractsId: "",
       suppliersId: "",
-      categoriesId:"",
-     
+      categoriesId: "",
 
       productsFullData: [],
       findProductsName: "",
@@ -35,6 +34,9 @@ const app = Vue.createApp({
 
       //利用販售終止日判斷商品狀態
       yesterdayDate: yesterday,
+
+      categoriesNameFindById: "",
+      categoriesNames: {},
     };
   },
   computed: {
@@ -62,6 +64,35 @@ const app = Vue.createApp({
     },
   },
   methods: {
+    //使用categoriesId 尋找一筆分類名稱
+
+    findCategoriesNameById: function (categoriesId) {          
+     
+      if (this.categoriesNames[categoriesId]) {
+        // 如果已经获取过该分类名称，直接使用缓存的值
+        return this.categoriesNames[categoriesId];
+      } else {
+        // 否则发起请求获取分类名称
+        let request = {
+          categoriesId: categoriesId,
+        };
+        let vm = this;
+        axios
+          .post(contextPath + "/categories/findById", request)
+          .then(function (response) {
+            // console.log(response.data);
+            // console.log(response.data.categories.name);
+            vm.categoriesNames[categoriesId] = response.data.categories.name; // 缓存分类名称
+            // 如果这个请求的结果在一次 Vue.js 的循环渲染中会多次调用，
+            // 你可以使用 $forceUpdate() 来强制更新视图
+            vm.$forceUpdate();
+          })
+          .catch(function (error) {
+            console.error("資料請求失敗：", error);
+          });
+      }
+    },
+
     selectAllproduct: function (page) {
       this.showPaginate = true;
       this.findProductsName = "";
@@ -168,11 +199,11 @@ const app = Vue.createApp({
           console.error("資料請求失敗：", error);
         });
     },
-  
   },
   mounted: function () {
     this.fullData();
     this.selectAllproduct();
+
   },
 });
 app.mount("#app");

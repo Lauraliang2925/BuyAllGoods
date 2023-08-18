@@ -48,14 +48,26 @@ public class CategoriesController {
 		return responseJson;
 	}
 
-	@GetMapping("/categories/{id}")
-	public Categories getId(@PathVariable(value = "id") Integer id) {
+	
+	//使用categoriesId 尋找一筆分類
+	@PostMapping("/categories/findById")
+	public Map<String, Object> findById(@RequestBody Categories categories) {
 
-		Categories categories = categoriesService.findById(id);
-		if (categories != null) {
-			return categories;
+		Categories ExistCategories = categoriesService.findById(categories.getCategoriesId());
+		
+		Map<String, Object> responseJson = new HashMap<>();
+
+		if (ExistCategories==null) {
+			responseJson.put("message", "查詢失敗，此分類不存在");
+			responseJson.put("success", false);
+		} else {
+			responseJson.put("categories", ExistCategories);
+			responseJson.put("message", "查詢成功");
+			responseJson.put("success", true);
 		}
-		return null;
+		return responseJson;
+		
+	
 	}
 
 //	有分頁功能
