@@ -34,38 +34,55 @@ const app = Vue.createApp({
 
       //利用販售終止日判斷商品狀態
       yesterdayDate: yesterday,
-
-      categoriesNameFindById: "",
+      
       categoriesNames: {},
+      SuppliersNames: {},
+      contractsNames: {},
     };
   },
-  computed: {
-    // 计算属性 filteredSuppliersIds 获取不重复的廠商ID列表
-    filteredSuppliersIds() {
-      const suppliersIdSet = new Set(); // 使用Set来存储不重复的廠商ID
-      this.productsFullData.forEach((product) => {
-        suppliersIdSet.add(product.suppliersId);
-      });
-      return Array.from(suppliersIdSet); // 将Set转换为数组，并返回数组作为计算属性的值
-    },
-    filteredContractsIds() {
-      const contractsIdSet = new Set();
-      this.productsFullData.forEach((product) => {
-        contractsIdSet.add(product.contractsId);
-      });
-      return Array.from(contractsIdSet);
-    },
-    findInputsNotEmpty() {
-      return (
-        this.findProductsName !== "" ||
-        this.findSuppliersId !== "" ||
-        this.findContractsId !== ""
-      );
-    },
-  },
-  methods: {
-    //使用categoriesId 尋找一筆分類名稱
 
+  methods: {
+       //查詢全部的廠商有哪些，for廠商名稱的填寫欄位
+       FindAllSuppliers: function () {
+        let vm = this;
+        axios
+          .post(contextPath + "/suppliers/findAllSuppliers")
+          .then(function (response) {
+            vm.suppliersFullData = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+          .finally(function () {});
+      },
+          //查詢全部的合約有哪些，for合約名編號的填寫欄位
+    FindAllContracts: function () {
+      let vm = this;
+      axios
+        .post(contextPath + "/contracts/findAllContracts")
+        .then(function (response) {
+          vm.contractFullData = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .finally(function () {});
+    },
+    // 查詢全部的分類有哪些，沒有分頁功能
+    FindAllcategories: function () {
+      let vm = this;
+      // 使用 Axios 進行 API 請求，獲取資料庫中的分類資料
+      axios
+        .get(contextPath + "/categories/fullData")
+        .then(function (response) {
+          vm.categoriesFullData = response.data.list;
+        })
+        .catch(function (error) {
+          console.error("資料請求失敗：", error);
+        });
+    },
+
+    //使用categoriesId 尋找一筆分類名稱
     findCategoriesNameById: function (categoriesId) {          
      
       if (this.categoriesNames[categoriesId]) {
@@ -83,6 +100,61 @@ const app = Vue.createApp({
             // console.log(response.data);
             // console.log(response.data.categories.name);
             vm.categoriesNames[categoriesId] = response.data.categories.name; // 缓存分类名称
+            // 如果这个请求的结果在一次 Vue.js 的循环渲染中会多次调用，
+            // 你可以使用 $forceUpdate() 来强制更新视图
+            vm.$forceUpdate();
+          })
+          .catch(function (error) {
+            console.error("資料請求失敗：", error);
+          });
+      }
+    },
+
+      //使用categoriesId 尋找一筆分類名稱
+      findSuppliersNameById: function (suppliersId) {          
+     
+        if (this.SuppliersNames[suppliersId]) {
+          // 如果已经获取过该分类名称，直接使用缓存的值
+          return this.SuppliersNames[suppliersId];
+        } else {
+          // 否则发起请求获取分类名称
+          let request = {
+            suppliersId: suppliersId,
+          };
+          let vm = this;
+          axios
+            .post(contextPath + "/suppliers/findById", request)
+            .then(function (response) {
+              // console.log(response.data);
+              vm.SuppliersNames[suppliersId] = response.data.suppliers.suppliersName; // 缓存分类名称
+              // 如果这个请求的结果在一次 Vue.js 的循环渲染中会多次调用，
+              // 你可以使用 $forceUpdate() 来强制更新视图
+              vm.$forceUpdate();
+            })
+            .catch(function (error) {
+              console.error("資料請求失敗：", error);
+            });
+        }
+      },
+
+        //使用categoriesId 尋找一筆分類名稱
+        findContractsNameById: function (contractsId) {          
+     
+      if (this.contractsNames[contractsId]) {
+        // 如果已经获取过该分类名称，直接使用缓存的值
+        return this.contractsNames[contractsId];
+      } else {
+        // 否则发起请求获取分类名称
+        let request = {
+          contractsId: contractsId,
+        };
+        let vm = this;
+        axios
+          .post(contextPath + "/contracts/findById", request)
+          .then(function (response) {
+            console.log(response.data);
+            // console.log(response.data.categories.name);
+            vm.contractsNames[contractsId] = response.data.contracts.contractNumber; // 缓存分类名称
             // 如果这个请求的结果在一次 Vue.js 的循环渲染中会多次调用，
             // 你可以使用 $forceUpdate() 来强制更新视图
             vm.$forceUpdate();
@@ -202,7 +274,10 @@ const app = Vue.createApp({
   },
   mounted: function () {
     this.fullData();
-    this.selectAllproduct();
+    // this.selectAllproduct();
+    this.FindAllSuppliers();
+    this.FindAllContracts();
+    this.FindAllcategories();
 
   },
 });

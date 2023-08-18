@@ -1,6 +1,8 @@
 package com.ispan.buyallgoods.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,26 @@ public class ContractsController {
 
 	@Autowired
 	private ContractsService cSer;
+	
+	//使用suppliersId 尋找一筆分類(create by Rong-0818)
+	@PostMapping("/findById")
+	public Map<String, Object> findById(@RequestBody ContractsBean contracts) {
+
+		ContractsBean ExistContracts = cSer.findById(contracts.getContractsId());
+		
+		Map<String, Object> responseJson = new HashMap<>();
+
+		if (ExistContracts==null) {
+			responseJson.put("message", "查詢失敗，此廠商不存在");
+			responseJson.put("success", false);
+		} else {
+			responseJson.put("contracts", ExistContracts);
+			responseJson.put("message", "查詢成功");
+			responseJson.put("success", true);
+		}
+		return responseJson;		
+	
+	}
 
 	// 查詢全部(create by Rong)
 	@PostMapping("/findAllContracts")

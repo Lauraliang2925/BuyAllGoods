@@ -65,8 +65,7 @@ public class CategoriesController {
 			responseJson.put("message", "查詢成功");
 			responseJson.put("success", true);
 		}
-		return responseJson;
-		
+		return responseJson;		
 	
 	}
 

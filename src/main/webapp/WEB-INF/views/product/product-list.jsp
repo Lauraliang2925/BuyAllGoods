@@ -33,7 +33,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 class="form-control"
                 aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-default"
-                @blur="findInputsNotEmpty && findByCustomQuery()"
+                @blur="findByCustomQuery()"
                 v-model="findProductsName"
               />
             </div>
@@ -42,7 +42,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           <div class="col">
             <div class="input-group mb-3">
               <span class="input-group-text" id="inputGroup-sizing-default"
-                >廠商ID</span
+                >廠商名稱</span
               >
               <select
                 class="form-select"
@@ -51,14 +51,14 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 v-model="findSuppliersId"
                 @change="findByCustomQuery()"
               >
-                <option selected value="">[請選擇廠商ID]</option>
+                <option selected value="">[請選擇廠商名稱]</option>
                 <!--~~~~~~~~~~~~~~~~~~用迴圈~~~~~~~~~~~~~~~~~~-->
                 <option
-                  v-for="suppliersId in filteredSuppliersIds"
-                  :key="suppliersId"
-                  :value="suppliersId"
+                  v-for="supplier in suppliersFullData"
+                  :key="supplier.suppliersId"
+                  :value="supplier.suppliersId"
                 >
-                  {{ suppliersId }}
+                  {{ supplier.suppliersName }}
                 </option>
               </select>
             </div>
@@ -68,7 +68,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           <div class="col">
             <div class="input-group mb-3">
               <span class="input-group-text" id="inputGroup-sizing-default"
-                >合約ID</span
+                >合約編號</span
               >
               <select
                 class="form-select"
@@ -77,14 +77,14 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 v-model="findContractsId"
                 @change="findByCustomQuery()"
               >
-                <option selected value="">[請選擇合約ID]</option>
+                <option selected value="">[請選擇合約編號]</option>
                 <!--~~~~~~~~~~~~~~~~~~用迴圈~~~~~~~~~~~~~~~~~~-->
                 <option
-                  v-for="contractsId in filteredContractsIds"
-                  :key="contractsId"
-                  :value="contractsId"
+                  v-for="contract in contractFullData"
+                  :key="contract.contractsId"
+                  :value="contract.contractsId"
                 >
-                  {{ contractsId }}
+                  {{ contract.contractNumber }}
                 </option>
               </select>
             </div>
@@ -109,8 +109,8 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               <th scope="col">商品名稱</th>
               <th scope="col">商品狀態</th>
               <th scope="col">分類名稱</th>
-              <th scope="col">廠商ID</th>
-              <th scope="col">合約ID</th>
+              <th scope="col">廠商名稱</th>
+              <th scope="col">合約編號</th>
               <th scope="col">詳細資訊</th>
             </tr>
           </thead>
@@ -142,11 +142,18 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               <template>
                 <td>{{ product.categoriesId }}</td>
               </template>
-          
-                <td>{{ findCategoriesNameById(product.categoriesId) }}</td>
+              <td>{{ findCategoriesNameById(product.categoriesId) }}</td>
 
-              <td>{{ product.suppliersId }}</td>
-              <td>{{ product.contractsId }}</td>
+              <template>
+                <td>{{ product.suppliersId }}</td>
+              </template>
+              <td>{{ findSuppliersNameById(product.suppliersId) }}</td>
+
+              <template>
+                <td>{{ product.contractsId }}</td>
+              </template>
+              <td>{{ findContractsNameById(product.contractsId) }}</td>
+
               <td>
                 <button
                   class="btn btn-outline-dark"

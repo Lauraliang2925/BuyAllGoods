@@ -157,12 +157,16 @@ const app = Vue.createApp({
     },
     findCategoryNameByCategoryId: function (categoriesId) {
       let vm = this;
+      let request={
+        categoriesId:categoriesId
+      }
       axios
-        .get(contextPath + "/categories/" + categoriesId)
+        .post(contextPath + "/categories/findById",request)
         .then(function (response) {
-          vm.categoriesId = response.data.categoriesId;
-          vm.categoriesName = response.data.name;
-          vm.categoriesLink=contextPath+"/?categoriesName="+vm.categoriesName     
+          vm.categoriesId = response.data.categories.categoriesId;
+          vm.categoriesName = response.data.categories.name;
+          vm.categoriesLink=contextPath+"/?categoriesName="+vm.categoriesName   
+          
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);

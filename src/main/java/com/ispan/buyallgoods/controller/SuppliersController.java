@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ispan.buyallgoods.model.Categories;
 import com.ispan.buyallgoods.model.SuppliersBean;
 import com.ispan.buyallgoods.service.SuppliersSrevice;
 import com.ispan.buyallgoods.tools.SuppliersContractsOthers;
@@ -27,6 +28,27 @@ public class SuppliersController {
 
 	@Autowired
 	private SuppliersSrevice sSre;
+	
+	
+	//使用suppliersId 尋找一筆分類(create by Rong-0818)
+	@PostMapping("/findById")
+	public Map<String, Object> findById(@RequestBody SuppliersBean suppliers) {
+
+		SuppliersBean ExistSuppliers = sSre.findById(suppliers.getSuppliersId());
+		
+		Map<String, Object> responseJson = new HashMap<>();
+
+		if (ExistSuppliers==null) {
+			responseJson.put("message", "查詢失敗，此廠商不存在");
+			responseJson.put("success", false);
+		} else {
+			responseJson.put("suppliers", ExistSuppliers);
+			responseJson.put("message", "查詢成功");
+			responseJson.put("success", true);
+		}
+		return responseJson;		
+	
+	}
 
 	// 新增1筆資料
 	@PostMapping("/addSuppliers")
