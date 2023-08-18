@@ -25,7 +25,7 @@ public class ContractsController {
 	@Autowired
 	private ContractsService cSer;
 
-	// 查詢全部
+	// 查詢全部(create by Rong)
 	@PostMapping("/findAllContracts")
 	public ResponseEntity<List<ContractsBean>> findAllSuppliers() {
 		List<ContractsBean> findAll = cSer.findAll();

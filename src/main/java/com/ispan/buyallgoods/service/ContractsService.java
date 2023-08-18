@@ -18,7 +18,7 @@ public class ContractsService {
 	@Autowired
 	private ContractsRepository cRepo;
 	
-	// 查詢全部
+	// 查詢全部(create by Rong)
 	public List<ContractsBean> findAll() {
 		List<ContractsBean> findAll = cRepo.findAll();
 		// isEmpty檢查有沒有資料，true就是沒資料

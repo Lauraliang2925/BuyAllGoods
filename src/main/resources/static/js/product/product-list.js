@@ -13,6 +13,7 @@ const app = Vue.createApp({
       name: "",
       contractsId: "",
       suppliersId: "",
+      categoriesId:"",
      
 
       productsFullData: [],
@@ -167,6 +168,7 @@ const app = Vue.createApp({
           console.error("資料請求失敗：", error);
         });
     },
+  
   },
   mounted: function () {
     this.fullData();

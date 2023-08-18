@@ -168,6 +168,9 @@ const app = Vue.createApp({
           console.error("資料請求失敗：", error);
         });
     },
+    goBack() {
+      window.history.back(); // 使用浏览器的 history.back() 方法来回到上一页
+    },
   },
   mounted: function () {
     this.selectAllcategories();

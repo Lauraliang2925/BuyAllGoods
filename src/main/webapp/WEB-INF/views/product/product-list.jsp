@@ -86,6 +86,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 <th scope="col">商品圖片</th>
                 <th scope="col">商品名稱</th>
                 <th scope="col">商品狀態</th>
+                <th scope="col">分類ID</th>
                 <th scope="col">廠商ID</th>
                 <th scope="col">合約ID</th>
                 <th scope="col">詳細資訊</th>
@@ -109,7 +110,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                     <i class="fa-solid fa-sack-dollar" style="color: #005eff;"></i>販售中
                   </div>
                 </td>
-    
+                <td>{{ product.categoriesId }}</td>
                 <td>{{ product.suppliersId }}</td>                
                 <td>{{ product.contractsId }}</td>
                 <td>

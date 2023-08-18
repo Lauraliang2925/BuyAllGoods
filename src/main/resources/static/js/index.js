@@ -31,7 +31,7 @@ const index = Vue.createApp({
       staffId: "",
       createdDate: "",
 
-      categoriesName: "特價商品",
+      categoriesName: "3C",
 
       // showPaginate: true,
 
@@ -190,8 +190,8 @@ const index = Vue.createApp({
     const name = urlParams.get("categoriesName");
 
     if (name == null || name == "") {
-      this.categoriesName = "特價商品";
-      this.findVaildByCategoriesId(1);
+      this.categoriesName = "3C";
+      this.findVaildByCategoriesId(2);
     } else {
       this.categoriesName = name;
       this.selectCategoryIdByCategoryName(name);
