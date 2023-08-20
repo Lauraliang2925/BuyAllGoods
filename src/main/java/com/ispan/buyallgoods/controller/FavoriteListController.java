@@ -95,6 +95,7 @@ public class FavoriteListController {
 			map.put("products_id", row[2]);
 			map.put("name", row[3]);
 			map.put("selling_price", row[4]);
+			//map.put("image_path", row[5]);
 			result.add(map);
 			
 		}
@@ -133,6 +134,8 @@ public class FavoriteListController {
 			map.put("name", row[3]);
 			map.put("selling_price", row[4]);
 			map.put("suppliers_id", row[8]);
+			map.put("image_path", row[9]);
+			
 			
 			java.sql.Date sqlDiscountStartDate = (java.sql.Date) row[6];
 			java.sql.Date sqlDiscountEndDate = (java.sql.Date) row[7];

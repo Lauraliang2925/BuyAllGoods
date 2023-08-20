@@ -8,6 +8,7 @@ const app = Vue.createApp({
             order_status: "",
             placed: "",
             delivered_arrival:"",
+            contextPath: contextPath,
         }
     },
     mounted() {
@@ -19,11 +20,11 @@ const app = Vue.createApp({
 
             const urlParams = new URLSearchParams(window.location.search);
             const order_id = urlParams.get('order_id');
-            console.log(order_id);
+            // console.log(order_id);
 
             axios.post(contextPath + '/api/page/orders/detail/innerJoinDetail/' + order_id)
                 .then((response) => {
-                    console.log(response.data.list)
+                    // console.log(response.data.list)
                     vm.OrderDetailData = response.data.list
                     vm.backupData = response.data.list
                     vm.total_amount = response.data.list[0].total_amount

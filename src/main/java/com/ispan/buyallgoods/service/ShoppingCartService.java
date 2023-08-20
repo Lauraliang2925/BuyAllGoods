@@ -29,28 +29,28 @@ public class ShoppingCartService {
 		return shoppingCartRepository.saveAll(shoppingCart);
 	}
 
-	public ShoppingCartBean modify(Integer shopping_cart_id, ShoppingCartBean shoppingCart) {
-		Optional<ShoppingCartBean> optional = shoppingCartRepository.findById(shopping_cart_id);
+	public ShoppingCartBean modify(Integer shoppingCartId, ShoppingCartBean shoppingCart) {
+		Optional<ShoppingCartBean> optional = shoppingCartRepository.findById(shoppingCartId);
 		if (optional.isPresent()) {
 			return shoppingCartRepository.save(shoppingCart);
 		}
 		return null;
 	}
 
-	public void remove(Integer shopping_cart_id) {
-		shoppingCartRepository.deleteById(shopping_cart_id);
+	public void remove(Integer shoppingCartId) {
+		shoppingCartRepository.deleteById(shoppingCartId);
 	}
 
 	public void removeAll() {
 		shoppingCartRepository.deleteAll();
 	}
 	
-	public void removeAllByMemberId(Integer members_id) {
-		shoppingCartRepository.removeAllByMemberId(members_id);
+	public void removeAllByMemberId(Integer membersId) {
+		shoppingCartRepository.removeAllByMemberId(membersId);
 	}
 
-	public boolean exists(Integer shopping_cart_id) {
-		return shoppingCartRepository.existsById(shopping_cart_id);
+	public boolean exists(Integer shoppingCartId) {
+		return shoppingCartRepository.existsById(shoppingCartId);
 
 	}
 	
@@ -71,11 +71,11 @@ public class ShoppingCartService {
 		return checkId != null;
 	}
 	
-	public Integer getMemberIdCount(Integer memebers_id) {
-		return shoppingCartRepository.getMemberIdCount(memebers_id);
+	public Integer getMemberIdCount(Integer membersId) {
+		return shoppingCartRepository.getMemberIdCount(membersId);
 	}
 	
-	public List<Object[]> findByShoppingCartWhereMemberId(Integer members_id){
-		return shoppingCartRepository.findByShoppingCartWhereMemberId(members_id);
+	public List<Object[]> findByShoppingCartWhereMemberId(Integer membersId){
+		return shoppingCartRepository.findByShoppingCartWhereMemberId(membersId);
 	}
 }

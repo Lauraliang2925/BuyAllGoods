@@ -35,6 +35,10 @@ const app = Vue.createApp({
       signingDateMessage: "",
       contractEndDateMessage: "",
       hintFinishMessage: "",
+
+      isShowEditBtn:true,
+      isShowEndBtn:true,
+
     };
   },
   methods: {
@@ -106,6 +110,18 @@ const app = Vue.createApp({
 
     //取suppliersId，送findBySuppliersId查詢方法
     getSuppliersData: function (suppliersId) {
+
+      
+      let roleId=localStorage.getItem("RoleId")
+      if(roleId==='1'){
+        this.isShowEditBtn=true
+        this.isShowEndBtn=true
+
+      }else{
+        this.isShowEditBtn=false
+        this.isShowEndBtn=false
+      }
+
       let request = {
         suppliersId,
       };

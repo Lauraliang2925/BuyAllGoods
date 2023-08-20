@@ -58,7 +58,7 @@ const app = Vue.createApp({
             if (startDate < suppliersStartDate) {
               p.overSigningDateMessage =
                 "合約起日不得早於廠商簽約日，廠商簽約日：" +
-                formatDate(suppliersStartDate);
+                formatDate(suppliersStartDate); 
             } else {
               p.overSigningDateMessage = ""; // 清空消息
             }
@@ -148,12 +148,6 @@ const app = Vue.createApp({
 
     //新增合約按鈕
     callAddContracts: function () {
-      const today = new Date(); // 获取当前系统日期
-      const startDate = new Date(this.findStartDate);
-      const endEndDate = new Date(this.findEndDate);
-
-      //如果日期有誤，沒有修改，就不能新增
-      // if (startDate > today || endEndDate < startDate) {
       if (
         this.startDateMessage != "" ||
         this.endDateMessage != "" ||

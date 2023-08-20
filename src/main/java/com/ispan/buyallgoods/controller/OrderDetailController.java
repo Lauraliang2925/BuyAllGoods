@@ -25,15 +25,15 @@ public class OrderDetailController {
 	private OrderDetailService orderDetailService;
 	
 	@PostMapping("/orders/detail/{order_detail_id}")
-	public Optional<OrderDetailBean> findById(@PathVariable(name="order_detail_id")Integer order_detail_id) {
-		return orderDetailService.findById(order_detail_id);
+	public Optional<OrderDetailBean> findById(@PathVariable(name="order_detail_id")Integer orderDetailId) {
+		return orderDetailService.findById(orderDetailId);
 	}
 	
 	@PutMapping("/orders/detail/{order_detail_id}")
-	public OrderDetailBean modify(@PathVariable(name="order_detail_id")Integer order_detail_id, @RequestBody OrderDetailBean orderDetail) {
-		Optional<OrderDetailBean> optional = orderDetailService.findById(order_detail_id);
+	public OrderDetailBean modify(@PathVariable(name="order_detail_id")Integer orderDetailId, @RequestBody OrderDetailBean orderDetail) {
+		Optional<OrderDetailBean> optional = orderDetailService.findById(orderDetailId);
 		if(optional.isPresent()) {
-			return orderDetailService.modify(order_detail_id, orderDetail);
+			return orderDetailService.modify(orderDetailId, orderDetail);
 		}
 		return null;
 	}
@@ -44,11 +44,11 @@ public class OrderDetailController {
 	}
 	
 	@DeleteMapping("/orders/detail/{order_detail_id}")
-	public String remove(@PathVariable(name="order_detail_id")Integer order_detail_id) {
-		if(!orderDetailService.exists(order_detail_id)) {
+	public String remove(@PathVariable(name="order_detail_id")Integer orderDetailId) {
+		if(!orderDetailService.exists(orderDetailId)) {
 			return "資料不存在";
 		}else {
-			orderDetailService.remove(order_detail_id);
+			orderDetailService.remove(orderDetailId);
 			return "資料刪除成功";
 		}
 		
@@ -60,18 +60,43 @@ public class OrderDetailController {
 	}
 	
 	@PostMapping("/orders/detail/findInnerJoin/{members_id}/{order_id}")
-	public Map<String, Object> findDataInnerJoinProductAndOrderByMemberIdAndOrderId(@PathVariable("members_id")Integer members_id, @PathVariable("order_id")Integer order_id){
+	public Map<String, Object> findDataInnerJoinProductAndOrderByMemberIdAndOrderId(@PathVariable("members_id")Integer membersId, @PathVariable("order_id")Integer orderId){
 		Map<String, Object> responseJson = new HashMap<>();
-		List<Map<String, Object>> list = orderDetailService.findDataInnerJoinProductAndOrderByMemberIdAndOrderId(members_id, order_id);
+		List<Map<String, Object>> list = orderDetailService.findDataInnerJoinProductAndOrderByMemberIdAndOrderId(membersId, orderId);
 		responseJson.put("list", list);
 		return responseJson;
 	}
 	
 	@PostMapping("/orders/detail/innerJoinDetail/{order_id}")
-	public Map<String, Object> getOrderDetailInnerJoinProductAndOrder(@PathVariable("order_id")Integer order_id){
+	public Map<String, Object> getOrderDetailInnerJoinProductAndOrder(@PathVariable("order_id")Integer orderId){
 		Map<String, Object> responseJson = new HashMap<>();
-		List<Map<String, Object>> list = orderDetailService.getOrderDetailInnerJoinProductAndOrder(order_id);
+		List<Map<String, Object>> list = orderDetailService.getOrderDetailInnerJoinProductAndOrder(orderId);
 		responseJson.put("list", list);
 		return responseJson;
 	}
+	
+	@PostMapping("/orders/detail/dataBySuppliers/{order_id}/{suppliers_id}")
+	public Map<String, Object> getOrderDetailBySuppliersIdAndOrderId(@PathVariable("order_id")Integer orderId, @PathVariable("suppliers_id")Integer suppliersId){
+		Map<String, Object> responseJson = new HashMap<>();
+		List<Map<String, Object>> list = orderDetailService.getOrderDetailBySuppliersIdAndOrderId(orderId,suppliersId);
+		responseJson.put("list", list);
+		return responseJson;
+	}
+	
+	@PostMapping("/orders/detail/dataBySuppliersId/{suppliers_id}")
+	public Map<String, Object> getOrderDetailBySuppliersId(@PathVariable("suppliers_id")Integer suppliersId){
+		Map<String, Object> responseJson = new HashMap<>();
+		List<Map<String, Object>> list = orderDetailService.getOrderDetailBySuppliersId(suppliersId);
+		responseJson.put("list", list);
+		return responseJson;
+	}
+	
+//	 @PutMapping("/orders/detail/update/{{order_detail_id}}")
+//	    public ResponseEntity<String> updateOrderDetail(@RequestParam Integer suppliers_id,
+//	                                                    @RequestParam String order_status,
+//	                                                    @RequestParam String track_shipment,
+//	                                                    @RequestParam LocalDate estimated_arrival) {
+//	        orderDetailService.updateOrderDetail(suppliers_id, order_status, track_shipment, estimated_arrival);
+//	        return ResponseEntity.ok("Order details updated successfully.");
+//	   }
 }

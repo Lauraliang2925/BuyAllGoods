@@ -22,39 +22,39 @@ public class OrderService {
 		return orderRepository.findAll();
 	}
 
-	public Optional<OrderBean> findOrdersById(Integer order_id) {
-		return orderRepository.findById(order_id);
+	public Optional<OrderBean> findOrdersById(Integer orderId) {
+		return orderRepository.findById(orderId);
 	}
 
 	public OrderBean create(OrderBean orderBean) {
 		return orderRepository.save(orderBean);
 	}
 
-	public OrderBean modify(Integer order_id, OrderBean orderBean) {
-		Optional<OrderBean> optional = orderRepository.findById(order_id);
+	public OrderBean modify(Integer orderId, OrderBean orderBean) {
+		Optional<OrderBean> optional = orderRepository.findById(orderId);
 		if (optional.isPresent()) {
 			OrderBean bean = optional.get();
-			bean.setMembers_id(orderBean.getMembers_id());
-			bean.setTotal_amount(orderBean.getTotal_amount());
-			bean.setPayment_method(orderBean.getPayment_method());
-			bean.setShipping_address(orderBean.getShipping_address());
-			bean.setOrder_status(orderBean.getOrder_status());
-			bean.setOrder_notes(orderBean.getOrder_notes());
-			bean.setReceipt_method(orderBean.getReceipt_method());
+			bean.setMembersId(orderBean.getMembersId());
+			bean.setTotalAmount(orderBean.getTotalAmount());
+			bean.setPaymentMethod(orderBean.getPaymentMethod());
+			bean.setShippingAddress(orderBean.getShippingAddress());
+			bean.setOrderStatus(orderBean.getOrderStatus());
+			bean.setOrderNotes(orderBean.getOrderNotes());
+			bean.setOrderNotes(orderBean.getOrderNotes());
 			bean.setDelivered(orderBean.getDelivered());
 
 			return orderRepository.save(bean);
 
 		} else {
 
-			throw new IllegalArgumentException("Order with ID " + order_id + " not found.");
+			throw new IllegalArgumentException("Order with ID " + orderId + " not found.");
 
 		}
 	}
 
 	
-	public OrderBean modify2(Integer order_id, OrderBean orderBean) {
-		Optional<OrderBean> optional = orderRepository.findById(order_id);
+	public OrderBean modify2(Integer orderId, OrderBean orderBean) {
+		Optional<OrderBean> optional = orderRepository.findById(orderId);
 		if(optional.isPresent()) {
 			
 			return orderRepository.save(orderBean);
@@ -62,10 +62,10 @@ public class OrderService {
 		return null;
 	}
 	
-	public boolean remove(Integer order_id) {
-		Optional<OrderBean> optional = orderRepository.findById(order_id);
+	public boolean remove(Integer orderId) {
+		Optional<OrderBean> optional = orderRepository.findById(orderId);
 		 if (optional.isPresent()) {
-			orderRepository.deleteById(order_id);
+			orderRepository.deleteById(orderId);
 			return true;
 		}
 
@@ -80,16 +80,16 @@ public class OrderService {
 		return createOrders;
 	}
 	
-	public boolean exists(Integer order_id) {
-		return orderRepository.existsById(order_id);
+	public boolean exists(Integer orderId) {
+		return orderRepository.existsById(orderId);
 	}
 	
 	public List<OrderBean> createAllByJson(List<OrderBean> orders){
 		return orderRepository.saveAll(orders);
 	}
 	
-	public List<Object[]> findAllOrdersWhereMemberId(Integer members_id){
-		return orderRepository.getAllOrdersWhereMemberID(members_id);
+	public List<Object[]> findAllOrdersWhereMemberId(Integer membersId){
+		return orderRepository.getAllOrdersWhereMemberID(membersId);
 	}
 	
 //	public List<OrderBean> searchOrderByNotes(String order_notes){
@@ -97,12 +97,12 @@ public class OrderService {
 //		
 //	}
 	
-    public List<OrderBean> searchOrderByNotes(String order_notes) {
-        return orderRepository.searchOrderByNotes(order_notes);
+    public List<OrderBean> searchOrderByNotes(String orderNotes) {
+        return orderRepository.searchOrderByNotes(orderNotes);
     }
     
-    public List<Object[]> searchOrderByNotes2(String order_notes) {
-        return orderRepository.searchOrderByNotes2(order_notes);
+    public List<Object[]> searchOrderByNotes2(String orderNotes) {
+        return orderRepository.searchOrderByNotes2(orderNotes);
     }
     
 	public Page<OrderBean> findAll(Pageable pageable) {

@@ -15,10 +15,10 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
       height: 100px;
     }
   </style>
-  <body style="padding-top: 8%" id="app">
+  <body style="padding-top: 8%">
     <%@ include file="/WEB-INF/views/toolbar/navbar.jsp"%>
 
-    <div class="container">
+    <div class="container"  id="app">
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~table上方條件輸入框~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <div>
         <!-- 廠商ID輸入框 -->
@@ -187,7 +187,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           <!-- 我是分頁 -->
         </div>
       </div>
-    </div>
+    
 
     <div class="container d-flex justify-content-center py-3">
       <div>
@@ -196,6 +196,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
         </button>
       </div>
     </div>
+  </div>
 
     <script type="text/javascript">
       const contextPath = "${pageContext.request.contextPath}";

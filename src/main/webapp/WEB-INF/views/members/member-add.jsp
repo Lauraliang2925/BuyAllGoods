@@ -10,24 +10,43 @@
 <link rel="buy icon"
 	href="${pageContext.request.contextPath}/favicon.ico" />
 <meta charset="UTF-8">
-<title>會員資料檢視/修改</title>
+<title>會員資料新增</title>
 </head>
 <body style="padding-top: 8%" id="app">
 	<%@ include file="/WEB-INF/views/toolbar/navbar.jsp"%>
 	<div class="container">
-		<h2 class="text-center py-3">會員資料檢視/修改</h2>
+		<h2 class="text-center py-3">會員資料新增</h2>
 		<div class="album py-5 bg-light container">
 				
-				<div class="外框此div保留">
+				
 
+				<div class="">
+					<div class="row">
+						<div class="col">
+							<div class="input-group mb-3">
+								<span class="input-group-text" id="userNameSid">帳號</span>
+								<input id="userName" name="userName"
+									type="text" class="form-control" placeholder="User Name"
+									aria-label="User Name" aria-describedby="userNameSid"
+									value="${onemember.userName}">
+							</div>
+						</div>
+						<div class="col">
+							<div class="input-group mb-3">
+								<span class="input-group-text" id="passwordSid">密碼</span> 
+								<input id="password"								
+									type="password" class="form-control" placeholder="Password"
+									aria-label="Password" aria-describedby="passwordSid"
+									value="${onemember.password}">
+							</div>
+						</div>
+					</div>
+						<div class="row">
 					<div class="d-flex">
 						<div>
 							<img id="myImage" :src="imgSrcVue" :alt="個人圖檔" width="100"
 								height="100" class="rounded-circle me-2">
-						</div>
-						<div class="flex-grow-1">
-							<span class="fs-2 text-nowrap">祝 ${onemember.userName} 有個美好的一天!</span>
-						</div>
+						</div>						
 					</div>
 					<div class="d-flex">
 						<label for="selectFile" class="form-label">更換您的個人圖檔</label>
@@ -42,29 +61,9 @@
 						</div>						
 					</div>
 				</div>
-
-				<div class="mt-3">
-					<div class="row">
-						<div class="col">
-							<div class="input-group mb-3">
-								<span class="input-group-text" id="userNameSid">帳號</span>
-								<input id="userName" name="userName"
-									type="text" class="form-control" placeholder="User Name"
-									aria-label="User Name" aria-describedby="userNameSid"
-									value="${onemember.userName}" disabled>
-							</div>
-						</div>
-						<div class="col">
-							<div class="input-group mb-3">
-								<span class="input-group-text" id="passwordSid">密碼</span> 
-								<input id="password"								
-									type="password" class="form-control" placeholder="Password"
-									aria-label="Password" aria-describedby="passwordSid"
-									value="${onemember.password}">
-							</div>
-						</div>
-					</div>
-					<div class="row">
+					
+					
+					<div class="row mt-3">
 						<div class="input-group mb-3">
 							<span class="input-group-text" id="firstNameSid">姓氏和名字</span> 
 							<input id="firstName"
@@ -77,6 +76,10 @@
 								value="${onemember.lastName}">
 						</div>
 					</div>
+				
+					
+					
+					
 					<div class="row">
 						<div class="col">
 							<div class="input-group mb-3">
@@ -90,7 +93,7 @@
 								<span class="input-group-text" id="genderIDSid">性別</span>
 								<select id="gender"
 									class="form-select" aria-label="gender" aria-describedby="genderIDSid"
-									value="${onemember.gender}">
+									value="no">
 									<option value="no"selected>性別選擇</option>
 									<option value="male">男</option>
 									<option value="female">女</option>
@@ -174,8 +177,8 @@
 								<span class="input-group-text" id="roleSid">角色</span> 
 								<select id="role"
 									class="form-select" 
-									value="${onemember.roleId}">
-									<option value="0" selected>角色選擇</option>
+									value="2" disabled>
+									<option value="0">角色選擇</option>
 									<option value="1">系統管理者</option>
 									<option value="2">廠商</option>
 									<option value="3">會員</option>
@@ -188,20 +191,22 @@
 								<input id="expirationDate"
 									type="datetime-local" class="form-control" placeholder="Expiration Date"
 									aria-label="Expiration Date" aria-describedby="expirationDateSid"
-									value="${onememberExpirationDate}">
+									value="${onememberExpirationDate}" disabled>
 							</div>
 						</div>
 					</div>
 				</div>
-				<input id="membersId" name ="membersId" type="hidden" value="${membersId}">
+				<input id="membersId" name ="membersId" type="hidden" value="">
 				
 					<div class="row justify-content-end">					    
-						<div class="col-4">
-							<button type="button" class="btn btn-outline-primary"  @click="modifyMember()">修改</button>
+						<div class="col-5">
+							<button type="button" class="btn btn-outline-primary"  @click="addMember()">新增</button>
 						</div>						
-						<div class="col-2" style="text-align:right;">
-							<button type="button" class="btn btn-outline-primary"   @click="gotoMembersList()">回到會員列表</button>
+						<div class="col-2" style="text-align: right">
+							<button type="button" class="btn btn-outline-primary pull-right"  @click="gotoMembersList()">回到會員列表</button>
 						</div>
+						
+						
 						
 					</div>
 		</div>
@@ -210,11 +215,9 @@
 
 	<script type="text/javascript">
 		const contextPath = "${pageContext.request.contextPath}";
-		const membersId = "${membersId}";
-		let imgSrc = contextPath + "${onemember.photoPath}";
 	</script>
 	<script type="text/javascript"
-		src="<c:url value='/js/members/members-edit.js'></c:url>">
+		src="<c:url value='/js/members/members-add.js'></c:url>">
 	</script>
 
 

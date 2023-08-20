@@ -36,7 +36,10 @@ const app = Vue.createApp({
             selectedTimeRange: 'all',
             searchTime: false,
             filteredOrders: [],
-            data404: false
+            data404: false,
+            contextPath: contextPath,
+            orderId: "",
+            membersId: "",
 
 
             // // 分頁功能所需參數
@@ -80,7 +83,7 @@ const app = Vue.createApp({
 
             axios.post(contextPath + '/api/page/orders/members/' + vm.tt_number)
                 .then((response) => {
-                    //console.log(response.data)
+                    // console.log(response.data)
                     vm.OrdersWhereMemberData = response.data
                     vm.backupOrdersData = response.data
                     vm.order_id = response.data.order_id
@@ -117,7 +120,7 @@ const app = Vue.createApp({
             let vm = this
             vm.isShowTable = true
             vm.isShowCard = false
-            
+
 
             if (vm.selectedStatus !== '所有訂單') {
                 vm.OrdersWhereMemberData = vm.backupOrdersData.filter(item => item.order_status === vm.selectedStatus);
@@ -136,8 +139,8 @@ const app = Vue.createApp({
             axios.post(contextPath + '/api/page/orders/' + order_id)
                 .then((response) => {
                     // console.log(response.data)
-                    vm.members_id = response.data.members_id
-                    vm.order_id = response.data.order_id
+                    vm.members_id = response.data.membersId
+                    vm.order_id = response.data.orderId
                     // console.log(vm.members_id)
                     vm.getInnerJoinProductAndOrderByMemberIdAndOrderId()
                 })
@@ -147,6 +150,7 @@ const app = Vue.createApp({
         },
         searchOrderNotes() {
             let searchInputValue = this.searchInput.trim();
+            console.log(searchInputValue)
             let vm = this
             vm.isShowTable = true
             vm.isShowCard = false
@@ -156,16 +160,25 @@ const app = Vue.createApp({
             vm.cancel = false
             vm.data404 = true
 
+            // 判斷輸入是否包含標點符號
+            const punctuations = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;
+            if (punctuations.test(searchInputValue)) {
+                vm.isShowTable = false
+                vm.data404 = true
+                return; // 停止執行
+            }
+
+
             axios.post(contextPath + '/api/page/orders/searchByNotes2/' + searchInputValue)
                 .then((response) => {
-                    // console.log(response.data)
+                    console.log(response.data)
                     vm.searchResult = response.data
                     vm.searchResult.forEach(order => {
                         order.placed = vm.formatDate(order.placed);
                     });
-                    if(vm.searchResult.length === 0){
+                    if (vm.searchResult.length === 0) {
                         vm.isShowTable = false
-                        
+
                     }
 
                 })
@@ -292,9 +305,10 @@ const app = Vue.createApp({
             const startDate = new Date()
             const endDate = new Date()
 
-            if(vm.selectedTimeRange === 'all'){
+            if (vm.selectedTimeRange === 'all') {
                 vm.findAllOrdersWhereMember()
-            }else if (vm.selectedTimeRange === '30') {
+                vm.searchTime = false
+            } else if (vm.selectedTimeRange === '30') {
                 startDate.setDate(startDate.getDate() - 30)
             } else if (vm.selectedTimeRange === '180') {
                 startDate.setMonth(startDate.getMonth() - 6)
@@ -305,7 +319,7 @@ const app = Vue.createApp({
                 startDate.setFullYear(1987, 0, 1)
                 endDate.setFullYear(2022, 0, 1)
             }
-            
+
 
             const dateObject = new Date(startDate)
             const dateObject2 = new Date(endDate)

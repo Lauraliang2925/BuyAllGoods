@@ -20,12 +20,12 @@ public class OrderDetailService {
 	@Autowired
 	private OrderDetailRepository orderDetailRepository;
 	
-	public Optional<OrderDetailBean> findById(Integer order_detail_id) {
-		return orderDetailRepository.findById(order_detail_id);
+	public Optional<OrderDetailBean> findById(Integer orderDetailId) {
+		return orderDetailRepository.findById(orderDetailId);
 	}
 	
-	public OrderDetailBean modify(Integer order_detail_id, OrderDetailBean OrderDetail) {
-		Optional<OrderDetailBean> optional = orderDetailRepository.findById(order_detail_id);
+	public OrderDetailBean modify(Integer orderDetailId, OrderDetailBean OrderDetail) {
+		Optional<OrderDetailBean> optional = orderDetailRepository.findById(orderDetailId);
 		if(optional.isPresent()) {
 			return orderDetailRepository.save(OrderDetail);
 		}
@@ -37,24 +37,24 @@ public class OrderDetailService {
 		return orderDetailRepository.save(OrderDetail);
 	}
 	
-	public OrderDetailBean remove(Integer order_detail_id) {
-		Optional<OrderDetailBean> optional = orderDetailRepository.findById(order_detail_id);
+	public OrderDetailBean remove(Integer orderDetailId) {
+		Optional<OrderDetailBean> optional = orderDetailRepository.findById(orderDetailId);
 		if(optional.isPresent()) {
-			orderDetailRepository.deleteById(order_detail_id);			
+			orderDetailRepository.deleteById(orderDetailId);			
 		}
 		return null;
 	}
 	
-	public boolean exists(Integer order_detail_id) {
-		return orderDetailRepository.existsById(order_detail_id);
+	public boolean exists(Integer orderDetailId) {
+		return orderDetailRepository.existsById(orderDetailId);
 	}
 	
 	public List<OrderDetailBean> createAllByJson(List<OrderDetailBean> orderDetaol){
 		return orderDetailRepository.saveAll(orderDetaol);
 	}
 	
-	public List<Map<String,Object>> findDataInnerJoinProductAndOrderByMemberIdAndOrderId(Integer members_id, Integer order_id){
-		List<Object[]> data = orderDetailRepository.findDataInnerJoinProductAndOrderByMemberIdAndOrderId(order_id, members_id);
+	public List<Map<String,Object>> findDataInnerJoinProductAndOrderByMemberIdAndOrderId(Integer membersId, Integer orderId){
+		List<Object[]> data = orderDetailRepository.findDataInnerJoinProductAndOrderByMemberIdAndOrderId(orderId, membersId);
 		List<Map<String,Object>> result = new ArrayList<>();
 		
 		LocalDate currentDate = LocalDate.now();
@@ -91,13 +91,14 @@ public class OrderDetailService {
 			map.put("order_status", row[10]);
 			map.put("placed", row[11]);
 			map.put("members_id", row[12]);
+			map.put("image_path", row[13]);
 			result.add(map);
 		}
 		return result;
 	}
 	
-	public List<Map<String,Object>> getOrderDetailInnerJoinProductAndOrder(Integer order_id){
-		List<Object[]> data = orderDetailRepository.getOrderDetailInnerJoinProductAndOrder(order_id);
+	public List<Map<String,Object>> getOrderDetailInnerJoinProductAndOrder(Integer orderId){
+		List<Object[]> data = orderDetailRepository.getOrderDetailInnerJoinProductAndOrder(orderId);
 		List<Map<String,Object>> result = new ArrayList<>();
 		
 		for(Object obj : data) {
@@ -119,6 +120,7 @@ public class OrderDetailService {
 			map.put("placed", row[9]);
 			map.put("shipping_address", row[10]);
 			map.put("total_amount", row[11]);
+			map.put("image_path", row[12]);
 			
 			result.add(map);
 		}
@@ -127,5 +129,78 @@ public class OrderDetailService {
 		
 	}
 	
+	public List<Map<String,Object>> getOrderDetailBySuppliersIdAndOrderId(Integer orderId, Integer suppliersId){
+		List<Object[]> data = orderDetailRepository.getOrderDetailBySuppliersIdAndOrderId(orderId, suppliersId);
+		List<Map<String,Object>> result = new ArrayList<>();
+		
+		for(Object obj : data) {
+			Object[] row = (Object[])obj;
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("order_detail_id", row[0]);
+			map.put("order_id", row[1]);
+			map.put("products_id", row[2]);
+			map.put("suppliers_id", row[3]);
+			map.put("name", row[4]);
+			map.put("quantity", row[5]);
+			map.put("unit_price", row[6]);
+			map.put("subtotal", row[7]);
+			map.put("track_shipment", row[8]);
+			map.put("estimated_arrival", row[9]);
+			map.put("delivered_arrival", row[10]);
+			map.put("placed", row[11]);
+			map.put("shipping_address", row[12]);
+			map.put("order_status", row[13]);
+			map.put("total_amount", row[14]);
+			map.put("delivered", row[15]);
+			map.put("image_path", row[16]);
+			
+			result.add(map);
+			
+		}
+		
+		return result;
+		
+	}
+	
+	public List<Map<String,Object>> getOrderDetailBySuppliersId(Integer suppliersId){
+		List<Object[]> data = orderDetailRepository.getOrderDetailBySuppliersId(suppliersId);
+		List<Map<String,Object>> result = new ArrayList<>();
+		
+		for(Object obj : data) {
+			Object[] row = (Object[])obj;
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("order_detail_id", row[0]);
+			map.put("order_id", row[1]);
+			map.put("products_id", row[2]);
+			map.put("suppliers_id", row[3]);
+			map.put("name", row[4]);
+			map.put("quantity", row[5]);
+			map.put("unit_price", row[6]);
+			map.put("subtotal", row[7]);
+			map.put("track_shipment", row[8]);
+			map.put("estimated_arrival", row[9]);
+			map.put("delivered_arrival", row[10]);
+			map.put("placed", row[11]);
+			map.put("shipping_address", row[12]);
+			map.put("order_status", row[13]);
+			map.put("total_amount", row[14]);
+			map.put("delivered", row[15]);
+			map.put("members_id", row[16]);
+			map.put("order_notes", row[17]);
+			map.put("receipt_method", row[18]);
+			map.put("payment_method", row[19]);
+			map.put("image_path", row[20]);
+			
+			result.add(map);
+			
+		}
+		
+		return result;
+		
+	}
+	
+//	public void updateOrderDetail(Integer suppliers_id, String order_status, String track_shipment, LocalDate estimated_arrival) {
+//		orderDetailRepository.updateOrderDetail(suppliers_id,order_status,track_shipment,estimated_arrival);
+//	}
 
 }

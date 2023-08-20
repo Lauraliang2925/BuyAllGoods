@@ -8,7 +8,9 @@ const app = Vue.createApp({
             isShowFavorite: false,
             Product: [],
             count: localStorage.getItem('count'),
-            tt_number: 8
+            tt_number: 8,
+            image_path:"",
+            contextPath: contextPath,
         };
     },
     mounted() {
@@ -43,8 +45,8 @@ const app = Vue.createApp({
         },
         addToShoppingCart(item) {
             const originalData = {
-                members_id: item.members_id,
-                products_id: item.products_id,
+                membersId: item.members_id,
+                productsId: item.products_id,
                 quantity: 1,
             };
             axios.post(contextPath + "/api/page/shoppingcarts/checkin", originalData)

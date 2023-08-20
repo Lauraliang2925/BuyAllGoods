@@ -16,10 +16,10 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
       height: 200px;
     }
   </style>
-  <body style="padding-top: 8%" id="app">
+  <body style="padding-top: 8%" >
     <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
 
-    <div class="container">
+    <div class="container" id="app">
       <div class="d-flex">
         <!-- 商品表格起始 -->
 

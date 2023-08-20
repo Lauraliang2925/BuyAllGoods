@@ -10,9 +10,9 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
     <title>商品頁面</title>
   </head>
 
-<body style="padding-top: 8%" id="app">
+<body style="padding-top: 8%" >
     <%@ include file="/WEB-INF/views/toolbar/navbar.jsp"%>
-<div class="container">
+<div class="container" id="app">
 
 
         <!-- 上方Breadcrumb起始 -->

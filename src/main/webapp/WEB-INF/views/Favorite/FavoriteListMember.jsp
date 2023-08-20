@@ -33,9 +33,27 @@
                 </tr>
               </thead>
               <tbody class="table-light">
-                <tr v-for="(item, index) in favorite" :key="index">
-                  <td><img
-                      src='https://memeprod.ap-south-1.linodeobjects.com/user-template-thumbnail/d5dac084aa2905e2014f90f621dd5032.jpg'>
+                <tr v-for="item in favorite" :key="item.favorite_list_id">
+                  <td>
+                    <!-- <img
+                      src='https://memeprod.ap-south-1.linodeobjects.com/user-template-thumbnail/d5dac084aa2905e2014f90f621dd5032.jpg'> -->
+                      <svg
+                      class="bd-placeholder-img card-img-top"
+                      width="100%"
+                      height="225"
+                      xmlns="http://www.w3.org/2000/svg"
+                      role="img"
+                      aria-label="Placeholder: Thumbnail"
+                      preserveAspectRatio="xMidYMid slice"
+                      focusable="false"
+                    >
+                      <title>{{ item.name }}</title>
+                      <image
+                        :xlink:href="contextPath + '/pic/product/' + item.name + '.jpg'"
+                        width="100%"
+                        height="100%"
+                      />
+                    </svg>
                   </td>
                   <td class="align-middle">{{ item.name }}</td>
                   <!-- <td class="align-middle"><i class="bi bi-currency-dollar"></i>{{ item.selling_price }}</td> -->

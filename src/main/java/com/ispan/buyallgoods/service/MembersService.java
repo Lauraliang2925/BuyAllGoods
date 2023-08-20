@@ -141,42 +141,4 @@ public class MembersService {
 	
 	
 	
-	
-	
-	
-	
-	
-	//渝平-----開始
-	public Members findMembersByIdForAddS(Integer id) {
-		Optional<Members> optional = membersRepository.findById(id);
-		if (optional.isPresent()) {
-			Members members = optional.get();
-			return members;
-		} else {
-			return null;
-		}
-	}
-
-	//for新增廠商頁面的會員代號下拉選單
-	public List<Object> findAllMembers() {
-		List<Object> allMemberId = membersRepository.getAllMemberId();
-
-		if (allMemberId == null) {
-			return null;
-		}
-		return allMemberId;
-	}
-
-	public List<Object> findOneByMemberId(Integer membersId) {
-		List<Object> oneByMemberId = membersRepository.getOneByMemberId(membersId);
-		
-		if(oneByMemberId==null) {
-			return null;
-
-		}
-		return oneByMemberId;
-
-		}
-	//渝平-----結束
-
 }

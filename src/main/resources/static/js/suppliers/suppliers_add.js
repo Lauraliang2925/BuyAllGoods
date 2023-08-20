@@ -188,6 +188,7 @@ const app = Vue.createApp({
                   pika.findRemarks = "";
                   pika.signingDateMessage = "";
                   pika.contractEndDateMessage = "";
+                  pika.reply= "請選擇會員帳號";
                 }
               },
             });

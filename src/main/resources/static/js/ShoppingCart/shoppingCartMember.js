@@ -12,6 +12,7 @@ const app = Vue.createApp({
             totalItemMemberCount: 0,
             isShowByMemberId: false,
             suppliers_id:"",
+            contextPath: contextPath,
         }
     },
     computed: {
@@ -26,14 +27,29 @@ const app = Vue.createApp({
         this.getTotalItemCountByMemberId()
         this.getShoppingCartByMemberId()
     },
+    watch: {
+        ShoppingCart: {
+            deep: true,
+            handler() {
+                this.calculateTotalQuantity();
+            },
+        },
+    },
     methods: {
         updateShoppingCart(item) {
+            console.log("Updating quantity for item:", item);
+            let data = {
+                shoppingCartId : item.shopping_cart_id,
+                membersId : item.members_id,
+                productsId : item.products_id,
+                quantity : item.quantity,
+            }
             let vm = this
             bootbox.dialog({
                 message: '<div class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Loding...</div>',
                 closeButton: false
-            });
-            axios.put(contextPath + '/api/page/shoppingcarts/' + item.shopping_cart_id, item).then((response) => {
+            })
+            axios.put(contextPath + '/api/page/shoppingcarts/' + item.shopping_cart_id,data).then((response) => {
                 vm.getShoppingCartByMemberId()
             }).catch((error) => {
                 console.log(error.message)
@@ -48,6 +64,7 @@ const app = Vue.createApp({
             let vm = this
             axios.post(contextPath + "/api/page/shoppingcarts/" + vm.tt_number)
                 .then((response) => {
+                    console.log(response.data)
                     vm.ShoppingCart = response.data.map(item => {
                         if (item.new_selling_price !== null) {
                             item.discounted = true;
@@ -67,18 +84,10 @@ const app = Vue.createApp({
         calculateTotalQuantity() {
             this.totalQuantity = this.ShoppingCart.reduce((total, item) => total + item.quantity, 0);
         },
-        watch: {
-            ShoppingCart: {
-                deep: true,
-                handler() {
-                    this.calculateTotalQuantity();
-                },
-            },
-        },
         addFavoriteList(item) {
             const originalData = {
-                members_id: item.members_id,
-                products_id: item.products_id
+                membersId: item.members_id,
+                productsId: item.products_id
             };
             axios.post(contextPath + '/api/page/favorites/checkin', originalData).then((response) => {
                 if (!response.data.success) {

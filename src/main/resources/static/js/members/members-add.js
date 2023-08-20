@@ -2,12 +2,8 @@ let newapp = Vue.createApp({
 	components: {},
 	data: function() {
 		return {
+			editMembersId:"",
 			
-			imgSrcVue:"",
-			editMembersId: membersId,
-			contextPathVue: contextPath,
-			
-			componentKey:0,
 		};
 	},
 	computed: {},
@@ -15,11 +11,13 @@ let newapp = Vue.createApp({
 		gotoMembersList:function(){
 			window.location.href = contextPath+"/members/list";
 		},	
-		modifyMember:function(){
-			console.log("modifyMember..in ");			
-			let membersId = document.getElementById('membersId').value;
+		addMember:function(){
+			console.log("addMember..in");			
+			
+			let membersId = "";
 			let userName = document.getElementById('userName').value;
 			let password = document.getElementById('password').value;
+			let selectFileSrc = document.getElementById('myImage').src;
 			let firstName = document.getElementById('firstName').value;
 			let lastName = document.getElementById('lastName').value;
 			let birthday = document.getElementById('birthday').value;
@@ -36,8 +34,14 @@ let newapp = Vue.createApp({
 			
 			let errorMsg="";			
 			
+			if(userName===""){
+				errorMsg = errorMsg + '<div class="text-left">請輸入帳號!</div>';				
+			}
 			if(password===""){
 				errorMsg = errorMsg + '<div class="text-left">請輸入密碼!</div>';				
+			}
+			if (selectFileSrc === "") {
+				errorMsg = errorMsg + '<div class="text-left">請選擇檔案!</div>';
 			}
 			if(firstName===""){
 				errorMsg = errorMsg + '<div class="text-left">請輸入姓氏!</div>';				
@@ -45,24 +49,24 @@ let newapp = Vue.createApp({
 			if(lastName===""){
 				errorMsg = errorMsg + '<div class="text-left">請輸入姓名!</div>';				
 			}
+			if(birthday===""){
+				errorMsg = errorMsg + '<div class="text-left">請選擇生日!</div>';				
+			}
 			if(gender==="no"){
 				errorMsg = errorMsg + '<div class="text-left">請選擇性別!</div>';				
 			}
 			if(tel===""){
 				errorMsg = errorMsg + '<div class="text-left">請輸入電話!</div>';				
+			}			
+			if(postalCode===""){
+				errorMsg = errorMsg + '<div class="text-left">請輸入郵遞區號!</div>';				
 			}
 			if(address===""){
 				errorMsg = errorMsg + '<div class="text-left">請輸入地址!</div>';				
 			}
-			if(postalCode===""){
-				errorMsg = errorMsg + '<div class="text-left">請輸入郵遞區號!</div>';				
-			}
 			if(email===""){
 				errorMsg = errorMsg + '<div class="text-left">請輸入Email!</div>';				
-			}
-			if(role==="0"){
-				errorMsg = errorMsg + '<div class="text-left">請選擇角色!</div>';				
-			}
+			}			
 			
 			if (errorMsg != '') {
 				bootbox.alert({
@@ -99,10 +103,10 @@ let newapp = Vue.createApp({
 				registrationDate: registrationDate,
 				expirationDate: expirationDate
             }
-            console.log("request=",request);
+            console.log("addMember_request=",request);
             
             let vm = this;
-            axios.put(contextPath+"/members/modify/"+membersId, request).then(function(response) {
+            axios.post(contextPath+"/members/insertjson", request).then(function(response) {
                 if(response.data.success) {
                     bootbox.alert({
                         message: '<div class="text-center">'+response.data.message+'</div>',
@@ -138,7 +142,7 @@ let newapp = Vue.createApp({
                 }
             }).catch(function(error) {
                 bootbox.alert({
-                    message: '<div class="text-center">修改失敗：'+error+'</div>',
+                    message: '<div class="text-center">新增失敗：'+error+'</div>',
                     buttons: {
                         ok: {
                             label: '關閉',
@@ -154,7 +158,7 @@ let newapp = Vue.createApp({
             }).finally(function() {
 
             })
-			console.log("modifyMember..End.. ");
+			console.log("addMember..End.. ");
 			
 			
 			
@@ -166,6 +170,23 @@ let newapp = Vue.createApp({
 			let oneFile = selectFile.files[0];
 			console.log("uploadFile..file ", oneFile);
 
+			if ((document.getElementById('userName').value) === '') {
+				bootbox.alert({
+                    message: '<div class="text-center">請輸入帳號!</div>',
+                    buttons: {
+                        ok: {
+                            label: '關閉',
+                            className: 'btn btn-danger'
+                        }
+                    },
+                    callback: function() {
+                        setTimeout(function() {
+                            bootbox.hideAll();
+                        }, 500)
+                    }
+                })
+				return false;
+			}
 			if (typeof (oneFile) === 'undefined') {
 				bootbox.alert({
                     message: '<div class="text-center">請選擇檔案!</div>',
@@ -190,8 +211,6 @@ let newapp = Vue.createApp({
 			formData.append("file", oneFile);
 			formData.append("editMembersId", this.editMembersId);
 			formData.append("userName", document.getElementById('userName').value);
-
-			let vm = this;
 
 			axios.post(contextPath+"/members/single-file", formData, {
 				headers: {
@@ -255,15 +274,7 @@ let newapp = Vue.createApp({
 				
 			});			
 		}
-
-
 	},
-	mounted() {
-		let dom = this;
-		$(window).on("load", function() {
-			//畫面載入指定圖片
-			dom.imgSrcVue = imgSrc;     			
-			//console.log("mounted_dom.imgSrcVue=",dom.imgSrcVue)
-		});
+	mounted() {		
 	},
 }).mount("#app");

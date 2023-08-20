@@ -12,9 +12,9 @@ uri="http://java.sun.com/jsp/jstl/core" %>
    
   </head>
 
-  <body style="padding-top: 8%" id="app">
+  <body style="padding-top: 8%" >
     <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
-    <div class="container">
+    <div class="container" id="app">
       <h2 class="text-center py-3">分類編輯</h2>
       <!-- 商品分類清單起始 -->
       <table

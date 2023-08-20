@@ -18,34 +18,34 @@ public class OrderDetailBean {
 	@Id
 	@Column(name="order_detail_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer order_detail_id;
+	private Integer orderDetailId;
 	
 	@Column(name = "order_id")
-	private Integer order_id;
+	private Integer orderId;
 	
 	@Column(name = "products_id")
-	private Integer products_id;
+	private Integer productsId;
 	
 	@Column(name="quantity")
 	private Integer quantity;
 	
 	@Column(name="unit_price", columnDefinition = "decimal")
-	private double unit_price;
+	private double unitPrice;
 	
 	@Column(name="subtotal", columnDefinition = "decimal")
 	private double subtotal;
 	
 	@Column(name="suppliers_id")
-	private Integer suppliers_id;
+	private Integer suppliersId;
 	
 	@Column(name="track_shipment", columnDefinition = "nvarchar")
-	private String track_shipment;
+	private String trackShipment;
 	
 	@Column(name="estimated_arrival", columnDefinition = "date" )
-	private LocalDate estimated_arrival;
+	private LocalDate estimatedArrival;
 	
 	@Column(name = "delivered_arrival", columnDefinition = "date")
-	private LocalDate delivered_arrival;
+	private LocalDate deliveredArrival;
 	
  
 	

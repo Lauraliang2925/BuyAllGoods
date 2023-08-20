@@ -32,7 +32,9 @@ let newapp = Vue.createApp({
     // gotoViewAndEdit:function(){      
     //   window.location.href = contextPath+'/members/readedit';
     // },
-
+	addMember:function(){
+		window.location.href = contextPath+"/members/addmember";	
+	},
     showAllMember:function(){
       this.showSelect();
       this.callFindAll(1);

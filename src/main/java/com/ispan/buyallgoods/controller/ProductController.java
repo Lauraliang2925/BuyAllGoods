@@ -305,9 +305,9 @@ public class ProductController {
 	}
 
 	// 拋一份商品的資料，找出商品後終止商品--for商品明細的下架商品按鈕
-	@PostMapping("/product/finishProductDateByPId")
-	public String finishProductDateByPId(@RequestBody Product product) {
-		return productService.finishProductByPId(product);
-	}
+//	@PostMapping("/product/finishProductDateByPId")
+//	public String finishProductDateByPId(@RequestBody Product product) {
+//		return productService.finishProductByPId(product);
+//	}
 
 }

@@ -10,20 +10,14 @@
 
 <title>廠商明細</title>
 
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-	crossorigin="anonymous" />
-
 <style>
 </style>
 </head>
+<body style="padding-top: 9%">
 <%@ include file="../toolbar/navbar.jsp"%>
-<body style="padding-top: 8%" id="app">
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~form~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-	<div class="container">
+	<div class="container" id="app">
 		<p style="font-size: 30px; text-align: center; margin-bottom: 10px">
 			廠商明細</p>
 		<p style="font-size: 14px; text-align: center; margin-bottom: 10px ;color:red">
@@ -223,11 +217,11 @@
 
 		<div style="text-align: center; margin-top: 10px; margin-bottom: 10px">
 			<button class="btn btn-outline-success mx-5"
-				@click="callAddSuppliersToUpdate()">編輯</button>
+				@click="callAddSuppliersToUpdate()" v-show="isShowEditBtn">編輯</button>
 			<a href="<c:url value="/showSupplierPage"></c:url>"><button
 					class="btn btn-outline-dark mx-5">回查詢頁</button></a>
 					<button class="btn btn-outline-danger mx-5"
-				@click="callFinishSuppliers()">終止合作</button>
+				@click="callFinishSuppliers()" v-show="isShowEndBtn">終止合作</button>
 
 		</div>
 	</div>

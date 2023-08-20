@@ -1,6 +1,15 @@
 /**
  *
  */
+
+//轉換日期為YYYY-MM-DD
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 const app = Vue.createApp({
   components: {},
   data: function () {
@@ -20,11 +29,44 @@ const app = Vue.createApp({
       updateMessage: "",
       startDateMessage: "",
       endDateMessage: "",
+      overSigningDateMessage: "",
+      overSupplierEndDateMessage:"",
     };
   },
   methods: {
     //簽約日不早於系統日
-    checkStartDate: function () {
+    checkStartDate: function (suppliersId) {
+      let p = this;
+      axios
+        .get(contextPath + "/suppliers/findBySuppliersId/" + suppliersId)
+        .then(function (response) {
+          let signingDate = new Date(response.data.signingDate);
+          const keyInStartDate = new Date(p.findStartDate);
+
+          //只取年月日，把時分秒排除
+          const suppliersStartDate = new Date(
+            signingDate.getFullYear(),
+            signingDate.getMonth(),
+            signingDate.getDate()
+          );
+
+          const startDate = new Date(
+            keyInStartDate.getFullYear(),
+            keyInStartDate.getMonth(),
+            keyInStartDate.getDate()
+          );
+
+          if (startDate < suppliersStartDate) {
+            p.overSigningDateMessage =
+              "合約起日不得早於廠商簽約日，廠商簽約日：" +
+              formatDate(suppliersStartDate);
+          } else {
+            p.overSigningDateMessage = ""; // 清空消息
+          }
+        })
+        .catch(function () {})
+        .finally(function () {});
+
       const today = new Date(); // 获取当前系统日期
       const startDate = new Date(this.findStartDate); // 将输入的日期转换为日期对象
 
@@ -46,7 +88,39 @@ const app = Vue.createApp({
     },
 
     //到期日不能早於簽約日
-    checkEndDate: function () {
+    checkEndDate: function (suppliersId) {
+
+      let p = this;
+        axios
+          .get(contextPath + "/suppliers/findBySuppliersId/" + suppliersId)
+          .then(function (response) {
+            let contractEndDate = new Date(response.data.contractEndDate);
+            const keyInEndDate = new Date(p.findEndDate);
+
+            //只取年月日，把時分秒排除
+            const suppliersEndDate = new Date(
+              contractEndDate.getFullYear(),
+              contractEndDate.getMonth(),
+              contractEndDate.getDate()
+            );
+
+            const endDate = new Date(
+              keyInEndDate.getFullYear(),
+              keyInEndDate.getMonth(),
+              keyInEndDate.getDate()
+            );
+
+            if (endDate > suppliersEndDate) {
+              p.overSupplierEndDateMessage =
+                "合約起日不得晚於廠商契約到期日，廠商契約到期日：" +
+                formatDate(suppliersEndDate);
+            } else {
+              p.overSupplierEndDateMessage = ""; // 清空消息
+            }
+          })
+          .catch(function () {})
+          .finally(function () {});
+
       const startDate = new Date(this.findStartDate); // 将输入的签约日期转换为日期对象
       const endEndDate = new Date(this.findEndDate); // 将输入的签约日期转换为日期对象
 

@@ -38,8 +38,25 @@
                                     <tr v-for="(item, index) in ShoppingCart" :key="index">
                                         <td></td>
                                         <td>
-                                            <img 
-                                                src='https://memeprod.ap-south-1.linodeobjects.com/user-template-thumbnail/2047ceddc1d91c629b3a04117178bde1.jpg'>
+                                            <!-- <img 
+                                                src='https://memeprod.ap-south-1.linodeobjects.com/user-template-thumbnail/2047ceddc1d91c629b3a04117178bde1.jpg'> -->
+                                                <svg
+                                                class="bd-placeholder-img card-img-top"
+                                                width="100%"
+                                                height="225"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                role="img"
+                                                aria-label="Placeholder: Thumbnail"
+                                                preserveAspectRatio="xMidYMid slice"
+                                                focusable="false"
+                                              >
+                                                <title>{{ item.name }}</title>
+                                                <image
+                                                  :xlink:href="contextPath + '/pic/product/' + item.name + '.jpg'"
+                                                  width="100%"
+                                                  height="100%"
+                                                />
+                                              </svg>
                                         </td>
                                         <td class="align-middle">{{item.name}}</td>
                                         <td class="align-middle"><i class="bi bi-currency-dollar"></i>

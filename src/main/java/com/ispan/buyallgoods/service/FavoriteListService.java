@@ -27,14 +27,14 @@ public class FavoriteListService {
 		return favoriteListRepository.findAll();
 	}
 	
-	public Optional<FavoriteListBean> findById(Integer favorite_list_id) {
-		return favoriteListRepository.findById(favorite_list_id);
+	public Optional<FavoriteListBean> findById(Integer favoriteListId) {
+		return favoriteListRepository.findById(favoriteListId);
 	}
 	
-	public boolean remove(Integer favorite_list_id) {
-		Optional<FavoriteListBean> optional = favoriteListRepository.findById(favorite_list_id);
+	public boolean remove(Integer favoriteListId) {
+		Optional<FavoriteListBean> optional = favoriteListRepository.findById(favoriteListId);
 		if(optional.isPresent()) {
-			favoriteListRepository.deleteById(favorite_list_id);
+			favoriteListRepository.deleteById(favoriteListId);
 			return true;
 		}
 		return false;
@@ -52,8 +52,8 @@ public class FavoriteListService {
 		return favoriteListRepository.saveAll(favoriteList);
 	}
 	
-	public boolean exists(Integer favorite_list_id) {
-		return favoriteListRepository.existsById(favorite_list_id);
+	public boolean exists(Integer favoriteListId) {
+		return favoriteListRepository.existsById(favoriteListId);
 	}
 	
 	
@@ -84,7 +84,7 @@ public class FavoriteListService {
 	}
 	
 	// 依據 members_id 去取得資料
-	public List<Object[]> findByFavoriteListWhereMemberId(Integer members_id){
-		return favoriteListRepository.findByFavoriteListWhereMemberId(members_id);
+	public List<Object[]> findByFavoriteListWhereMemberId(Integer membersId){
+		return favoriteListRepository.findByFavoriteListWhereMemberId(membersId);
 	}
 }

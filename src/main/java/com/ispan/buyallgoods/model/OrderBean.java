@@ -18,31 +18,31 @@ public class OrderBean {
 	@Id
 	@Column(name="order_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer order_id;
+	private Integer orderId;
 	
 	@Column(name="members_id")
-	private Integer members_id;
+	private Integer membersId;
 		
 	@Column(name="total_amount")
-	private Integer total_amount;
+	private Integer totalAmount;
 	
 	@Column(name="payment_method", columnDefinition = "nvarchar")
-	private String payment_method;
+	private String paymentMethod;
 	
 	@Column(name="shipping_address", columnDefinition = "nvarchar")
-	private String shipping_address;
+	private String shippingAddress;
 	
 	@Column(name=" placed", insertable = false, updatable = false)
 	private LocalDateTime placed;
 	
 	@Column(name="order_status", columnDefinition = "nvarchar")
-	private String order_status;
+	private String orderStatus;
 	
 	@Column(name="order_notes", columnDefinition = "nvarchar")
-	private String order_notes;
+	private String orderNotes;
 	
 	@Column(name="receipt_method", columnDefinition = "nvarchar")
-	private String receipt_method;
+	private String receiptMethod;
 	
 	@Column(name="delivered")
 	private LocalDateTime delivered;

@@ -41,14 +41,16 @@
 					</button>					
 				</div>
 				<div class="col">
-				</div>
-				<div class="col">
-				
+				</div>				
+				<div class="col" style="text-align:right;">
+					<button class="btn btn-outline-dark" @click="addMember()">
+							<i class="fa-solid fa-user"></i>新增會員
+					</button>
 				</div>
 			</div>
 
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~table上方條件輸入框~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-			<h2 class="text-center py-3">會員列表</h2>
+			<h2 class="text-center py-3">會員列表</h2>		
 
 			<div id="select" v-show="isShowSelect">
 				<!--會員列表起始 -->

@@ -22,19 +22,19 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCartBean, 
 	
 	@Query(nativeQuery = true,
 			value = "select * from shopping_cart s where s.products_id = :products_id and s.members_id = :members_id")
-	ShoppingCartBean findByShoppingCartCheckId(@Param("products_id")Integer products_id, @Param("members_id")Integer members_id );
+	ShoppingCartBean findByShoppingCartCheckId(@Param("products_id")Integer productsId, @Param("members_id")Integer membersId );
 	
 	@Query(nativeQuery = true,
 			value = "select count(*) from shopping_cart where members_id = :members_id")
-	Integer getMemberIdCount(@Param("members_id")Integer members_id);
+	Integer getMemberIdCount(@Param("members_id")Integer membersId);
 	
 	@Query(nativeQuery = true,
-			value = "select s.shopping_cart_id, s.members_id, s.products_id, s.quantity, p.name, p.selling_price, p.discount, p.discount_start_date, p.discount_end_date, p.suppliers_id  \n"
+			value = "select s.shopping_cart_id, s.members_id, s.products_id, s.quantity, p.name, p.selling_price, p.discount, p.discount_start_date, p.discount_end_date, p.suppliers_id,p.image_path  \n"
 					+ "from shopping_cart s  inner join product p on s.products_id = p.products_id where s.members_id = :members_id")
-	List<Object[]> findByShoppingCartWhereMemberId(@Param("members_id")Integer members_id);
+	List<Object[]> findByShoppingCartWhereMemberId(@Param("members_id")Integer membersId);
 	
 	@Modifying
 	@Query(nativeQuery = true,
 			value = "delete from shopping_cart where members_id = :members_id")
-	void removeAllByMemberId(@Param("members_id")Integer members_id);
+	void removeAllByMemberId(@Param("members_id")Integer membersId);
 }

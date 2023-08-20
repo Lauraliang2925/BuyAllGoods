@@ -16,6 +16,7 @@ const app = Vue.createApp({
 
       suppliersData: [],
       suppliersAllData: [],
+      contractsAllData:[],
 
       chooseSuppliersId: null,
 
@@ -24,29 +25,76 @@ const app = Vue.createApp({
       offset2: "",
       findOffset: "",
 
-      isShowPage: true,
+      isShowPage: false,
 
       tomorrowDate: tomorrow,
       todayDate: new Date(),
+
+      isShowSearch:false,
+      
     };
   },
   computed: {},
   methods: {
     //分頁查詢
     callFindAllSCPage: function (offset) {
-      this.isShowPage = true;
+      this.callFindAllSuppliers();
+      this.callFindAllContracts();
+      this.isShowPage = false;
+      this.isShowSearch=false;
       let pika = this;
+      let userRoleId = localStorage.getItem("RoleId");
 
-      axios
-        .get(contextPath + "/suppliers/findAllSCPage?offset=" + offset)
-        .then(function (response) {
-          pika.pageCount = response.data;
-          pika.suppliersData = response.data;
-        })
-        .catch(function () {})
-        .finally(function () {
-          pika.callCountAllSC();
-        });
+      if (userRoleId === "1") {
+        this.isShowPage = true;
+        this.isShowSearch=true;
+        axios
+          .get(contextPath + "/suppliers/findAllSCPage?offset=" + offset)
+          .then(function (response) {
+            pika.pageCount = response.data;
+            pika.suppliersData = response.data;
+          })
+          .catch(function () {})
+          .finally(function () {
+            pika.callCountAllSC();
+          });
+      } else if (userRoleId === "2") {
+        pika.isShowPage = false;
+        pika.isShowSearch=false;
+        let localStorageMembersId = localStorage.getItem("MembersId");
+        console.log("localStorageMembersId", localStorageMembersId);
+        let request = {
+          membersId: localStorageMembersId,
+        };
+        console.log("request", request);
+
+        let pulu = pika;
+        axios
+          .post(contextPath + "/suppliers/findSupplier", request)
+          .then(function (response) {
+            console.log(response);
+            let vm = pulu;
+            let suppliersId = response.data.suppliersId;
+            axios
+              .get(
+                contextPath +
+                  "/suppliers/findSomeSCPage?offset=" +
+                  offset +
+                  "&suppliersId=" +
+                  suppliersId
+              )
+              .then(function (response2) {
+                vm.pageCount = response2.data;
+                vm.suppliersData = response2.data;
+              })
+              .catch(function () {})
+              .finally(function () {
+                vm.callCountAllSC();
+              });
+          })
+          .catch(function () {})
+          .finally(function () {});
+      }
     },
 
     //計算總共有幾頁
@@ -86,9 +134,21 @@ const app = Vue.createApp({
         .finally(function () {});
     },
 
+    //查詢全部的合約有哪些，for合約編號的填寫欄位
+    callFindAllContracts: function () {
+      let pika = this;
+      axios
+        .post(contextPath + "/contracts/findAllContracts")
+        .then(function (response) {
+          pika.contractsAllData = response.data;
+        })
+        .catch(function () {})
+        .finally(function () {});
+    },
+
     //進入畫面先查詢全部的資料
     callFindSC: function () {
-      let pika = this;
+      console.log("userRoleId", userRoleId);
       axios
         .post(contextPath + "/suppliers/findAllSC")
         .then(function (response) {
@@ -226,13 +286,25 @@ const app = Vue.createApp({
 
     //如果廠商沒有合約資料，就顯示新增，帶到專屬廠商的合約新增畫面
     callGoAddContracts: function (suppliersId) {
-      const url = contextPath + "/goAddContracts?suppliersId=" + suppliersId;
-      window.location.href = url;
+      let roleId=localStorage.getItem("RoleId")
+      if(roleId==='1'){
+        const url = contextPath + "/goAddContracts?suppliersId=" + suppliersId;
+        window.location.href = url;
+      }else{
+        bootbox.alert({
+          title: "提醒！",
+          message:
+            '<div class="text-center">如合約尚未登錄，請聯繫管理員協助登錄，謝謝！</div>',
+          buttons: {
+            ok: { label: "關閉", className: "btn btn-warning" },
+          },
+        });
+      }
+      
     },
   },
   mounted: function () {
-    this.callFindSC();
-    this.callFindAllSuppliers();
+    // this.callFindSC();
     this.offset = 0;
     this.callFindAllSCPage(this.offset);
   },

@@ -46,27 +46,27 @@ public class ShoppingCartController {
 	}
 	
 	@PutMapping("/shoppingcarts/{shopping_cart_id}")
-	public ShoppingCartBean modify(@PathVariable(name="shopping_cart_id") Integer shopping_cart_id, @RequestBody ShoppingCartBean shoppingCart) {
-		if(shoppingCartService.exists(shopping_cart_id)) {
-			return shoppingCartService.modify(shopping_cart_id, shoppingCart);
+	public ShoppingCartBean modify(@PathVariable(name="shopping_cart_id") Integer shoppingCartId, @RequestBody ShoppingCartBean shoppingCart) {
+		if(shoppingCartService.exists(shoppingCartId)) {
+			return shoppingCartService.modify(shoppingCartId, shoppingCart);
 		}
 		return null;
 	}
 	
 	@DeleteMapping("/shoppingcarts/{shopping_cart_id}")
-	public String delete(@PathVariable(name = "shopping_cart_id") Integer shopping_cart_id) {
-		if(!shoppingCartService.exists(shopping_cart_id)) {
+	public String delete(@PathVariable(name = "shopping_cart_id") Integer shoppingCartId) {
+		if(!shoppingCartService.exists(shoppingCartId)) {
 			return "查無資料或不存在";
 		}else {
-			shoppingCartService.remove(shopping_cart_id);
+			shoppingCartService.remove(shoppingCartId);
 			return "刪除資料成功";
 		}
 	
 	}
 	
 	@DeleteMapping("/shoppingcarts/delete/{members_id}")
-	public void removerAllByMemberId(@PathVariable("members_id")Integer members_id) {
-		shoppingCartService.removeAllByMemberId(members_id);
+	public void removerAllByMemberId(@PathVariable("members_id")Integer membersId) {
+		shoppingCartService.removeAllByMemberId(membersId);
 	}
 	
 	
@@ -122,14 +122,14 @@ public class ShoppingCartController {
 	}
 	
 	@GetMapping("/shoppingcarts/count/{members_id}")
-	public ResponseEntity<Integer> getMemberIdCount(@PathVariable("members_id")Integer members_id){
-		Integer memberIdCount = shoppingCartService.getMemberIdCount(members_id);
+	public ResponseEntity<Integer> getMemberIdCount(@PathVariable("members_id")Integer membersId){
+		Integer memberIdCount = shoppingCartService.getMemberIdCount(membersId);
 		return ResponseEntity.ok(memberIdCount);
 	}
 	
 	@PostMapping("/shoppingcarts/{members_id}")
-	public List<Map<String,Object>> findByShoppingCartWhereMemberId(@PathVariable("members_id")Integer members_id){
-		List<Object[]> data = shoppingCartService.findByShoppingCartWhereMemberId(members_id);
+	public List<Map<String,Object>> findByShoppingCartWhereMemberId(@PathVariable("members_id")Integer membersId){
+		List<Object[]> data = shoppingCartService.findByShoppingCartWhereMemberId(membersId);
 		List<Map<String,Object>> result = new ArrayList<>();
 		LocalDate currentDate = LocalDate.now();
 		for(Object obj : data) {
@@ -142,6 +142,7 @@ public class ShoppingCartController {
 			map.put("name", row[4]);
 			map.put("selling_price", row[5]);
 			map.put("suppliers_id", row[9]);
+			map.put("image_path", row[10]);
 			
 			java.sql.Date sqlDiscountStartDate = (java.sql.Date) row[7];
 			java.sql.Date sqlDiscountEndDate = (java.sql.Date) row[8];
