@@ -45,18 +45,22 @@ const index = Vue.createApp({
       current: 1, //目前頁面 (from 1)
       lastPageRows: 0, //最後一頁資料數量
 
-      // 目前先把會員寫死~~~~~~~~~~~~~~~~~~~~~
-      membersId: 1,
+
+      membersId: "",
       productQuantities: {}, // 以商品ID为键，数量为值的对象
       quantity: "",
     };
   },
 
   methods: {
+    getUserID: function () {
+      let membersId = localStorage.getItem("MembersId");
+      return membersId;
+    },
     addFavorites: function (productsId) {
       let request = {
         productsId: productsId,
-        membersId: this.membersId,
+        membersId: this.getUserID(),
       };
       let vm = this;
       axios
@@ -69,10 +73,16 @@ const index = Vue.createApp({
           }
         })
         .catch(function (error) {
+          alert("請先登入");
           console.error("資料請求失敗：", error);
         });
     },
     addShoppingcarts: function (productsId) {
+       membersId = this.getUserID();
+      if (membersId == null) {
+        alert("請先登入");
+        return
+      }
       let quantity = this.productQuantities[productsId]; // 获取该商品的数量
       if (quantity === undefined || quantity <= 0) {
         alert("請選擇有效的商品數量!");
@@ -81,7 +91,7 @@ const index = Vue.createApp({
 
       let request = {
         productsId: productsId,
-        membersId: this.membersId,
+        membersId : this.getUserID(),
         quantity: quantity,
       };
 
@@ -194,6 +204,7 @@ const index = Vue.createApp({
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("categoriesName");
 
+
     if (name == null || name == "") {
       this.categoriesName = "3C";
       this.findVaildByCategoriesId(2);
@@ -201,6 +212,9 @@ const index = Vue.createApp({
       this.categoriesName = name;
       this.selectCategoryIdByCategoryName(name);
     }
+
+    
+    this.getUserID();
   },
 });
 index.mount("#index");

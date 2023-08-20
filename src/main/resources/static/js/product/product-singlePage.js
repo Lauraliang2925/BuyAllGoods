@@ -31,20 +31,22 @@ const app = Vue.createApp({
 
       categoriesName: "",
 
-      categoriesLink:"",
+      categoriesLink: "",
 
-
-      // 目前先把會員寫死~~~~~~~~~~~~~~~~~~~~~
-      membersId: 1,
-      quantity:"",
+      membersId: "",
+      quantity: "",
     };
   },
   computed: {},
   methods: {
+    getUserID: function () {
+      let membersId = localStorage.getItem("MembersId");
+      return membersId;
+    },
     addFavorites: function (productsId) {
       let request = {
         productsId: productsId,
-        membersId: this.membersId,
+        membersId: this.getUserID(),
       };
       let vm = this;
       axios
@@ -57,19 +59,25 @@ const app = Vue.createApp({
           }
         })
         .catch(function (error) {
+          alert("請先登入");
           console.error("資料請求失敗：", error);
         });
     },
-      addShoppingcarts: function (productsId) {
-        let quantity = this.quantity;
-        if (quantity === undefined || quantity <= 0) {
-          alert("請選擇有效的商品數量!");
-          return;
-        }
+    addShoppingcarts: function (productsId) {
+      let quantity = this.quantity;
+      membersId = this.getUserID();
+      if (membersId == null) {
+        alert("請先登入");
+        return
+      }
+      if (quantity === undefined || quantity <= 0) {
+        alert("請選擇有效的商品數量!");
+        return;
+      }
       let request = {
         productsId: productsId,
-        membersId: this.membersId,
-        quantity:this.quantity
+        membersId: this.getUserID(),
+        quantity: this.quantity,
       };
       let vm = this;
       axios
@@ -86,7 +94,7 @@ const app = Vue.createApp({
         });
     },
     // 沒有分頁功能
-    selectAllcategories: function () { 
+    selectAllcategories: function () {
       let vm = this;
       // 使用 Axios 進行 API 請求，獲取資料庫中的分類資料
       axios
@@ -100,9 +108,7 @@ const app = Vue.createApp({
     },
 
     selectCategoryIdByCategoryName: function (name) {
-
-      window.location.href =
-      contextPath + "/?categoriesName=" + name;
+      window.location.href = contextPath + "/?categoriesName=" + name;
     },
     findById: function (productsId) {
       let vm = this;
@@ -133,9 +139,8 @@ const app = Vue.createApp({
           vm.staffId = response.data.staffId;
           vm.createdDate = response.data.createdDate;
 
-          // 當畫面一載入時，自動顯示當前圖片          
+          // 當畫面一載入時，自動顯示當前圖片
           vm.previewUrl = contextPath + "/pic/product/" + vm.name + ".jpg"; // 設定 this.previewUrl
-
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -147,9 +152,8 @@ const app = Vue.createApp({
         .get(contextPath + "/product/" + productsId)
         .then(function (response) {
           vm.productsId = response.data.productsId;
-          vm.categoriesId = response.data.categoriesId;          
+          vm.categoriesId = response.data.categoriesId;
           vm.findCategoryNameByCategoryId(vm.categoriesId);
-
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -157,16 +161,16 @@ const app = Vue.createApp({
     },
     findCategoryNameByCategoryId: function (categoriesId) {
       let vm = this;
-      let request={
-        categoriesId:categoriesId
-      }
+      let request = {
+        categoriesId: categoriesId,
+      };
       axios
-        .post(contextPath + "/categories/findById",request)
+        .post(contextPath + "/categories/findById", request)
         .then(function (response) {
           vm.categoriesId = response.data.categories.categoriesId;
           vm.categoriesName = response.data.categories.name;
-          vm.categoriesLink=contextPath+"/?categoriesName="+vm.categoriesName   
-          
+          vm.categoriesLink =
+            contextPath + "/?categoriesName=" + vm.categoriesName;
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -181,8 +185,9 @@ const app = Vue.createApp({
     // Get the productsId from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const productsId = urlParams.get("productsId");
-    this.findById(productsId);   
-    this.findCategoryIdByProductsId(productsId)    
+    this.findById(productsId);
+    this.findCategoryIdByProductsId(productsId);
+    this.getUserID();
   },
 });
 app.mount("#app");
