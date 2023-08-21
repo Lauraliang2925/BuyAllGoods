@@ -1,5 +1,6 @@
 const searchPro = Vue.createApp({
-  components: {},
+  components: {
+  },
   data: function () {
     return {
       contextPath: contextPath,

@@ -215,11 +215,15 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           />
         </div>
 
+        
+
       <div class="py-5 d-flex  justify-content-end">
         <button class="btn btn-outline-success " @click="goBack">回到上一頁</button>
       </div>
-      
+
+
       </div>
+    
 
 
     </div>

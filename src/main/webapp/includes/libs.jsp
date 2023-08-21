@@ -38,3 +38,12 @@
 <script src="https://www.unpkg.com/vue-upload-component@3.1.8/dist/vue-upload-component.min.js"></script>
 
 <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
+
+ 
+
+<script src="https://www.unpkg.com/browse/react-magnifier@3.0.4/dist/Magnifier.js"></script>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/vue-magnifier@latest/dist/vue-magnifier.min.css"
+/>
+

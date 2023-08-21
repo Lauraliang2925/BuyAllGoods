@@ -10,9 +10,9 @@
     <title>購物車</title>
 </head>
 
-<body style="padding-top: 8%" id="app">
+<body style="padding-top: 8%" >
     <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
-        <div class="container">
+        <div class="container" id="app">
             <h2 class="text-center py-3 mt-3">付款方式</h2>
             <!-- 確認接收商品會員資料和付款方式起始 -->
             <div class="row mt-3">

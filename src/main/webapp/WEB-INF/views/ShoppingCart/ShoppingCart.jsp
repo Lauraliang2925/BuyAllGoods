@@ -10,10 +10,10 @@
                 <title>購物車</title>
             </head>
 
-            <body style="padding-top: 8%" id="app">
+            <body style="padding-top: 8%" >
                 <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
                 
-                    <div class="container">
+                    <div class="container" id="app">
                         <h2 class="text-center py-3">購物車清單</h2>
                         <div class="row mb-3">
                             <div class="col-3"></div>
