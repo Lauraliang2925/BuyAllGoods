@@ -43,11 +43,11 @@
 				</a>
 				<ul class="dropdown-menu text-small shadow"
 					aria-labelledby="dropdownUser2">
-					<li><a class="dropdown-item" href="#">會員資料</a></li>
+					<li><a class="dropdown-item" href="<c:url value='/members/readedit?membersId=${membersId}'/>">會員資料</a></li>
 					<li><a class="dropdown-item"
 						href="<c:url value='/FavoriteMember'/>">收藏清單</a></li>
-					<li v-show="!isShowAddSupplier"><a class="dropdown-item" href="<c:url value='/OrderMember'/>">訂單查詢</a></li>
-					<li v-show="isShowAddSupplier"><a class="dropdown-item" href="<c:url value='/OrderSupliers'/>">訂單查詢</a></li>	
+					<li v-show="isShowOrder"><a class="dropdown-item" href="<c:url value='/OrderMember'/>"  >訂單查詢</a></li>
+					<li v-show="isShowButton"><a class="dropdown-item" href="<c:url value='/OrderSuppliers'/>"  >訂單查詢</a></li>	
 					<li><hr class="dropdown-divider" /></li>
 					<li v-show="isShowLogin"><a class="dropdown-item"
 						href="<c:url value="goLogin"></c:url>">登入</a></li>

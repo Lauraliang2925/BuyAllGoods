@@ -13,33 +13,36 @@
 //}
 // 當登入從 localStorage 拿到 MemberId 來判斷哪位使用者
 function upadateLocalStoraageByMembersId() {
-	let storedMemberId = localStorage.getItem('MembersId')
-	if (storedMemberId === null || storedMemberId) {
-		axios.get(`http://localhost:8090/buyallgoods/api/page/shoppingcarts/count/${storedMemberId}`)
-			.then((response) => {
-				let cartCount = response.data
-				updateCartBadge(cartCount);
-				localStorage.setItem('count', cartCount);
-			})
-			.catch((error) => {
-				updateCartBadge(0)
-				localStorage.setItem('count', 0)
-			})
-	} else {
-		updateCartBadge(0)
-		localStorage.setItem('count', 0)
-	}
+  let storedMemberId = localStorage.getItem("MembersId");
+  if (storedMemberId === null || storedMemberId) {
+    axios
+      .get(
+        `http://localhost:8090/buyallgoods/api/page/shoppingcarts/count/${storedMemberId}`
+      )
+      .then((response) => {
+        let cartCount = response.data;
+        updateCartBadge(cartCount);
+        localStorage.setItem("count", cartCount);
+      })
+      .catch((error) => {
+        updateCartBadge(0);
+        localStorage.setItem("count", 0);
+      });
+  } else {
+    updateCartBadge(0);
+    localStorage.setItem("count", 0);
+  }
 }
 
 function updateCartBadge(cartCount) {
-	const cartBadge = document.getElementById('cart');
-	if (cartBadge) {
-		cartBadge.textContent = cartCount;
-		localStorage.setItem('count', cartCount);
-	}
+  const cartBadge = document.getElementById("cart");
+  if (cartBadge) {
+    cartBadge.textContent = cartCount;
+    localStorage.setItem("count", cartCount);
+  }
 }
 //upadateLocalStoraage();
-upadateLocalStoraageByMembersId()
+upadateLocalStoraageByMembersId();
 // let test = document.getElementById('cart');
 // if (test) {
 //     test.textContent = storedJsonData;
@@ -51,7 +54,7 @@ upadateLocalStoraageByMembersId()
 //         let storedJsonData = localStorage.getItem('count');
 //         let cartCount = response.data
 //         var cartBadge = document.getElementById('cart');
-//         if(storedJsonData !== cartCount || cartBadge ){ 
+//         if(storedJsonData !== cartCount || cartBadge ){
 //             localStorage.setItem('count', cartCount);
 //             cartBadge.textContent = cartCount;
 //             //getCount();
@@ -59,20 +62,17 @@ upadateLocalStoraageByMembersId()
 //     })
 // }
 
-
 //`${contextPath}api/page/shoppingcarts/count/${members_id}`
 // 'http://localhost:8080/buyallgoods/api/page/shoppingcarts/count/8'
 
-
 // let storedJsonData = localStorage.getItem('count');
-// let storedcount = parseInt(storedJsonData) || 0; 
+// let storedcount = parseInt(storedJsonData) || 0;
 
 // // 获取用于显示 count 的元素
 // let countElement = document.getElementById('cart');
 
 // // 更新 count 的显示
 // countElement.textContent = storedcount.toString();
-
 
 /**
  *
@@ -82,17 +82,15 @@ upadateLocalStoraageByMembersId()
 //   components: {},
 //   data: function () {
 //     return {
-      
 
 //     };
 //   },
 //   computed: {},
 //   methods: {
- 
-    
+
 //   },
 //   mounted: function () {
-    
+
 //   },
 // });
 
@@ -112,16 +110,16 @@ const login = Vue.createApp({
       isShowAddSupplier: false,
       isShowAddContracts: false,
 
-      roleId:null,
+      roleId: null,
       isShowAdminButton: false,
       isShowCartButton: true,
-      
+
       searchProductName: "",
     };
   },
   computed: {},
   methods: {
-      goLogin: function () {
+    goLogin: function () {
       let userName = localStorage.getItem("UserName");
       if (userName === null) {
         this.isShowLogin = true;
@@ -132,7 +130,7 @@ const login = Vue.createApp({
       }
     },
     logout: function () {
-      console.log("登出!!!!!!!!!!!!")
+      console.log("登出!!!!!!!!!!!!");
       bootbox.confirm({
         title: "再次確認！",
         message: '<div class="text-center">' + "確定要登出嗎？" + "</div>",
@@ -169,7 +167,7 @@ const login = Vue.createApp({
 
     goAddSuppliers: function () {
       let roleId = localStorage.getItem("RoleId");
-      if (roleId === '1') {
+      if (roleId === "1") {
         this.isShowAddSupplier = true;
       } else {
         this.isShowAddSupplier = false;
@@ -177,7 +175,7 @@ const login = Vue.createApp({
     },
     goAddContracts: function () {
       let roleId = localStorage.getItem("RoleId");
-      if (roleId === '1') {
+      if (roleId === "1") {
         this.isShowAddContracts = true;
       } else {
         this.isShowAddContracts = false;
@@ -185,30 +183,42 @@ const login = Vue.createApp({
     },
 
     showNavButton: function () {
-    let roleId = localStorage.getItem("RoleId");
-      if (roleId === '1' || roleId === '2') {
-        this.isShowAdminButton= true;
-        this.isShowCartButton=false;
+      let roleId = localStorage.getItem("RoleId");
+      if (roleId === "1" || roleId === "2") {
+        this.isShowAdminButton = true;
+        this.isShowCartButton = false;
       } else {
-        this.isShowAdminButton= false;
-        this.isShowCartButton=true;
+        this.isShowAdminButton = false;
+        this.isShowCartButton = true;
       }
     },
-    
+
     // 搜尋商品的按鈕，丟products Name
     searchProduct: function (name) {
       // 帶著選定的products Name跳轉至商品頁面
       window.location.href = contextPath + "/product-search?name=" + name;
     },
+
+    check: function () {
+      let roleId = localStorage.getItem("RoleId");
+      if (roleId === "2") {
+        this.isShowButton = true;
+        this.isShowOrder = false;
+      } else {
+        this.isShowButton = false;
+        this.isShowOrder = true;
+      }
+    },
   },
   mounted: function () {
     this.goLogin();
+
+    this.check();
+
     this.showNavButton();
 
     this.goAddSuppliers();
     this.goAddContracts();
-    
-
   },
 });
 
