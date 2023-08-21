@@ -21,12 +21,12 @@
 		<nav class="navbar navbar-expand-lg bg-light">
 			<div class="container-fluid">
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<form class="d-flex" role="search">
 						<input style="width: 250px" class="me-2" type="search"
-							placeholder="搜尋商品" aria-label="Search" />
-						<button class="btn btn-outline-success" type="submit">搜尋
+							placeholder="搜尋商品" aria-label="Search" v-model="searchProductName"
+							@keydown.enter="searchProduct(searchProductName)"/>
+							
+						<button class="btn btn-outline-success"  @click="searchProduct(searchProductName)" >搜尋
 						</button>
-					</form>
 				</div>
 			</div>
 		</nav>

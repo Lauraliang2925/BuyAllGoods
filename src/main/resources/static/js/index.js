@@ -7,8 +7,6 @@ const index = Vue.createApp({
       contextPath: contextPath,
       categories: [],
 
-    
-
       products: [],
       productsId: "",
       //預設為載入頁面要顯示的商品分類ID
@@ -45,10 +43,10 @@ const index = Vue.createApp({
       current: 1, //目前頁面 (from 1)
       lastPageRows: 0, //最後一頁資料數量
 
-
       membersId: "",
       productQuantities: {}, // 以商品ID为键，数量为值的对象
       quantity: "",
+
     };
   },
 
@@ -78,10 +76,10 @@ const index = Vue.createApp({
         });
     },
     addShoppingcarts: function (productsId) {
-       membersId = this.getUserID();
+      membersId = this.getUserID();
       if (membersId == null) {
         alert("請先登入");
-        return
+        return;
       }
       let quantity = this.productQuantities[productsId]; // 获取该商品的数量
       if (quantity === undefined || quantity <= 0) {
@@ -91,7 +89,7 @@ const index = Vue.createApp({
 
       let request = {
         productsId: productsId,
-        membersId : this.getUserID(),
+        membersId: this.getUserID(),
         quantity: quantity,
       };
 
@@ -104,7 +102,6 @@ const index = Vue.createApp({
           } else {
             alert(response.data.message);
           }
-       
         })
         .catch(function (error) {
           alert("資料請求失敗：" + error);
@@ -144,7 +141,6 @@ const index = Vue.createApp({
       this.findVaildByCategoriesId(this.categoriesId, page);
     },
 
- 
     //	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
     findVaildByCategoriesId: function (categoriesId, page) {
       if (page) {
@@ -172,7 +168,6 @@ const index = Vue.createApp({
           let count = response.data.count;
           vm.pages = Math.ceil(count / vm.rows);
           vm.lastPageRows = count % vm.rows;
-         
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -198,12 +193,12 @@ const index = Vue.createApp({
       window.location.href =
         contextPath + "/product-singlePage?productsId=" + productsId;
     },
+
   },
   mounted: function () {
     this.selectAllcategories();
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("categoriesName");
-
 
     if (name == null || name == "") {
       this.categoriesName = "3C";
@@ -213,7 +208,6 @@ const index = Vue.createApp({
       this.selectCategoryIdByCategoryName(name);
     }
 
-    
     this.getUserID();
   },
 });

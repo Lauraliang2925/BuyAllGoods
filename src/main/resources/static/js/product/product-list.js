@@ -23,7 +23,7 @@ const app = Vue.createApp({
       suppliersData: [],
       suppliersAllData: [],
 
-      showPaginate: true,
+      showPaginate: false,
 
       // 分頁功能所需參數
       start: 0, //起始資料index (from 0)
@@ -152,7 +152,7 @@ const app = Vue.createApp({
         axios
           .post(contextPath + "/contracts/findById", request)
           .then(function (response) {
-            console.log(response.data);
+          //   console.log(response.data);
             // console.log(response.data.categories.name);
             vm.contractsNames[contractsId] = response.data.contracts.contractNumber; // 缓存分类名称
             // 如果这个请求的结果在一次 Vue.js 的循环渲染中会多次调用，
@@ -212,6 +212,12 @@ const app = Vue.createApp({
 
     // 不使用分頁功能查所有資料，for最上方搜尋BAR
     fullData: function () {
+      //一載入頁面就先找出所有下拉式選單的資料
+      
+      this.FindAllSuppliers();
+      this.FindAllContracts();
+      this.FindAllcategories();
+      this.findByCustomQuery();
       let vm = this;
       axios
         .get(contextPath + "/product/fullData")
@@ -222,30 +228,16 @@ const app = Vue.createApp({
           console.error("資料請求失敗：", error);
         });
     },
-    // findProductsByName: function () {
-    //   let vm = this;
-    //   axios
-    //     .get(contextPath + "/product/findByProductName/" + vm.findProductsName)
-    //     .then(function (response) {
-    //       vm.productsFullData = response.data.list;
-    //       console.log(vm.productsFullData);
-    //     })
-    //     .catch(function (error) {
-    //       console.error("資料請求失敗：", error);
-    //     });
-    // },
-
+   
     // 查看廠商明細的按鈕，丟productsId
     showDetails: function (productsId) {
-      // console.log("productsId:"+productsId)
-      // const url = contextPath + "/product/" + productsId;
-      // window.location.href = url;
+  
       // 帶著選定的productsId跳轉至編輯頁面
       window.location.href =
         contextPath + "/product-edit?productsId=" + productsId;
     },
     findByCustomQuery: function () {
-      this.showPaginate = false;
+      this.showPaginate = false;        
 
       if (this.findProductsName === "") {
         this.findProductsName = null;
@@ -266,6 +258,7 @@ const app = Vue.createApp({
         .post(contextPath + "/product/findByCustomQuery", request)
         .then(function (response) {
           vm.products = response.data.list;
+          console.log("findByCustomQuery")
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -274,12 +267,9 @@ const app = Vue.createApp({
     
    
   },
-  mounted: function () {
-    this.fullData();
-    // this.selectAllproduct();
-    this.FindAllSuppliers();
-    this.FindAllContracts();
-    this.FindAllcategories();
+  mounted: function () {     
+   
+    this.fullData(); 
 
   },
 });

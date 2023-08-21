@@ -10,9 +10,9 @@
     <!-- 訂單廠商 -->
 </head>
 
-<body style="padding-top: 8%" id="app">
-    <%@ include file="/WEB-INF/views/toolbar/navbar_k.jsp" %>
-        <div class="container">
+<body style="padding-top: 8%" >
+    <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
+        <div class="container" id="app">
             <!-- 開始 -->
             <h2 class="text-center py-3 mt-3">訂單</h2>
             <!-- <div class="rowd d-flex justify-content-end">

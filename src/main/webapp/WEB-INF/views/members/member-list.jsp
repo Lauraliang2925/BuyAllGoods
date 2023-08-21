@@ -12,12 +12,12 @@
 <title>會員列表</title>
 </head>
 
-<body style="padding-top: 8%" id="app">
+<body style="padding-top: 8%" >
 
 
 	<%@ include file="/WEB-INF/views/toolbar/navbar.jsp"%>
 
-	<div class="container">
+	<div class="container" id="app">
 		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~table上方條件輸入框~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<div>
 			<div class="row">

@@ -197,15 +197,19 @@ public class ProductController {
 //		return responseJson;
 //	}
 
-	@GetMapping("/product/findByProductName/{name}")
+//	使用商品名稱尋找"販售中"商品(模糊搜尋)以及商品數量
+	@GetMapping("/product/findByVaildProductName/{name}")
 	public Map<String, Object> findByProductName(@PathVariable(value = "name") String name) {
 
 		Map<String, Object> responseJson = new HashMap<>();
-		List<Product> list = productService.findByProductName(name);
+		List<Product> list = productService.findByVaildProductName(name);
+		long countByProductName = productService.findCountByVaildProductName(name);
 		responseJson.put("list", list);
+		responseJson.put("count", countByProductName);
 		return responseJson;
 	}
 
+//修改商品
 	@PutMapping("/product/update/{id}")
 	public Map<String, Object> updateProduct(@PathVariable(value = "id") Integer id, @RequestBody Product product) {
 
@@ -303,11 +307,5 @@ public class ProductController {
 		}
 		return responseJson;
 	}
-
-	// 拋一份商品的資料，找出商品後終止商品--for商品明細的下架商品按鈕
-//	@PostMapping("/product/finishProductDateByPId")
-//	public String finishProductDateByPId(@RequestBody Product product) {
-//		return productService.finishProductByPId(product);
-//	}
 
 }

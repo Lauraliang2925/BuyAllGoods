@@ -92,6 +92,11 @@ public class PageController {
 		return "/product/product-singlePage";
 	}
 	
+	@GetMapping("/product-search")
+	public String productSearch() {
+		return "/product/product-search";
+	}
+	
 	//正融-----開始
 	
 	// 任凱 --- 開始

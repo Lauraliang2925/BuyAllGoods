@@ -93,6 +93,15 @@ public class ProductService {
 		return productRepository.findVaildCountByCategoriesId(categoriesId);
 	}
 
+// 使用商品名稱尋找"販售中"商品(模糊搜尋)
+	public List<Product> findByVaildProductName(String name) {
+		return productRepository.findByVaildProductName(name);
+	}
+	
+// 使用商品名稱尋找"販售中"商品(模糊搜尋)所有商品數量
+	public long findCountByVaildProductName(String name) {
+		return productRepository.findCountByVaildProductName(name);
+	}
 	
 	public Product insert(Product product) {
 		if (product.getName() != null) {

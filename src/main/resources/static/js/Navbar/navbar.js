@@ -115,6 +115,8 @@ const login = Vue.createApp({
       roleId:null,
       isShowAdminButton: false,
       isShowCartButton: true,
+      
+      searchProductName: "",
     };
   },
   computed: {},
@@ -191,7 +193,13 @@ const login = Vue.createApp({
         this.isShowAdminButton= false;
         this.isShowCartButton=true;
       }
-    }
+    },
+    
+    // 搜尋商品的按鈕，丟products Name
+    searchProduct: function (name) {
+      // 帶著選定的products Name跳轉至商品頁面
+      window.location.href = contextPath + "/product-search?name=" + name;
+    },
   },
   mounted: function () {
     this.goLogin();
