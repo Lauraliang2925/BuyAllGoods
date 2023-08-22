@@ -1,3 +1,4 @@
+
 const index = Vue.createApp({
   components: {
     paginate: VuejsPaginateNext,
@@ -46,7 +47,6 @@ const index = Vue.createApp({
       membersId: "",
       productQuantities: {}, // 以商品ID为键，数量为值的对象
       quantity: "",
-
     };
   },
 
@@ -165,6 +165,15 @@ const index = Vue.createApp({
         .then(function (response) {
           vm.products = response;
           vm.products = response.data.list;
+    
+          // Update the discount values based on discountEndDate
+          let currentDate = new Date();
+          for (let product of vm.products) {
+            if (new Date(product.discountEndDate) < currentDate) {
+              product.discount = 1;
+            }
+          }
+
           let count = response.data.count;
           vm.pages = Math.ceil(count / vm.rows);
           vm.lastPageRows = count % vm.rows;
@@ -193,7 +202,6 @@ const index = Vue.createApp({
       window.location.href =
         contextPath + "/product-singlePage?productsId=" + productsId;
     },
-
   },
   mounted: function () {
     this.selectAllcategories();

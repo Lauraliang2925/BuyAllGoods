@@ -57,18 +57,10 @@
 			</div>
 			<!-- 會員登入/登出/個人資訊結束 -->
 
+
+
 			<!-- 購物車圖示起始 (顯示給:一般會員)-->
-			<!-- 			<div class="container"> -->
-			<!-- 				<button type="button" class="btn btn-light position-relative btn-lg"> -->
-			<!-- 					<i class="bi bi-cart3"></i> -->
-			<!-- 					              購物車ICON -->
-			<!-- 					<span -->
-			<!-- 						class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">5 -->
-			<!-- 						<span class="visually-hidden">unread messages</span> -->
-			<!-- 					</span> -->
-			<!-- 				</button> -->
-			<!-- 			</div> -->
-			<div class="container" v-if="isShowCartButton">
+					<div class="container" v-if="isShowCartButton">
               <a href="<c:url value='/ShoppingCartMember'/>">
                 <button type="button" class="btn btn-light position-relative btn-lg">
                   <i class="bi bi-cart3"></i>
@@ -99,16 +91,16 @@
 								href="<c:url value='/categories-edit'/>">編輯分類</a></li>
 							<li><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item"
-								href="<c:url value="/showSupplierPage"></c:url>">檢視廠商</a></li>
-							<li v-show="isShowAddSupplier"><a class="dropdown-item"
-								href="<c:url value="/showAddSupplierPage"></c:url>">新增廠商</a></li>
+								href="<c:url value='/showSupplierPage'></c:url>">檢視廠商</a></li>
+							<li v-if="isShowAddSupplier"><a class="dropdown-item"
+								href="<c:url value='/showAddSupplierPage'></c:url>">新增廠商</a></li>
 							<li><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item"
-								href="<c:url value="/showSupplierPage"></c:url>">檢視合約</a></li>
-							<li v-show="isShowAddContracts"><a class="dropdown-item"
-								href="<c:url value="/showAddContractsPage"></c:url>">新增合約</a></li>
+								href="<c:url value='/showSupplierPage'></c:url>">檢視合約</a></li>
+							<li v-if="isShowAddContracts"><a class="dropdown-item"
+								href="<c:url value='/showAddContractsPage'></c:url>">新增合約</a></li>
 							<li><hr class="dropdown-divider" /></li>
-							<li><a class="dropdown-item" href="<c:url value="/members/list"></c:url>">會員列表</a></li>							
+							<li><a class="dropdown-item" href="<c:url value='/members/list'></c:url>">會員列表</a></li>							
 						</ul></li>
 				</ul>
 			</div>

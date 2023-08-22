@@ -35,6 +35,8 @@ const app = Vue.createApp({
 
       membersId: "",
       quantity: "",
+
+      isShowDiscountDate:true
     };
   },
   computed: {},
@@ -138,6 +140,15 @@ const app = Vue.createApp({
           vm.discount = response.data.discount;
           vm.staffId = response.data.staffId;
           vm.createdDate = response.data.createdDate;
+
+             
+          // Update the discount values based on discountEndDate
+          let currentDate = new Date();         
+            if (new Date(vm.discountEndDate) < currentDate) {
+              vm.discount = 1;
+              vm.isShowDiscountDate=false
+            }
+         
 
           // 當畫面一載入時，自動顯示當前圖片
           vm.previewUrl = contextPath + "/pic/product/" + vm.name + ".jpg"; // 設定 this.previewUrl

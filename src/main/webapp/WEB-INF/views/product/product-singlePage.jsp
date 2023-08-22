@@ -85,7 +85,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
           </div>
           <div class="container">商品編號: {{productsId}}</div>
           <br />
-          <div class="container fs-5">優惠期限: {{discountStartDate}} ~ {{discountEndDate}}</div>
+          <div class="container fs-5" v-if="isShowDiscountDate">優惠期限: {{discountStartDate}} ~ {{discountEndDate}}</div>
           <br />
           <!-- 商品敘述/注意事項起始 -->
           <div class="bd-example-snippet bd-code-snippet">
