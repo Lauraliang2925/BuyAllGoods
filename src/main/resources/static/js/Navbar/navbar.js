@@ -11,11 +11,12 @@
 //			})
 //	}
 //}
+
 // 當登入從 localStorage 拿到 MemberId 來判斷哪位使用者
 function upadateLocalStoraageByMembersId() {
 	let storedMemberId = localStorage.getItem('MembersId')
 	if (storedMemberId === null || storedMemberId) {
-		axios.get(`http://localhost:8090/buyallgoods/api/page/shoppingcarts/count/${storedMemberId}`)
+		axios.get(contextPathNav+`/api/page/shoppingcarts/count/${storedMemberId}`)
 			.then((response) => {
 				let cartCount = response.data
 				updateCartBadge(cartCount);
@@ -138,24 +139,7 @@ const login = Vue.createApp({
 		  },
 		});
 	  },
-  
-	  goAddSuppliers: function () {
-		let roleId = localStorage.getItem("RoleId");
-		if (roleId === "1") {
-		  this.isShowAddSupplier = true;
-		} else {
-		  this.isShowAddSupplier = false;
-		}
-	  },
-	  goAddContracts: function () {
-		let roleId = localStorage.getItem("RoleId");
-		if (roleId === "1") {
-		  this.isShowAddContracts = true;
-		} else {
-		  this.isShowAddContracts = false;
-		}
-	  },
-  
+	  
 	  showNavButton: function () {
 		let roleId = localStorage.getItem("RoleId");
 		if (roleId === "1" || roleId === "2") {
@@ -167,21 +151,27 @@ const login = Vue.createApp({
 		}
 	  },
   
-	  // 搜尋商品的按鈕，丟products Name
-	  searchProduct: function (name) {
-		// 帶著選定的products Name跳轉至商品頁面
-		window.location.href = contextPath + "/product-search?name=" + name;
+	  goShowManagerButton: function () {
+		let roleId = localStorage.getItem("RoleId");
+		if (roleId === "1") {
+		  this.isShowManagerButton = true;
+		} else {
+		  this.isShowManagerButton = false;
+		}
 	  },
   
+  
 	  check: function () {
-		let roleId = localStorage.getItem("RoleId");
-		if (roleId === "2") {
-		  this.isShowButton = true;
-		  this.isShowOrder = false;
-		} else {
-		  this.isShowButton = false;
-		  this.isShowOrder = true;
+		let roleIdStorage = localStorage.getItem("RoleId");
+		if(roleIdStorage === '1' || roleIdStorage === '2' || roleIdStorage === '3'){
+			this.roleId = roleIdStorage
 		}
+	  },
+
+	   // 搜尋商品的按鈕，丟products Name
+	   searchProduct: function (name) {
+		// 帶著選定的products Name跳轉至商品頁面
+		window.location.href = contextPath + "/product-search?name=" + name;
 	  },
 	},
 	mounted: function () {
@@ -191,8 +181,7 @@ const login = Vue.createApp({
   
 	  this.showNavButton();
   
-	  this.goAddSuppliers();
-	  this.goAddContracts();
+	  this.goShowManagerButton();
 	},
   });
   

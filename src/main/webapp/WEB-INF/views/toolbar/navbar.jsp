@@ -42,31 +42,37 @@
 				</a>
 				<ul class="dropdown-menu text-small shadow"
 					aria-labelledby="dropdownUser2">
-					<li><a class="dropdown-item" href="<c:url value='/members/readedit?membersId=${membersId}'/>">會員資料</a></li>
-					<li><a class="dropdown-item"
-						href="<c:url value='/FavoriteMember'/>">收藏清單</a></li>
-					<li v-show="isShowOrder"><a class="dropdown-item" href="<c:url value='/OrderMember'/>"  >訂單查詢</a></li>
-					<li v-show="isShowButton"><a class="dropdown-item" href="<c:url value='/OrderSuppliers'/>"  >訂單查詢</a></li>	
-					<li><hr class="dropdown-divider" /></li>
-					<li v-show="isShowLogin"><a class="dropdown-item"
-						href="<c:url value="goLogin"></c:url>">登入</a></li>
-					<li v-show="isShowLogout"><button class="dropdown-item"
-							@click="logout">登出</button></li>
+					<li v-if="roleId === '1' || roleId === '2' || roleId === '3'">
+						<a class="dropdown-item" href="<c:url value='/members/readedit?membersId=${membersId}'/>">會員資料</a>
+					</li>
+					<li v-if="roleId === '3'">
+						<a class="dropdown-item"
+						href="<c:url value='/FavoriteMember'/>">收藏清單</a>
+					</li>
+					<li v-if="roleId === '3' || roleId === '1'">
+						<a class="dropdown-item" href="<c:url value='/OrderMember'/>"  >訂單查詢</a>
+					</li>
+					<li v-if="roleId === '2'">
+						<a class="dropdown-item" href="<c:url value='/OrderSuppliers'/>"  >訂單查詢</a>
+					</li>	
+					<li v-if="roleId === '1' || roleId === '2' || roleId === '3'">
+						<hr class="dropdown-divider" />
+					</li>
+					<li v-show="isShowLogin">
+						<a class="dropdown-item"
+						href="<c:url value="goLogin"></c:url>">登入</a>
+					</li>
+					<li v-show="isShowLogout">
+						<button class="dropdown-item"
+							@click="logout">登出</button>
+						</li>
 				</ul>
 			</div>
 			<!-- 會員登入/登出/個人資訊結束 -->
 
+
 			<!-- 購物車圖示起始 (顯示給:一般會員)-->
-			<!-- 			<div class="container"> -->
-			<!-- 				<button type="button" class="btn btn-light position-relative btn-lg"> -->
-			<!-- 					<i class="bi bi-cart3"></i> -->
-			<!-- 					              購物車ICON -->
-			<!-- 					<span -->
-			<!-- 						class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">5 -->
-			<!-- 						<span class="visually-hidden">unread messages</span> -->
-			<!-- 					</span> -->
-			<!-- 				</button> -->
-			<!-- 			</div> -->
+		
 			<div class="container" v-if="isShowCartButton">
               <a href="<c:url value='/ShoppingCartMember'/>">
                 <button type="button" class="btn btn-light position-relative btn-lg">
@@ -91,23 +97,23 @@
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item"
 								href="<c:url value='/product-list'/>">檢視商品</a></li>
-							<li><a class="dropdown-item"
+							<li v-if="isShowManagerButton"><a class="dropdown-item"
 								href="<c:url value='/product-add'/>">新增商品</a></li>
 							<li><hr class="dropdown-divider" /></li>
-							<li><a class="dropdown-item"
+							<li v-if="isShowManagerButton"><a class="dropdown-item"
 								href="<c:url value='/categories-edit'/>">編輯分類</a></li>
-							<li><hr class="dropdown-divider" /></li>
+							<li v-if="isShowManagerButton"><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item"
 								href="<c:url value='/showSupplierPage'></c:url>">檢視廠商</a></li>
-							<li v-show="isShowAddSupplier"><a class="dropdown-item"
+							<li v-if="isShowManagerButton"><a class="dropdown-item"
 								href="<c:url value='/showAddSupplierPage'></c:url>">新增廠商</a></li>
 							<li><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item"
 								href="<c:url value='/showSupplierPage'></c:url>">檢視合約</a></li>
-							<li v-show="isShowAddContracts"><a class="dropdown-item"
+							<li v-if="isShowManagerButton"><a class="dropdown-item"
 								href="<c:url value='/showAddContractsPage'></c:url>">新增合約</a></li>
-							<li><hr class="dropdown-divider" /></li>
-							<li><a class="dropdown-item" href="<c:url value='/members/list'></c:url>">會員列表</a></li>							
+							<li v-if="isShowManagerButton"><hr class="dropdown-divider" /></li>
+							<li v-if="isShowManagerButton"><a class="dropdown-item" href="<c:url value='/members/list'></c:url>">會員列表</a></li>							
 						</ul></li>
 				</ul>
 			</div>
@@ -116,7 +122,10 @@
 	</header>
 	<!-- 上方工具列結束 -->
 </div>
-
+    <script type="text/javascript">
+      const contextPathNav = "${pageContext.request.contextPath}";
+      type = "text/javascript";
+    </script>
 
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/Navbar/navbar.js"></script>

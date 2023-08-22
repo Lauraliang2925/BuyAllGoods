@@ -47,11 +47,9 @@
 		<div class="col-auto text-center row">
 			<p id="" class="form-text">
 				※若選單中無此廠商對應之會員帳號，請先幫廠商新增會員資料 ➜➜➜ <a
-					href="<c:url value="/showAddSupplierPage"></c:url>">前往新增</a>
+					href="<c:url value="/members/addmember"></c:url>">前往新增</a>
 			</p>
 		</div>
-
-
 
 
 		<!--欄位1-->
