@@ -39,3 +39,9 @@
 
 <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
 
+<script src="https://unpkg.com/vue-star-rating@next/dist/VueStarRating.umd.min.js"></script>
+
+
+
+
+

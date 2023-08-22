@@ -242,10 +242,23 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               ></paginate>
               <!-- 我是分頁 -->
             </div>
+
+
+            <star-rating v-bind:increment="0.5"
+                   v-bind:max-rating="5"
+                   inactive-color="#000"
+                   active-color="orange"
+                   v-bind:star-size="30">
+      </star-rating>
+
           </div>
           <!-- 中間商品內容結束 -->
         </div>
       </div>
+
+
+
+
     </div>
 
     <%@ include file="/WEB-INF/views/toolbar/footer.jsp" %>
