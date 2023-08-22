@@ -14,7 +14,7 @@
       <body style="padding-top: 8%" >
         <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
           <div class="container" id="app">
-            <h2 class="text-center py-3 mt-3">收藏清單</h2>
+            <h2 class="text-center py-3 mt-3" >收藏清單</h2>
             <div class="row mb-3">
               <div class="col-3"></div>
               <div class="col-6"></div>
@@ -33,7 +33,7 @@
                 </tr>
               </thead>
               <tbody class="table-light">
-                <tr v-for="item in favorite" :key="item.favorite_list_id">
+                <tr v-for="item in favorite">
                   <td>
                     <!-- <img
                       src='https://memeprod.ap-south-1.linodeobjects.com/user-template-thumbnail/d5dac084aa2905e2014f90f621dd5032.jpg'> -->

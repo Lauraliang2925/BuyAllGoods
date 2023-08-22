@@ -32,10 +32,13 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 type="text"
                 class="form-control"
                 aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default"
-                @blur="findByCustomQuery()"
+                aria-describedby="inputGroup-sizing-default"                
                 v-model="findProductsName"
+                @keydown.enter="findByCustomQuery()"
               />
+              <button class="btn btn-outline-secondary" type="button" @click="findByCustomQuery()">
+                <i class="bi bi-search"></i>
+            </button>
             </div>
           </div>
 
@@ -51,7 +54,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 v-model="findSuppliersId"
                 @change="findByCustomQuery()"
               >
-                <option selected value="">[請選擇廠商名稱]</option>
+                <option selected value="null">[請選擇廠商名稱]</option>
                 <!--~~~~~~~~~~~~~~~~~~用迴圈~~~~~~~~~~~~~~~~~~-->
                 <option
                   v-for="supplier in suppliersFullData"
@@ -77,7 +80,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 v-model="findContractsId"
                 @change="findByCustomQuery()"
               >
-                <option selected value="">[請選擇合約編號]</option>
+                <option selected value="null">[請選擇合約編號]</option>
                 <!--~~~~~~~~~~~~~~~~~~用迴圈~~~~~~~~~~~~~~~~~~-->
                 <option
                   v-for="contract in contractFullData"

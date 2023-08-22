@@ -40,6 +40,8 @@ const app = Vue.createApp({
             contextPath: contextPath,
             orderId: "",
             membersId: "",
+            MemberId: localStorage.getItem('MembersId'),
+            RoleId: localStorage.getItem('RoleId'),
 
 
             // // 分頁功能所需參數
@@ -81,29 +83,44 @@ const app = Vue.createApp({
             //     vm.current = 1;
             // }
 
-            axios.post(contextPath + '/api/page/orders/members/' + vm.tt_number)
-                .then((response) => {
+            if(vm.MemberId != null && vm.RoleId === '3'){
+                // axios.post(contextPath + '/api/page/orders/members/' + vm.tt_number)
+                axios.post(contextPath + '/api/page/orders/members/' + vm.MemberId)
+                    .then((response) => {
+                        // console.log(response.data)
+                        vm.OrdersWhereMemberData = response.data
+                        vm.backupOrdersData = response.data
+                        vm.order_id = response.data.order_id
+                        vm.members_id = response.data.members_id
+                        vm.total_amount = response.data.total_amount
+                        vm.order_notes = response.data.order_notes
+                        vm.order_status = response.data.order_status
+                        // console.log(response.data)
+                        // const dateTimeString = response.data.placed
+                        // vm.placed = vm.formatDate(dateTimeString);
+                        vm.OrdersWhereMemberData.forEach(order => {
+                            order.placed = vm.formatDate(order.placed);
+                        });
+                        // vm.placed = order.placed
+                        // console.log(vm.placed)
+                        // console.log("heh",order.placed)
+                    })
+                    .catch((error) => {
+                        console.error(error.message)
+                    })
+            }else if(vm.RoleId === '1'){
+                axios.get(contextPath + '/api/page/orders/find').then((response)=>{
                     // console.log(response.data)
                     vm.OrdersWhereMemberData = response.data
                     vm.backupOrdersData = response.data
-                    vm.order_id = response.data.order_id
-                    vm.members_id = response.data.members_id
-                    vm.total_amount = response.data.total_amount
-                    vm.order_notes = response.data.order_notes
-                    vm.order_status = response.data.order_status
-                    // console.log(response.data)
-                    // const dateTimeString = response.data.placed
-                    // vm.placed = vm.formatDate(dateTimeString);
                     vm.OrdersWhereMemberData.forEach(order => {
                         order.placed = vm.formatDate(order.placed);
                     });
-                    // vm.placed = order.placed
-                    // console.log(vm.placed)
-                    // console.log("heh",order.placed)
                 })
-                .catch((error) => {
-                    console.error(error.message)
+                .catch((error)=>{
+                    console.error("error:",error.message)
                 })
+            }
         },
         formatDate(dateTimeString) {
             // if (!dateTimeString) {
@@ -121,9 +138,8 @@ const app = Vue.createApp({
             vm.isShowTable = true
             vm.isShowCard = false
 
-
             if (vm.selectedStatus !== '所有訂單') {
-                vm.OrdersWhereMemberData = vm.backupOrdersData.filter(item => item.order_status === vm.selectedStatus);
+                vm.OrdersWhereMemberData = vm.backupOrdersData.filter(item => item.orderStatus === vm.selectedStatus);
                 if (vm.OrdersWhereMemberData.length === 0) {
                     vm.isShowTable = false
                 }
@@ -131,12 +147,12 @@ const app = Vue.createApp({
                 vm.OrdersWhereMemberData = vm.backupOrdersData
             }
         },
-        selectOrderId(order_id) {
+        selectOrderId(orderId) {
             let vm = this
             vm.isShowTable = false
             vm.isShowCard = true
 
-            axios.post(contextPath + '/api/page/orders/' + order_id)
+            axios.post(contextPath + '/api/page/orders/' + orderId)
                 .then((response) => {
                     // console.log(response.data)
                     vm.members_id = response.data.membersId
@@ -150,7 +166,7 @@ const app = Vue.createApp({
         },
         searchOrderNotes() {
             let searchInputValue = this.searchInput.trim();
-            console.log(searchInputValue)
+            // console.log(searchInputValue)
             let vm = this
             vm.isShowTable = true
             vm.isShowCard = false
@@ -171,7 +187,7 @@ const app = Vue.createApp({
 
             axios.post(contextPath + '/api/page/orders/searchByNotes2/' + searchInputValue)
                 .then((response) => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     vm.searchResult = response.data
                     vm.searchResult.forEach(order => {
                         order.placed = vm.formatDate(order.placed);
@@ -202,22 +218,30 @@ const app = Vue.createApp({
                 },
                 callback: (result) => {
                     if (result) {
-                        axios.put(contextPath + '/api/page/orders/modifyByStatusReturn/' + this.order_id)
+                        axios.put(contextPath + '/api/page/orders/modifyByStatusReturn/' + vm.order_id)
                             .then((response) => {
-                                bootbox.alert({
-                                    message: `<div class="text-center">退貨成功</div>`,
-                                    button: {
-                                        ok: {
-                                            label: '關閉',
-                                            className: 'btn btn-success'
-                                        }
-                                    }
-                                })
+                                const notyf = new Notyf({
+                                    ripple : false,
+                                    position: {
+                                        x: 'right',
+                                        y: 'top',
+                                      },
+                                });
+                                notyf.success('退貨成功');
+                                
                                 vm.disableButton = true
                                 vm.getInnerJoinProductAndOrderByMemberIdAndOrderId()
                             })
                             .catch((error) => {
-                                console.error('訂單退貨失敗:', error)
+                                const notyf = new Notyf({
+                                    ripple : false,
+                                    position: {
+                                        x: 'right',
+                                        y: 'top',
+                                      },
+                                });
+                                notyf.error('訂單退貨失敗');
+                                // console.error('訂單退貨失敗:', error)
                                 vm.disableButton = false
                             })
                     }
@@ -241,22 +265,30 @@ const app = Vue.createApp({
                 callback: (result) => {
                     if (result) {
                         vm.cancel = true
-                        axios.put(contextPath + '/api/page/orders/modifyByStatusCancel/' + this.order_id)
+                        axios.put(contextPath + '/api/page/orders/modifyByStatusCancel/' + vm.order_id)
                             .then((response) => {
-                                bootbox.alert({
-                                    message: `<div class="text-center">取消訂單成功</div>`,
-                                    button: {
-                                        ok: {
-                                            label: '關閉',
-                                            className: 'btn btn-success'
-                                        }
-                                    }
-                                })
+                                const notyf = new Notyf({
+                                    ripple : false,
+                                    position: {
+                                        x: 'right',
+                                        y: 'top',
+                                      },
+                                });
+                                notyf.success('取消訂單成功');
+                                
                                 vm.cancel = true
                                 vm.getInnerJoinProductAndOrderByMemberIdAndOrderId()
                             })
                             .catch((error) => {
-                                console.error('取消訂單失敗:', error)
+                                const notyf = new Notyf({
+                                    ripple : false,
+                                    position: {
+                                        x: 'right',
+                                        y: 'top',
+                                      },
+                                });
+                                notyf.error('取消訂單失敗');
+                                // console.error('取消訂單失敗:', error)
                                 vm.cancel = false
                             })
                     }
@@ -267,8 +299,10 @@ const app = Vue.createApp({
             let vm = this
             vm.isShowTable = false
             vm.isShowCard = true
+            vm.disableButton = false
+            vm.cancel = false
 
-            axios.post(contextPath + '/api/page/orders/detail/findInnerJoin/' + this.members_id + '/' + this.order_id)
+            axios.post(contextPath + '/api/page/orders/detail/findInnerJoin/' + vm.members_id + '/' + vm.order_id)
                 .then((response) => {
                     // console.log(response.data)
                     // console.log(this.getInnerJoinData)
@@ -281,7 +315,7 @@ const app = Vue.createApp({
                     for (const item of vm.getInnerJoinData) {
                         const order_status = item.order_status;
 
-                        if (order_status === '取消' || order_status === '申請退貨中') {
+                        if (order_status === '取消' || order_status === '退貨完成' || order_status === '申請退貨中') {
                             vm.disableButton = true
                             vm.cancel = true
                         }

@@ -9,9 +9,9 @@
     <title>訂單細節</title>
 </head>
 
-<body style="padding-top: 8%" >
+<body style="padding-top: 8%" id="app">
 <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
-<div class="container" id="app">
+<div class="container">
     <!-- 開始 -->
     <h2 class="text-center py-3 mt-3">訂單細節</h2>
     <div class="row mb-3">

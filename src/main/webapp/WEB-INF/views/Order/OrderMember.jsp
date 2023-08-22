@@ -133,24 +133,24 @@
                             </thead>
                             <tbody>
                                 <!-- 一般 -->
-                                <tr class="align-middle" v-for="item in OrdersWhereMemberData" :key="item.order_id"
+                                <tr class="align-middle" v-for="item in OrdersWhereMemberData" :key="item.orderId"
                                     v-show="noSearchShowAll">
                                     <td></td>
                                     <td>
-                                        <p hidden>{{item.order_id}}</p>
-                                        {{item.order_notes}}
+                                        <p hidden>{{item.orderId}}</p>
+                                        {{item.orderNotes}}
                                     </td>
-                                    <td><i class="bi bi-currency-dollar"></i> {{item.total_amount}}</td>
-                                    <td class="text-success">{{item.order_status}}</td>
+                                    <td><i class="bi bi-currency-dollar"></i> {{item.totalAmount}}</td>
+                                    <td class="text-success">{{item.orderStatus}}</td>
                                     <td>{{item.placed}}</td>
                                     <td><button type="button" class="btn btn-outline-secondary btn-lg"
-                                            @click="selectOrderId(item.order_id)"><i class="bi bi-search"></i>
+                                            @click="selectOrderId(item.orderId)"><i class="bi bi-search"></i>
                                             查看</button>
                                     </td>
                                 </tr>
                                 <!-- 一般 -->
                                 <!-- 搜尋 -->
-                                <tr class="align-middle" v-for="item in searchResult" :key="item.order_id"
+                                <tr class="align-middle" v-for="item in searchResult" :key="item.orderId"
                                     v-show="searchByNotes">
                                     <td></td>
                                     <td>
@@ -161,24 +161,24 @@
                                     <td class="text-success">{{item.order_status}}</td>
                                     <td>{{item.placed}}</td>
                                     <td><button type="button" class="btn btn-outline-secondary btn-lg"
-                                            @click="selectOrderId(item.order_id)"><i class="bi bi-search"></i>
+                                            @click="selectOrderId(item.orderId)"><i class="bi bi-search"></i>
                                             查看</button>
                                     </td>
                                 </tr>
                                 <!-- 搜尋 -->
                                 <!-- 時間 -->
-                                <tr class="align-middle" v-for="item in filteredOrders" :key="item.order_id"
+                                <tr class="align-middle" v-for="item in filteredOrders" :key="item.orderId"
                                     v-show="searchTime">
                                     <td></td>
                                     <td>
-                                        <p hidden>{{item.order_id}}</p>
-                                        {{item.order_notes}}
+                                        <p hidden>{{item.orderId}}</p>
+                                        {{item.orderNotes}}
                                     </td>
-                                    <td><i class="bi bi-currency-dollar"></i> {{item.total_amount}}</td>
-                                    <td class="text-success">{{item.order_status}}</td>
+                                    <td><i class="bi bi-currency-dollar"></i> {{item.totalAmount}}</td>
+                                    <td class="text-success">{{item.orderStatus}}</td>
                                     <td class="text-primary">{{item.placed}}</td>
                                     <td><button type="button" class="btn btn-outline-secondary btn-lg"
-                                            @click="selectOrderId(item.order_id)"><i class="bi bi-search"></i>
+                                            @click="selectOrderId(item.orderId)"><i class="bi bi-search"></i>
                                             查看</button>
                                     </td>
                                 </tr>

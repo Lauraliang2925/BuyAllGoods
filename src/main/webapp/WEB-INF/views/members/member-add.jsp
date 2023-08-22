@@ -12,9 +12,9 @@
 <meta charset="UTF-8">
 <title>會員資料新增</title>
 </head>
-<body style="padding-top: 8%" >
+<body style="padding-top: 8%" id="app">
 	<%@ include file="/WEB-INF/views/toolbar/navbar.jsp"%>
-	<div class="container" id="app">
+	<div class="container">
 		<h2 class="text-center py-3">會員資料新增</h2>
 		<div class="album py-5 bg-light container">
 				

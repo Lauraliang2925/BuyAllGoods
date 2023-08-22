@@ -139,6 +139,15 @@ public class MembersService {
 		return findAllPage;		
 	}
 	
-	
+	// 任凱 開始
+	public Members findByMembersIdk(Integer membersId) {
+		Optional<Members> optional = membersRepository.findById(membersId);
+		if(optional.isPresent()) {
+			System.out.println("heheheh");
+			return optional.get();
+		}
+		return null;
+	}
+	// 任凱 結束
 	
 }

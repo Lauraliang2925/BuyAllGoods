@@ -12,7 +12,7 @@
 <meta charset="UTF-8">
 <title>會員資料檢視/修改</title>
 </head>
-<body style="padding-top: 8%" >
+<body style="padding-top: 8%">
 	<%@ include file="/WEB-INF/views/toolbar/navbar.jsp"%>
 	<div class="container" id="app">
 		<h2 class="text-center py-3">會員資料檢視/修改</h2>
@@ -168,7 +168,7 @@
 					</div>
 
 
-					<div class="row">
+					<div class="row" v-show="showMemberRow">
 						<div class="col">
 							<div class="input-group mb-3">
 								<span class="input-group-text" id="roleSid">角色</span> 
@@ -211,6 +211,7 @@
 	<script type="text/javascript">
 		const contextPath = "${pageContext.request.contextPath}";
 		const membersId = "${membersId}";
+		const roleId = "${roleId}";
 		let imgSrc = contextPath + "${onemember.photoPath}";
 	</script>
 	<script type="text/javascript"

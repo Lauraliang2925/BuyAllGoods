@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ispan.buyallgoods.model.ContractsBean;
+import com.ispan.buyallgoods.model.Product;
 import com.ispan.buyallgoods.model.SuppliersBean;
 import com.ispan.buyallgoods.repository.ContractsRepository;
 
@@ -17,7 +18,7 @@ public class ContractsService {
 
 	@Autowired
 	private ContractsRepository cRepo;
-	
+
 	// 查詢全部(create by Rong)
 	public List<ContractsBean> findAll() {
 		List<ContractsBean> findAll = cRepo.findAll();

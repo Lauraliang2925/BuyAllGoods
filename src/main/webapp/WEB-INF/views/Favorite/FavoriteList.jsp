@@ -11,9 +11,9 @@
         <title>收藏清單</title>
       </head>
 
-      <body style="padding-top: 8%" >
+      <body style="padding-top: 8%" id="app">
         <%@ include file="/WEB-INF/views/toolbar/navbar.jsp" %>
-          <div class="container" id="app">
+          <div class="container">
             <h2 class="text-center py-3">收藏清單</h2>
             <div class="row mb-3">
               <div class="col-3"></div>

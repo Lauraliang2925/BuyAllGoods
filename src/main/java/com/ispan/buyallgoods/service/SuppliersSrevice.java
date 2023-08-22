@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ispan.buyallgoods.model.Members;
 import com.ispan.buyallgoods.model.SuppliersBean;
 import com.ispan.buyallgoods.repository.SuppliersRepository;
 
@@ -112,7 +113,7 @@ public class SuppliersSrevice {
 		return scView;
 	}
 	
-	//測試分頁
+	//分頁--全部
 	public List<Object> findAllSCToViewPage(int offset) {
 		List<Object> scViewPage = sRepo.getSCViewWithPagination(offset);
 		if (scViewPage == null) {
@@ -122,9 +123,28 @@ public class SuppliersSrevice {
 		return scViewPage;
 	}
 	
+	//分頁--BY廠商ID
+		public List<Object> findSomeAllSCToViewPage(int suppliersId,int offset) {
+			List<Object> scViewPage = sRepo.getSCViewWithPaginationWhere(suppliersId,offset);
+			if (scViewPage == null) {
+				return null;
+			}
+
+			return scViewPage;
+		}
+	
 	//計算資料量
 	public Integer countAllSC() {
 		return sRepo.getSCCount();
+	}
+	
+	//用會員代號找廠商
+	public SuppliersBean findSByMId(Members members) {
+		SuppliersBean findByMembersId = sRepo.findByMembersId(members.getMembersId());
+		if(findByMembersId==null) {
+			return null;
+		}
+		return findByMembersId;
 	}
 	
 	

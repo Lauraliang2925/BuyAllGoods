@@ -3,7 +3,7 @@ const app = Vue.createApp({
         return{
             orderDetailBySuppliers: [],
             backupData: [],
-            suppliers_id: 1,
+            suppliers_id: 3,
             order_status: "",
             track_shipment: "",
             estimated_arrival: "",
@@ -30,15 +30,29 @@ const app = Vue.createApp({
     methods:{
         findAllOrderDetailBySuppliers(){
             let vm = this
-            axios.post(contextPath + '/api/page/orders/detail/dataBySuppliersId/' + vm.suppliers_id)
+            let localStorageMembersId = localStorage.getItem("MembersId");
+            let request={
+                membersId : localStorageMembersId
+            }
+            axios.post(contextPath + '/suppliers/findSupplier',request)
             .then((response)=>{
-                console.log(response.data.list)
-                vm.orderDetailBySuppliers = response.data.list
-                vm.backupData = response.data.list
+                console.log(response.data)
+                let suppliersId = response.data.suppliersId
+                console.log(suppliersId)
+                // console.log(vm.suppliers_id)
 
-                vm.orderDetailBySuppliers.forEach(order => {
-                    order.placed = vm.formatDate(order.placed)
-                });
+                // axios.post(contextPath + '/api/page/orders/detail/dataBySuppliersId/' + vm.suppliers_id)
+                axios.post(contextPath + '/api/page/orders/detail/dataBySuppliersId/' + suppliersId)
+                .then((response)=>{
+                    console.log(response.data.list)
+                    vm.orderDetailBySuppliers = response.data.list
+                    vm.backupData = response.data.list
+    
+                    vm.orderDetailBySuppliers.forEach(order => {
+                        order.placed = vm.formatDate(order.placed)
+                    });
+            })
+            
                 
             })
             .catch((error)=>{

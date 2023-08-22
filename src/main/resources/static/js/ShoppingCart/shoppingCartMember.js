@@ -13,6 +13,7 @@ const app = Vue.createApp({
             isShowByMemberId: false,
             suppliers_id:"",
             contextPath: contextPath,
+            membersId: localStorage.getItem('MembersId'),
         }
     },
     computed: {
@@ -62,7 +63,8 @@ const app = Vue.createApp({
         },
         getShoppingCartByMemberId() {
             let vm = this
-            axios.post(contextPath + "/api/page/shoppingcarts/" + vm.tt_number)
+            // axios.post(contextPath + "/api/page/shoppingcarts/" + vm.tt_number)
+            axios.post(contextPath + "/api/page/shoppingcarts/" + vm.membersId)
                 .then((response) => {
                     console.log(response.data)
                     vm.ShoppingCart = response.data.map(item => {
@@ -91,37 +93,34 @@ const app = Vue.createApp({
             };
             axios.post(contextPath + '/api/page/favorites/checkin', originalData).then((response) => {
                 if (!response.data.success) {
-                    bootbox.alert({
-                        message: `<div class="text-center">收藏清單已有此商品</div>`,
-                        button: {
-                            ok: {
-                                label: '關閉',
-                                className: 'btn btn-success'
-                            }
-                        }
-                    })
+                    const notyf = new Notyf({
+                        ripple : false,
+                        position: {
+                            x: 'right',
+                            y: 'top',
+                          },
+                    });
+                    notyf.error('收藏清單已有此商品');
                 } else {
-                    bootbox.alert({
-                        message: `<div class="text-center">已加入收藏清單</div>`,
-                        button: {
-                            ok: {
-                                label: '關閉',
-                                className: 'btn btn-success'
-                            }
-                        }
-                    })
+                    const notyf = new Notyf({
+                        ripple : false,
+                        position: {
+                            x: 'right',
+                            y: 'top',
+                          },
+                    });
+                    notyf.success('已加入收藏清單');
                 }
             }).catch((error) => {
                 console.log(error.message)
-                bootbox.alert({
-                    message: `<div class="text-center">加入收藏清單失敗</div>`,
-                    button: {
-                        ok: {
-                            label: '關閉',
-                            className: 'btn btn-dark'
-                        }
-                    }
-                })
+                const notyf = new Notyf({
+                    ripple : false,
+                    position: {
+                        x: 'right',
+                        y: 'top',
+                      },
+                });
+                notyf.error('加入收藏清單失敗');
             })
         },
         removeShoppingCart(shopping_cart_id) {
@@ -141,25 +140,36 @@ const app = Vue.createApp({
                     if (result) {
                         axios.delete(contextPath + '/api/page/shoppingcarts/' + shopping_cart_id).then((response) => {
                             this.ShoppingCart = this.ShoppingCart.filter(item => item.shopping_cart_id !== shopping_cart_id);
-                            bootbox.alert({
-                                message: `<div class="text-center">已成功將商品移除購物車</div>`,
-                                button: {
-                                    ok: {
-                                        label: '關閉',
-                                        className: 'btn btn-success'
-                                    }
-                                }
-                            })
+                            const notyf = new Notyf({
+                                ripple : false,
+                                position: {
+                                    x: 'right',
+                                    y: 'top',
+                                  },
+                            });
+                            notyf.success('已成功將商品移除購物車');
+                           
                             this.getShoppingCartByMemberId()
                             this.getTotalItemCountByMemberId()
                             this.count--
+                            if(this.count <= 0){
+                                this.count = 0
+                            }
                             const newCount = this.count
                             const jsonData = JSON.stringify(newCount);
                             localStorage.setItem('count',jsonData)
                             this.ifCount()
                             
                         }).catch((error) => {
-                            console.log(error.message)
+                            const notyf = new Notyf({
+                                ripple : false,
+                                position: {
+                                    x: 'right',
+                                    y: 'top',
+                                  },
+                            });
+                            notyf.error('將商品移除購物車失敗');
+                            // console.log(error.message)
                         })
                     }
                 },
@@ -169,27 +179,36 @@ const app = Vue.createApp({
             //let vm = this;
             bootbox.confirm('<div class="text-center">確定要將所有商品移除嗎？</div>', (result) => {
                 if (result) {
-                    axios.delete(contextPath + '/api/page/shoppingcarts/delete/' + this.tt_number).then((response) => {
-                        bootbox.alert({
-                            message: `<div class="text-center">已成功將所有商品移除購物車</div>`,
-                            button: {
-                                ok: {
-                                    label: '關閉',
-                                    className: 'btn btn-success'
-                                }
-                            }
-                        })
+                    axios.delete(contextPath + '/api/page/shoppingcarts/delete/' + this.membersId).then((response) => {
+                        const notyf = new Notyf({
+                            ripple : false,
+                            position: {
+                                x: 'right',
+                                y: 'top',
+                              },
+                        });
+                        notyf.success('已成功將所有商品移除購物車');
+                        
                         this.getShoppingCartByMemberId()
                         this.getTotalItemCountByMemberId()
                         this.count = 0
                         const newCount = this.conut
                         var jsonData = JSON.stringify(newCount);
                         localStorage.setItem('count',jsonData)
-                        localStorage.clear()
+                        localStorage.removeItem('count')
                         this.ifCount()
                         
                     })
                         .catch((error) => {
+                            const notyf = new Notyf({
+                                ripple : false,
+                                position: {
+                                    x: 'right',
+                                    y: 'top',
+                                  },
+                            });
+                            notyf.error('將所有商品移除購物車失敗');
+
                             this.getShoppingCartByMemberId()
                             this.getTotalItemCountByMemberId()
                         })
@@ -197,7 +216,9 @@ const app = Vue.createApp({
             })
         },
         getTotalItemCountByMemberId() {
-            axios.get(contextPath + "/api/page/shoppingcarts/count/" + this.tt_number)
+            let vm = this
+            // axios.get(contextPath + "/api/page/shoppingcarts/count/" + vm.tt_number)
+            axios.get(contextPath + "/api/page/shoppingcarts/count/" + vm.membersId)
                 .then((response) => {
                     this.totalItemMemberCount = response.data
                 })
@@ -214,37 +235,34 @@ const app = Vue.createApp({
             axios.post(contextPath + "/api/page/shoppingcarts/checkin", originalData)
                 .then((response) => {
                     if (!response.data.success) {
-                        bootbox.alert({
-                            message: `<div class="text-center">購物車已有此商品</div>`,
-                            buttons: {
-                                ok: {
-                                    label: '關閉',
-                                    className: 'btn btn-success'
-                                }
-                            }
+                        const notyf = new Notyf({
+                            ripple : false,
+                            position: {
+                                x: 'right',
+                                y: 'top',
+                              },
                         });
+                        notyf.error('購物車已有此商品');
                     } else {
-                        bootbox.alert({
-                            message: `<div class="text-center">已加入購物車</div>`,
-                            buttons: {
-                                ok: {
-                                    label: '關閉',
-                                    className: 'btn btn-success'
-                                }
-                            }
+                        const notyf = new Notyf({
+                            ripple : false,
+                            position: {
+                                x: 'right',
+                                y: 'top',
+                              },
                         });
+                        notyf.success('已加入購物車');
                     }
                 })
                 .catch((error) => {
-                    bootbox.alert({
-                        message: `<div class="text-center">加入購物車失敗</div>`,
-                        buttons: {
-                            ok: {
-                                label: '關閉',
-                                className: 'btn btn-danger'
-                            }
-                        }
+                    const notyf = new Notyf({
+                        ripple : false,
+                        position: {
+                            x: 'right',
+                            y: 'top',
+                          },
                     });
+                    notyf.error('加入購物車失敗');
                 });
         },
         ifCount(){

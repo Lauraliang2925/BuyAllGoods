@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.buyallgoods.model.Categories;
-import com.ispan.buyallgoods.model.Product;
 import com.ispan.buyallgoods.repository.CategoriesRepository;
 
 @Service
@@ -20,7 +19,6 @@ public class CategoriesService {
 	@Autowired
 	CategoriesRepository categoriesRepository;
 
-	
 	public Categories findById(Integer id) {
 		Optional<Categories> optional = categoriesRepository.findById(id);
 
@@ -30,7 +28,7 @@ public class CategoriesService {
 		return null;
 
 	}
-	
+
 	public List<Categories> fullData() {
 		return categoriesRepository.findAll();
 
@@ -85,14 +83,13 @@ public class CategoriesService {
 		categoriesRepository.save(categories);
 		return false;
 	}
-	
-	
+
 	// 使用商品分類名稱查ID
 	public Integer findCategoriesIdByName(String name) {
 		if (name.length() == 0 || name == null) {
 			return null;
 		}
-		Integer idByName = categoriesRepository.findCategoriesIdByName(name);		
+		Integer idByName = categoriesRepository.findCategoriesIdByName(name);
 		return idByName;
 	}
 

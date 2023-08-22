@@ -61,11 +61,16 @@
 					<!-- 合約ID輸入框 -->
 					<div class="col">
 						<div class="input-group mb-3">
-							<span class="input-group-text" id="inputGroup-sizing-default">合約ID</span>
-							<input type="text" class="form-control"
-								aria-label="Sizing example input"
-								aria-describedby="inputGroup-sizing-default"
-								v-on:blur="callFindSomeSC()" v-model="findContractsId" />
+							<span class="input-group-text" id="inputGroup-sizing-default">合約編號</span>
+
+							<select class="form-select" aria-label="Default select example"
+								style="width: 200px" v-model="findContractsId"
+								v-on:blur="callFindSomeSC()">
+								<option selected :value="">[請選擇合約編號]</option>
+								<!-- 								~~~~~~~~~~~~~~~~~~用迴圈~~~~~~~~~~~~~~~~~~ -->
+								<option v-for="c in contractsAllData" v-bind:key="c.contractsId"
+									:value="c.contractsId">{{c.contractNumber}}</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -101,45 +106,48 @@
 							<td class="text-center align-middle">{{item.suppliersName}}</td>
 							<td class="text-center align-middle">{{item.contractsId}}</td>
 							<td class="text-center align-middle">{{item.contractnumber}}</td>
-							
+
 							<td class="text-center align-middle">
-							
-							<div v-if="new Date(item.suppliersEndDate)>tomorrowDate">
-							<i class="fa-solid fa-user-group" style="color: #005eff;"></i>合作中
-							</div>
-							
-							<div v-if="new Date(item.suppliersEndDate)<tomorrowDate">
-							<i class="fa-solid fa-person-circle-xmark" style="color: #ff0000;"></i>已終止
-							</div>
-							
+
+								<div v-if="new Date(item.suppliersEndDate)>tomorrowDate">
+									<i class="fa-solid fa-user-group" style="color: #005eff;"></i>合作中
+								</div>
+
+								<div v-if="new Date(item.suppliersEndDate)<tomorrowDate">
+									<i class="fa-solid fa-person-circle-xmark"
+										style="color: #ff0000;"></i>已終止
+								</div>
+
 							</td>
-							
+
 							<td class="text-center align-middle">
 								<button class="btn btn-outline-dark"
 									@click="showDetailsBySuppliersId(item.suppliersId)">
 									<i class="fa-solid fa-magnifying-glass" style="color: #ffa424;"></i>查看
 								</button>
 							</td>
-							
-							
+
+
 							<td class="text-center align-middle">
-							
-							<div v-if="item.contractsId!=null">
-							<div v-if="new Date(item.contractsEndDate)<tomorrowDate">
-							<i class="fa-regular fa-calendar-xmark" style="color: #ff0000;"></i>已到期
-							</div>
-							</div>
-							
-							<div v-if="item.contractsId!=null">
-							<div v-if="new Date(item.contractsEndDate)>tomorrowDate">
-							<i class="fa-regular fa-calendar-check" style="color: #005eff;"></i>有效
-							</div>
-							</div>
-							
-							
+
+								<div v-if="item.contractsId!=null">
+									<div v-if="new Date(item.contractsEndDate)<tomorrowDate">
+										<i class="fa-regular fa-calendar-xmark"
+											style="color: #ff0000;"></i>已到期
+									</div>
+								</div>
+
+								<div v-if="item.contractsId!=null">
+									<div v-if="new Date(item.contractsEndDate)>tomorrowDate">
+										<i class="fa-regular fa-calendar-check"
+											style="color: #005eff;"></i>有效
+									</div>
+								</div>
+
+
 							</td>
-							
-							
+
+
 							<td class="text-center">
 								<button
 									:class="item.contractsId != null ? 'btn btn-outline-dark' : 'btn btn-outline-warning'"
@@ -153,9 +161,9 @@
 
 
 							</td>
-							
+
 						</tr>
-					</tbody> 
+					</tbody>
 				</table>
 				<table class="mx-auto" v-show="isShowPage">
 					<tbody>

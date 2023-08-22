@@ -8,6 +8,7 @@ let newapp = Vue.createApp({
 			contextPathVue: contextPath,
 			
 			componentKey:0,
+			showMemberRow:false,
 		};
 	},
 	computed: {},
@@ -264,6 +265,10 @@ let newapp = Vue.createApp({
 			//畫面載入指定圖片
 			dom.imgSrcVue = imgSrc;     			
 			//console.log("mounted_dom.imgSrcVue=",dom.imgSrcVue)
+			if(roleId==="2"){
+				dom.showMemberRow = true;
+				console.log("mounted_dom.showMemberRow="+dom.showMemberRow)
+			}			    
 		});
 	},
 }).mount("#app");

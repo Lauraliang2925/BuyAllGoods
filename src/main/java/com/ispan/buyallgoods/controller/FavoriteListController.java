@@ -40,19 +40,19 @@ public class FavoriteListController {
 		return favoriteListService.findAllFavoriteList();
 	}
 	
-	@DeleteMapping("/favorites/{favorite_list_id}")
-	public String remove(@PathVariable(name="favorite_list_id")Integer favorite_list_id) {
-		if(!favoriteListService.exists(favorite_list_id)) {
+	@DeleteMapping("/favorites/{favoriteListId}")
+	public String remove(@PathVariable(name="favoriteListId")Integer favoriteListId) {
+		if(!favoriteListService.exists(favoriteListId)) {
 			return "查無資料或不存在";
 		}else {
-			favoriteListService.remove(favorite_list_id);
+			favoriteListService.remove(favoriteListId);
 			return "刪除資料成功";
 		}			
 	}
 	
 	@DeleteMapping("/favorites/delete/{members_id}")
-	public void removeAllMember(@PathVariable("members_id")Integer members_id) {
-		 favoriteListService.removeAllByMember(members_id); 
+	public void removeAllMember(@PathVariable("members_id")Integer membersId) {
+		 favoriteListService.removeAllByMember(membersId); 
 	}
 	
 	@DeleteMapping("/favorites")
@@ -119,8 +119,8 @@ public class FavoriteListController {
 	}
 	
 	@PostMapping("/favorites/{members_id}")
-	public List<Map<String,Object>> findByFavoriteListWhereMemberId(@PathVariable("members_id")Integer members_id){
-		List<Object[]> data = favoriteListService.findByFavoriteListWhereMemberId(members_id);
+	public List<Map<String,Object>> findByFavoriteListWhereMemberId(@PathVariable("members_id")Integer membersId){
+		List<Object[]> data = favoriteListService.findByFavoriteListWhereMemberId(membersId);
 		List<Map<String, Object>> result = new ArrayList<>();
 		
 		LocalDate currentDate = LocalDate.now();
@@ -128,7 +128,7 @@ public class FavoriteListController {
 		for(Object obj : data) {
 			Object[] row =(Object[])obj;
 			HashMap<String, Object> map = new HashMap<>();
-			map.put("shopping_cart_id", row[0]);
+			map.put("favorite_list_id", row[0]);
 			map.put("members_id", row[1]);
 			map.put("products_id", row[2]);
 			map.put("name", row[3]);

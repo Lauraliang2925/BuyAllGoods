@@ -26,16 +26,16 @@ public class ContractsController {
 
 	@Autowired
 	private ContractsService cSer;
-	
-	//使用suppliersId 尋找一筆分類(create by Rong-0818)
+
+	// 使用suppliersId 尋找一筆分類(create by Rong-0818)
 	@PostMapping("/findById")
 	public Map<String, Object> findById(@RequestBody ContractsBean contracts) {
 
 		ContractsBean ExistContracts = cSer.findById(contracts.getContractsId());
-		
+
 		Map<String, Object> responseJson = new HashMap<>();
 
-		if (ExistContracts==null) {
+		if (ExistContracts == null) {
 			responseJson.put("message", "查詢失敗，此廠商不存在");
 			responseJson.put("success", false);
 		} else {
@@ -43,8 +43,8 @@ public class ContractsController {
 			responseJson.put("message", "查詢成功");
 			responseJson.put("success", true);
 		}
-		return responseJson;		
-	
+		return responseJson;
+
 	}
 
 	// 查詢全部(create by Rong)

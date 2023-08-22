@@ -59,10 +59,12 @@ public class MembersServiceByP {
 					responseJSON.put("success", true);
 					responseJSON.put("members", findByUserName);
 					
-					//Alan 0818 1640 for session
+					//Alan 0818 1640 for session					
+					responseJSON.put("UserId", findByUserName.getMembersId());
+					responseJSON.put("RoleId", findByUserName.getRoleId());
+					
 					responseJSON.put("UserName", findByUserName.getUserName());
-					responseJSON.put("UserId", "  "+findByUserName.getMembersId());
-					responseJSON.put("RoleId", "  "+findByUserName.getRoleId());
+					responseJSON.put("PhotoPath", findByUserName.getPhotoPath());
 					
 					
 					return responseJSON;

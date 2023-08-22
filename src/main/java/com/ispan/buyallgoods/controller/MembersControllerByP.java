@@ -8,12 +8,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ispan.buyallgoods.model.Members;
+import com.ispan.buyallgoods.model.SuppliersBean;
 import com.ispan.buyallgoods.service.MembersServiceByP;
 
 import jakarta.servlet.http.HttpSession;
@@ -61,16 +64,26 @@ public class MembersControllerByP {
 	}
 
 	@PostMapping("/checkUser")
-	public Map<String, Object> checkUser(@RequestBody Members members, HttpSession seesion) {
-
-		// 新增Session Alan 08/18 1636
-		Map<String, Object> responseJSON = mSer.findByUserName(members);
-
-		seesion.setAttribute("UserName", responseJSON.get("UserName"));
-		seesion.setAttribute("UserID", responseJSON.get("UserID"));
-		seesion.setAttribute("RoleId", responseJSON.get("RoleId"));
-
+	public Map<String, Object> checkUser(@RequestBody Members members,HttpSession seesion) {
+		
+		//新增Session Alan 08/18 1636
+		Map<String,Object> responseJSON = mSer.findByUserName(members);
+		
+//		System.out.println("checkUser_responseJSON="+responseJSON);
+		
+		//登入成功
+		if(responseJSON.get("success").toString().trim().compareTo("true")==0) {			
+			seesion.setAttribute("UserId", responseJSON.get("UserId"));
+			seesion.setAttribute("RoleId", responseJSON.get("RoleId"));
+			
+			seesion.setAttribute("UserName", responseJSON.get("UserName"));
+			seesion.setAttribute("PhotoPath", responseJSON.get("PhotoPath"));
+			
+		}
+		
+		
 		return responseJSON;
 	}
 
+	
 }

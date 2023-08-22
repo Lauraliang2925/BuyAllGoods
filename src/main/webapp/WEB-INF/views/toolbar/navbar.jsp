@@ -3,7 +3,6 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
 <div class="container" id="login">
 
 	<!-- 上方工具列起始 -->
@@ -38,8 +37,8 @@
 				<a href="#"
 					class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
 					id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-					<img src="https://github.com/mdo.png" alt="" width="32" height="32"
-					class="rounded-circle me-2" /> <strong>會員名字</strong>
+					<img src="<c:url value='${photoPath}'/>" alt="" width="32" height="32"
+					class="rounded-circle me-2" /> <strong>${userName}</strong>
 				</a>
 				<ul class="dropdown-menu text-small shadow"
 					aria-labelledby="dropdownUser2">
@@ -57,10 +56,18 @@
 			</div>
 			<!-- 會員登入/登出/個人資訊結束 -->
 
-
-
 			<!-- 購物車圖示起始 (顯示給:一般會員)-->
-					<div class="container" v-if="isShowCartButton">
+			<!-- 			<div class="container"> -->
+			<!-- 				<button type="button" class="btn btn-light position-relative btn-lg"> -->
+			<!-- 					<i class="bi bi-cart3"></i> -->
+			<!-- 					              購物車ICON -->
+			<!-- 					<span -->
+			<!-- 						class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">5 -->
+			<!-- 						<span class="visually-hidden">unread messages</span> -->
+			<!-- 					</span> -->
+			<!-- 				</button> -->
+			<!-- 			</div> -->
+			<div class="container" v-if="isShowCartButton">
               <a href="<c:url value='/ShoppingCartMember'/>">
                 <button type="button" class="btn btn-light position-relative btn-lg">
                   <i class="bi bi-cart3"></i>
@@ -92,12 +99,12 @@
 							<li><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item"
 								href="<c:url value='/showSupplierPage'></c:url>">檢視廠商</a></li>
-							<li v-if="isShowAddSupplier"><a class="dropdown-item"
+							<li v-show="isShowAddSupplier"><a class="dropdown-item"
 								href="<c:url value='/showAddSupplierPage'></c:url>">新增廠商</a></li>
 							<li><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item"
 								href="<c:url value='/showSupplierPage'></c:url>">檢視合約</a></li>
-							<li v-if="isShowAddContracts"><a class="dropdown-item"
+							<li v-show="isShowAddContracts"><a class="dropdown-item"
 								href="<c:url value='/showAddContractsPage'></c:url>">新增合約</a></li>
 							<li><hr class="dropdown-divider" /></li>
 							<li><a class="dropdown-item" href="<c:url value='/members/list'></c:url>">會員列表</a></li>							
@@ -113,5 +120,3 @@
 
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/Navbar/navbar.js"></script>
-
-	

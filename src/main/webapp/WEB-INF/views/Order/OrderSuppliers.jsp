@@ -223,6 +223,14 @@
                     </tbody>
                 </table>
             </div>
+            <div class="container text-center">
+                <div v-if="orderDetailBySuppliers.length === 0">
+                    <img class="rounded-5 mt-3"
+                        src="https://memeprod.ap-south-1.linodeobjects.com/user-template/7946010b1537d8a68b58c736991cfc8f.png"
+                        style="width: 200px;">
+                    <p class="text-center fw-bold fs-5 mt-3">查無資料</p>
+                </div>
+            </div>
             <!-- 結束 -->
         </div>
         <%@ include file="/WEB-INF/views/toolbar/footer.jsp" %>

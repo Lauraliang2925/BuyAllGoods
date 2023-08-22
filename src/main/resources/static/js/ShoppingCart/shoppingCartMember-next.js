@@ -22,6 +22,7 @@ const app = Vue.createApp({
             count: 0,
             order_notes: "",
             contextPath: contextPath,
+            membersId: localStorage.getItem('MembersId'),
         }
     },
     computed: {
@@ -38,7 +39,7 @@ const app = Vue.createApp({
         getShoppingCartByMemberId() {
             let vm = this
             // axios.post(contextPath + "/api/page/shoppingcarts/" + vm.tt_number)
-            axios.post(contextPath + "/api/page/shoppingcarts/" + vm.tt_number)
+            axios.post(contextPath + "/api/page/shoppingcarts/" + vm.membersId)
                 .then((response) => {
                     // vm.ShoppingCart = response.data
                     vm.backupShoppingCartData = response.data
@@ -67,31 +68,35 @@ const app = Vue.createApp({
         },
         getMembersData() {
             let vm = this
-            axios.get(contextPath + "/api/page/members/" + vm.tt_number)
+            // axios.get(contextPath + "/api/page/members/" + vm.tt_number)
+            axios.get(contextPath + "/api/page/members/" + vm.membersId)
                 .then((response) => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     vm.Members = response.data
                     vm.first_name = response.data.firstName
                     vm.last_name = response.data.lastName
                     vm.address = response.data.address
                     vm.MemberName = vm.first_name + vm.last_name
-                    //console.log(vm.MemberName)
+                    if (vm.MemberName.length === 0) {
+                        vm.MemberName = localStorage.getItem('MemberName')
+                    }
+                    // console.log(vm.MemberName)
                 })
         },
+
         createOrders() {
-            let vm = this
+            let vm = this;
             const originalData = {
-                membersId: vm.tt_number,
+                membersId: vm.membersId,
                 totalAmount: vm.totalPriceToOrders,
                 paymentMethod: '信用卡',
                 shippingAddress: vm.address,
                 orderStatus: '訂單開立',
-                // order_notes: '測試用',
-                // order_notes: vm.order_notes || vm.getProductItemName(),
                 orderNotes: vm.order_notes,
                 receiptMethod: '電子發票',
                 delivered: ''
-            }
+            };
+
             bootbox.confirm({
                 message: '<div class="text-center">確定要送出訂單嗎？</div>',
                 button: {
@@ -104,104 +109,87 @@ const app = Vue.createApp({
                         className: 'btn btn-danger'
                     }
                 },
-                callback(result) {
+                async callback(result) {
                     if (result) {
-                        // let vm = this
                         if (vm.order_notes !== "") {
-                            axios.post(contextPath + '/api/page/orders', originalData)
-                                .then((response) => {
-                                    //console.log(response.data)
-                                    vm.order_id = response.data.orderId
-                                    // 輸入到訂單細節 開始
-                                    // const originalDataByOrderDetail = {
-                                    //     order_id: vm.order_id,
-                                    //     products_id: vm.backupShoppingCartData.products_id,
-                                    //     quantity: vm.backupShoppingCartData.quantity,
-                                    //     new_selling_price: vm.backupShoppingCartData.new_selling_price,
-                                    //     subtotal: vm.backupShoppingCartData.quantity * vm.backupShoppingCartData.new_selling_price,
-                                    //     suppliers_id: vm.backupShoppingCartData.suppliers_id
-                                    // }
-                                    const originalDataByOrderDetail = vm.backupShoppingCartData.map(item => {
-                                        return {
-                                            orderId: vm.order_id,
-                                            productsId: item.products_id,
-                                            quantity: item.quantity,
-                                            // new_selling_price: item.new_selling_price,
-                                            unitPrice: item.new_selling_price,
-                                            subtotal: item.quantity * item.new_selling_price,
-                                            suppliersId: item.suppliers_id
-                                        };
+                            try {
+                                const response1 = await axios.post(contextPath + '/api/page/orders', originalData)
+                                vm.order_id = response1.data.orderId
+
+                                const originalDataByOrderDetail = vm.backupShoppingCartData.map(item => {
+                                    return {
+                                        orderId: vm.order_id,
+                                        productsId: item.products_id,
+                                        quantity: item.quantity,
+                                        // new_selling_price: item.new_selling_price,
+                                        unitPrice: item.new_selling_price,
+                                        subtotal: item.quantity * item.new_selling_price,
+                                        suppliersId: item.suppliers_id
+                                    }
+                                });
+
+                                const response2 = await axios.post(contextPath + '/api/page/orders/detail/multi', originalDataByOrderDetail);
+
+                                if (response1.status === 200 && response2.status === 200) {
+
+                                    vm.removeAllShoppingCart()
+                                    // 兩個都成功才跳轉
+                                    bootbox.dialog({
+                                        message: '<div class="text-center"><i class="fa-solid fa-spinner fa-spin-pulse"></i> 送出訂單...</div>',
+                                        closeButton: false
                                     });
-                                    // console.log(originalDataByOrderDetail)
-                                    axios.post(contextPath + '/api/page/orders/detail/multi', originalDataByOrderDetail)
-                                        .then((response) => {
-                                            // console.log(response.data)
-                                            vm.removeAllShoppingCart()
-                                        })
-                                    // 輸入到訂單細節 結束
-                                    bootbox.alert({
-                                        message: `<div class="text-center">送出訂單成功</div>`,
-                                        button: {
-                                            closeButton: false,
-                                            ok: {
-                                                label: '關閉',
-                                                className: 'btn btn-success'
-                                            }
-                                        }
-                                    })
-                                    // bootbox.alert({
-                                    //     message: '<div class="text-center">送出訂單成功</div>',
-                                    //     // closeButton: false,
-                                    //     buttons: {
-                                    //         ok: {
-                                    //             label: '關閉',
-                                    //             className: 'btn btn-success',
-                                    //             callback: function () {
-                                    //                 setTimeout(function () {
-                                    //                     window.location.href = contextPath;
-                                    //                 }, 2000);
-                                    //             }
-                                    //         }
-                                    //     }
-                                    // });
-//                                    bootbox.dialog({
-//                                        message: '<div class="text-center"><i class="fa-solid fa-spinner fa-spin-pulse"></i> 送出訂單...</div>',
-//                                        closeButton: false
-//                                    });
-//                                    setTimeout(() => {
-//                                        // 或者直接使用 JavaScript 來執行跳轉
-//                                        window.location.href = contextPath;
-//                                    }, 2000);
-                                })
-                                .catch((error) => {
-                                    bootbox.alert({
-                                        message: `<div class="text-center">送出訂單失敗</div>`,
-                                        button: {
-                                            ok: {
-                                                label: '關閉',
-                                                className: 'btn btn-warning'
-                                            }
-                                        }
-                                    })
-                                    console.error(error.message)
-                                })
-                                .catch((error) => {
-                                    console.error(error.message);
-                                })
+
+                                    setTimeout(() => {
+                                        // 或者直接使用 JavaScript 來執行跳轉
+                                        window.location.href = contextPath;
+                                    }, 1500);
+                                    const notyf = new Notyf({
+                                        ripple : false,
+                                        position: {
+                                            x: 'right',
+                                            y: 'top',
+                                          },
+                                    });
+                                    notyf.success('已成功送出訂單');
+                                } else {
+                                    // 如果其中一個失敗顯示失敗
+                                    const notyf = new Notyf({
+                                        ripple : false,
+                                        position: {
+                                            x: 'right',
+                                            y: 'top',
+                                          },
+                                    });
+                                    notyf.error('送出訂單失敗');
+                                }
+                            } catch (error) {
+                                console.error('false:', error.message)
+                                const notyf = new Notyf({
+                                    ripple : false,
+                                    position: {
+                                        x: 'right',
+                                        y: 'top',
+                                      },
+                                });
+                                notyf.error('送出訂單失敗');
+                            }
                         }
                     }
                 }
             });
         },
+
         removeAllShoppingCart() {
             let vm = this;
-            axios.delete(contextPath + '/api/page/shoppingcarts/delete/' + this.tt_number)
+            // axios.delete(contextPath + '/api/page/shoppingcarts/delete/' + vm.tt_number)
+            axios.delete(contextPath + '/api/page/shoppingcarts/delete/' + vm.membersId)
                 .then((response) => {
                     this.count = 0
                     const newCount = this.conut
                     var jsonData = JSON.stringify(newCount);
                     localStorage.setItem('count', jsonData)
-                    localStorage.clear()
+                    // localStorage.clear()
+                    localStorage.removeItem('count');
                     vm.ifCount()
                 })
                 .catch((error) => { })

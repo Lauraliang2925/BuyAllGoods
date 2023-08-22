@@ -11,8 +11,8 @@ public interface CategoriesRepository extends JpaRepository<Categories, Integer>
 //	使用商品分類名稱尋找商品分類	
 	@Query("SELECT c FROM Categories c WHERE c.name = :name")
 	Categories findByCategoriesName(@Param("name") String name);
-	
+
 	@Query("SELECT c.categoriesId FROM Categories c WHERE c.name = :name")
-    Integer findCategoriesIdByName(@Param("name") String name);
+	Integer findCategoriesIdByName(@Param("name") String name);
 
 }

@@ -213,11 +213,8 @@ const app = Vue.createApp({
     // 不使用分頁功能查所有資料，for最上方搜尋BAR
     fullData: function () {
       //一載入頁面就先找出所有下拉式選單的資料
-      
-      this.FindAllSuppliers();
-      this.FindAllContracts();
-      this.FindAllcategories();
-      this.findByCustomQuery();
+      this.selectAllproduct()
+     
       let vm = this;
       axios
         .get(contextPath + "/product/fullData")
@@ -270,6 +267,9 @@ const app = Vue.createApp({
   mounted: function () {     
    
     this.fullData(); 
+    this.FindAllSuppliers();
+    this.FindAllContracts();
+    this.FindAllcategories();
 
   },
 });

@@ -293,7 +293,7 @@ public class MembersController {
 	
 	
 	@GetMapping({"/members/readedit"})
-    public String readEdit(@RequestParam String membersId,Model model) {
+    public String readEdit(@RequestParam String membersId,Model model,HttpSession session) {
 		
 		Members membersById = membersService.findMembersById(Integer.parseInt(membersId));
 //		System.out.println("(membersById.getBirthday()).toString()="+membersById.getBirthday());
@@ -303,6 +303,12 @@ public class MembersController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 		model.addAttribute("membersId", membersId);
+		model.addAttribute("roleId", session.getAttribute("RoleId"));
+		
+		model.addAttribute("userName", session.getAttribute("UserName"));
+		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
+		
+		
 		model.addAttribute("onemember", membersById);
 		model.addAttribute("onememberBirthday", (membersById.getBirthday()).toString());
 		model.addAttribute("onememberRegistrationDate", ((membersById.getRegistrationDate()).format(formatter)).toString());
@@ -407,7 +413,6 @@ public class MembersController {
 	
 	
 	
-	
 //	@ResponseBody
 //	@PostMapping("/members/updateset")
 //	public Members updateSet(@RequestBody Members members) {
@@ -423,6 +428,16 @@ public class MembersController {
 //		
 //	}
 	
+	// 任凱 開始
+	@ResponseBody
+	@GetMapping("/api/page/members/{members_id}")
+	public Members getMembersById(@PathVariable("members_id")Integer membersId) {
+		
+		System.out.println("controller");	
+		return membersService.findByMembersIdk(membersId);
+		
+	}
+	// 任凱 結束
 	
 	
 

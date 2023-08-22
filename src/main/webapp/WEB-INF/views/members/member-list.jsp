@@ -12,7 +12,7 @@
 <title>會員列表</title>
 </head>
 
-<body style="padding-top: 8%" >
+<body style="padding-top: 8%">
 
 
 	<%@ include file="/WEB-INF/views/toolbar/navbar.jsp"%>
