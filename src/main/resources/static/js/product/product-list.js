@@ -38,10 +38,23 @@ const app = Vue.createApp({
       categoriesNames: {},
       SuppliersNames: {},
       contractsNames: {},
+
+      membersId:null,
+      roleId:null,
+      isShowSearchBar:false,
+      showPaginateForS:false,
     };
   },
 
   methods: {
+    getUserID: function () {
+     this.membersId = localStorage.getItem("MembersId");
+     this.roleId = localStorage.getItem("RoleId");
+      if(this.roleId==2){
+        this.findSuppliersByMembersId(this.membersId);
+      }
+      
+    },
        //查詢全部的廠商有哪些，for廠商名稱的填寫欄位
        FindAllSuppliers: function () {
         let vm = this;
@@ -165,8 +178,11 @@ const app = Vue.createApp({
       }
     },
 
+    // 顯示表單內容(給管理員)
     selectAllproduct: function (page) {
+      this.isShowSearchBar= true;
       this.showPaginate = true;
+      this.showPaginateForS = false;
       this.findProductsName = "";
       this.findSuppliersId = "";
       this.findContractsId = "";
@@ -210,10 +226,84 @@ const app = Vue.createApp({
         });
     },
 
+    findSuppliersByMembersId:function(membersId){
+      let request = {
+        membersId: membersId,
+      };
+      let vm = this;
+      axios
+        .post(contextPath + "/suppliers/findSupplier", request)
+        .then(function (response) {
+          console.log(response);
+          vm.suppliersId = response.data.suppliersId; 
+          vm.selectProductForSuppliers(vm.suppliersId,1);
+        })
+        .catch(function () {})
+        .finally(function () {});
+    },
+
+    handlePaginationClick(page) {
+      this.selectProductForSuppliers(this.suppliersId, page);
+    },
+
+      // 顯示表單內容(給個別廠商)
+      selectProductForSuppliers: function (suppliersId, page) {
+        this.isShowSearchBar= false;
+        this.showPaginate = false;
+        this.showPaginateForS = true;
+        this.findProductsName = "";
+        this.findSuppliersId = "";
+        this.findContractsId = "";
+  
+        // 在點選分頁(page from 1)時，呼叫出顯示的資料
+        if (page) {
+          // 當點選指定分頁時的動作
+          this.start = (page - 1) * this.rows;
+          this.current = page;
+        } else {
+          // 未點選指定分頁時的動作(預設為第一頁)
+          this.start = 0;
+          this.current = 1;
+        }
+  
+        // 要使用spring boot 的pagable API，所需參數有current(目前頁面)，以及rows(每頁顯示資料數量)
+        // 但是current在pagable API預設起始值為0!! 因此傳入後端controller後要再-1，需特別注意
+        let request = {
+          productsId: "",
+          name: "",
+          contractsId: "",
+          suppliersId:this.suppliersId,
+          current: this.current,
+          rows: this.rows,
+        };
+  
+        let vm = this;
+        // 使用 Axios 進行 API 請求，獲取資料庫中的分類資料
+        axios
+          .get(contextPath + "/product/findBySuppliersId/"+suppliersId, {
+            params: request, // 将请求参数作为 params 对象
+          })
+          .then(function (response) {
+            vm.products = response.data.list;
+            let count = response.data.count;
+            vm.pages = Math.ceil(count / vm.rows);
+            vm.lastPageRows = count % vm.rows;
+          })
+          .catch(function (error) {
+            console.error("資料請求失敗：", error);
+          });
+      },
+
     // 不使用分頁功能查所有資料，for最上方搜尋BAR
     fullData: function () {
       //一載入頁面就先找出所有下拉式選單的資料
-      this.selectAllproduct()
+      if(this.roleId==1){
+        this.selectAllproduct()
+      }
+      if(this.roleId==2){
+        this.selectProductForSuppliers()
+      }
+    
      
       let vm = this;
       axios
@@ -265,11 +355,14 @@ const app = Vue.createApp({
    
   },
   mounted: function () {     
-   
+    
     this.fullData(); 
     this.FindAllSuppliers();
     this.FindAllContracts();
     this.FindAllcategories();
+    this.getUserID();
+
+  
 
   },
 });

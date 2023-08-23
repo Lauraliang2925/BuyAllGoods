@@ -70,14 +70,12 @@ public class ProductService {
 		}
 		return null;
 	}
-	
-	
+
 //	使用商品分類ID尋找此分類底下所有商品數量
 	public long findCountByCategoriesId(Integer categoriesId) {
 		return productRepository.findCountByCategoriesId(categoriesId);
 	}
-	
-	
+
 //	使用分類ID尋找底下"販售中"商品
 	public List<Product> findVaildByCategoriesId(Integer id, Pageable pageable) {
 		List<Product> findVaildByCategoriesId = productRepository.findValidByCategoriesId(id, pageable);
@@ -97,12 +95,12 @@ public class ProductService {
 	public List<Product> findByVaildProductName(String name) {
 		return productRepository.findByVaildProductName(name);
 	}
-	
+
 // 使用商品名稱尋找"販售中"商品(模糊搜尋)所有商品數量
 	public long findCountByVaildProductName(String name) {
 		return productRepository.findCountByVaildProductName(name);
 	}
-	
+
 	public Product insert(Product product) {
 		if (product.getName() != null) {
 			return productRepository.save(product);
@@ -213,5 +211,19 @@ public class ProductService {
 			return "已成功下架此商品";
 		}
 		return "找不到此商品，請再次確認內容!!";
+	}
+
+//	使用廠商ID找此廠商所有商品
+	public List<Product> findBySuppliersId(Integer suppliersId, Pageable pageable) {
+		List<Product> findBySuppliersId = productRepository.findBySuppliersId(suppliersId, pageable);
+		if (findBySuppliersId != null) {
+			return findBySuppliersId;
+		}
+		return null;
+	}
+
+//	使用廠商ID找此廠商所有商品數量
+	public Long findCountBySuppliersId(Integer suppliersId) {
+		return productRepository.findCountBySuppliersId(suppliersId);
 	}
 }

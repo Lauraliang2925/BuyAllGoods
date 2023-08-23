@@ -307,5 +307,24 @@ public class ProductController {
 		}
 		return responseJson;
 	}
+	
+//	使用廠商ID找此廠商所有商品 (還要加上分頁功能)
+	@GetMapping("/product/findBySuppliersId/{id}")
+	public Map<String, Object> findBySuppliersId(@PathVariable(value = "id") Integer id,
+			@RequestParam("current") int current, @RequestParam("rows") int rows) {
+		if (id == null) {
+			return null;
+		}
+		// spring boot 分頁API
+		Pageable pageable = PageRequest.of((current - 1), rows);
+
+		List<Product> list = productService.findBySuppliersId(id, pageable);
+		long count = productService.findCountBySuppliersId(id);
+
+		Map<String, Object> responseJson = new HashMap<>();
+		responseJson.put("list", list);
+		responseJson.put("count", count);
+		return responseJson;
+	}
 
 }

@@ -20,7 +20,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
 
     <div class="container"  id="app">
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~table上方條件輸入框~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <div>
+      <div v-if="isShowSearchBar">
         <!-- 廠商ID輸入框 -->
         <div class="row">
           <div class="col">
@@ -177,7 +177,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
         <div class="container d-flex justify-content-center">
           <!-- 我是分頁 -->
           <paginate
-            v-show="showPaginate"
+            v-if="showPaginate"
             first-last-button="true"
             first-button-text="&lt;&lt;"
             last-button-text="&gt;&gt;"
@@ -188,17 +188,34 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             :click-handler="selectAllproduct"
           ></paginate>
           <!-- 我是分頁 -->
+
+
+              <!-- 我是分頁 -->
+              <paginate
+              v-if="showPaginateForS"
+              first-last-button="true"
+              first-button-text="&lt;&lt;"
+              last-button-text="&gt;&gt;"
+              prev-text="&lt;"
+              next-text="&gt;"
+              :page-count="pages"
+              :initial-page="current"
+              :click-handler="handlePaginationClick"
+            ></paginate>
+            <!-- 我是分頁 -->
         </div>
       </div>
     
-
+    
     <div class="container d-flex justify-content-center py-3">
-      <div>
-        <button class="btn btn-outline-success" @click="selectAllproduct()">
+      <div >
+        <button class="btn btn-outline-success" @click="selectAllproduct()" >
           檢視完整商品清單
         </button>
       </div>
     </div>
+
+
   </div>
 
     <script type="text/javascript">

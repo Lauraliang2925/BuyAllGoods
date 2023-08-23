@@ -58,7 +58,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ "AND (:contractsId is null OR p.contractsId = :contractsId)")
 	List<Product> findByCustomQuery(@Param("name") String name, @Param("suppliersId") Integer suppliersId,
 			@Param("contractsId") Integer contractsId);
-	
+
 //	使用商品名稱尋找"販售中"商品(模糊搜尋)	
 	@Query("SELECT p FROM Product p WHERE p.name LIKE '%' + :name + '%' AND p.sellingStopDate > DATEADD(DAY, -1, CURRENT_DATE)")
 	List<Product> findByVaildProductName(@Param("name") String name);
@@ -66,4 +66,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 // 使用商品名稱尋找"販售中"商品(模糊搜尋)所有商品數量
 	@Query("SELECT COUNT(p) FROM Product p WHERE p.name LIKE '%' + :name + '%' AND p.sellingStopDate > DATEADD(DAY, -1, CURRENT_DATE)")
 	Long findCountByVaildProductName(@Param("name") String name);
+
+// 使用廠商ID找此廠商所有商品
+	@Query("SELECT p FROM Product p WHERE suppliersId = :suppliersId")
+	List<Product> findBySuppliersId(@Param("suppliersId") Integer suppliersId, Pageable pageable);
+
+// 使用廠商ID找此廠商所有商品數量
+	@Query("SELECT COUNT(p) FROM Product p WHERE suppliersId = :suppliersId")
+	Long findCountBySuppliersId(@Param("suppliersId") Integer suppliersId);
 }
