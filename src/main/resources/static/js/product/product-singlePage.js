@@ -36,7 +36,7 @@ const app = Vue.createApp({
       membersId: "",
       quantity: "",
 
-      isShowDiscountDate:true
+      isShowDiscountDate: true,
     };
   },
   computed: {},
@@ -70,7 +70,7 @@ const app = Vue.createApp({
       membersId = this.getUserID();
       if (membersId == null) {
         alert("請先登入");
-        return
+        return;
       }
       if (quantity === undefined || quantity <= 0) {
         alert("請選擇有效的商品數量!");
@@ -141,14 +141,18 @@ const app = Vue.createApp({
           vm.staffId = response.data.staffId;
           vm.createdDate = response.data.createdDate;
 
-             
+          vm.updateCountdown(vm.discountEndDate);
+          // 设置一个定时器，每秒钟更新倒计时
+          setInterval(function () {
+            vm.updateCountdown(vm.discountEndDate);
+          }, 1000);
+
           // Update the discount values based on discountEndDate
-          let currentDate = new Date();         
-            if (new Date(vm.discountEndDate) < currentDate) {
-              vm.discount = 1;
-              vm.isShowDiscountDate=false
-            }
-         
+          let currentDate = new Date();
+          if (new Date(vm.discountEndDate) < currentDate) {
+            vm.discount = 1;
+            vm.isShowDiscountDate = false;
+          }
 
           // 當畫面一載入時，自動顯示當前圖片
           vm.previewUrl = contextPath + "/pic/product/" + vm.name + ".jpg"; // 設定 this.previewUrl
@@ -189,6 +193,26 @@ const app = Vue.createApp({
     },
     goBack() {
       window.history.back(); // 使用浏览器的 history.back() 方法来回到上一页
+    },
+    updateCountdown(discountEndDate) {
+      let targetDate = discountEndDate;
+      const now = new Date().getTime();
+      const targetTime = new Date(targetDate).getTime();
+      const timeDifference = targetTime - now;
+
+      if (timeDifference > 0) {
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60) - 8
+        );
+        const minutes = Math.floor(
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        const countdownElement = document.getElementById("countdown");
+        countdownElement.innerHTML = `${days} 天 ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
+      }
     },
   },
   mounted: function () {

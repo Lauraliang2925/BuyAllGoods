@@ -54,7 +54,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 v-model="findSuppliersId"
                 @change="findByCustomQuery()"
               >
-                <option selected value="null">[請選擇廠商名稱]</option>
+                <option selected value="">[請選擇廠商名稱]</option>
                 <!--~~~~~~~~~~~~~~~~~~用迴圈~~~~~~~~~~~~~~~~~~-->
                 <option
                   v-for="supplier in suppliersFullData"
@@ -80,7 +80,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 v-model="findContractsId"
                 @change="findByCustomQuery()"
               >
-                <option selected value="null">[請選擇合約編號]</option>
+                <option selected value="">[請選擇合約編號]</option>
                 <!--~~~~~~~~~~~~~~~~~~用迴圈~~~~~~~~~~~~~~~~~~-->
                 <option
                   v-for="contract in contractFullData"
@@ -207,7 +207,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
       </div>
     
     
-    <div class="container d-flex justify-content-center py-3">
+    <div class="container d-flex justify-content-center py-3" v-if="roleId==1">
       <div >
         <button class="btn btn-outline-success" @click="selectAllproduct()" >
           檢視完整商品清單

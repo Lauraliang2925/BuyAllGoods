@@ -21,7 +21,7 @@
                         <div class="card-body">
                             <h4>付款方式</h4>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                <input class="form-check-input" type="checkbox" name="flexRadioDefault"
                                     id="flexRadioDefault1" data-bs-toggle="collapse" href="#collapseExample"
                                     role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <label class="form-check-label" for="flexRadioDefault1">
@@ -56,7 +56,7 @@
                         <div class="card-body">
                             <h4>取貨方式</h4>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                <input class="form-check-input" type="checkbox" name="flexRadioDefault"
                                     id="flexRadioDefault2" checked>
                                 <label class="form-check-label" for="flexRadioDefault2">
                                     宅配

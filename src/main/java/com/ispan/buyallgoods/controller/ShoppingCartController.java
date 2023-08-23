@@ -1,6 +1,7 @@
 package com.ispan.buyallgoods.controller;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,10 +155,12 @@ public class ShoppingCartController {
 	        	Integer sellingPrice = (Integer) row[5]; // Assuming selling_price is int
 	            BigDecimal sellingPriceDecimal = new BigDecimal(sellingPrice);// Assuming the selling price is a BigDecimal value
 	            BigDecimal newSellingPrice = sellingPriceDecimal.multiply(discount);
-	            map.put("new_selling_price", newSellingPrice.doubleValue());
+	            
+	            newSellingPrice = newSellingPrice.setScale(0,RoundingMode.DOWN);
+	            map.put("new_selling_price", newSellingPrice);
 	        } else {
 	        	Integer sellingPrice = (Integer) row[5];
-	            map.put("new_selling_price", sellingPrice.doubleValue());
+	            map.put("new_selling_price", sellingPrice);
 	        }
 			
 //			map.put("discount", row[6]);

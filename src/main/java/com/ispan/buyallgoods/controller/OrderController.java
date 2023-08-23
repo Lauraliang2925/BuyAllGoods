@@ -105,9 +105,33 @@ public class OrderController {
     	return orderService.searchOrderByNotes(orderNotes);
     }
     
-    @PostMapping("/orders/searchByNotes2/{orderNotes}")
-    public List<Map<String,Object>> searchOrderByNotes2(@PathVariable String orderNotes) {
-        List<Object[]> data = orderService.searchOrderByNotes2("%" + orderNotes + "%");
+    @PostMapping("/orders/searchByNotes2/{orderNotes}/{membersId}")
+    public List<Map<String,Object>> searchOrderByNotes2(@PathVariable String orderNotes, @PathVariable Integer membersId) {
+        List<Object[]> data = orderService.searchOrderByNotes2("%" + orderNotes + "%",membersId);
+        List<Map<String,Object>> result = new ArrayList<>();
+        for(Object obj : data) {
+        	Object[] row = (Object[])obj;
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("order_id", row[0]);
+            map.put("members_id", row[1]);
+            map.put("total_amount", row[2]);
+            map.put("payment_method", row[3]);
+            map.put("shipping_address", row[4]);
+            map.put("placed", row[5]);
+            map.put("order_status", row[6]);
+            map.put("order_notes", row[7]);
+            map.put("receipt_method", row[8]);
+            map.put("delivered", row[9]);
+    
+            result.add(map);
+
+        }
+        return result;
+    }
+    
+    @PostMapping("/orders/searchByNotesAll/{orderNotes}")
+    public List<Map<String,Object>> searchOrderByNotesAll(@PathVariable String orderNotes) {
+        List<Object[]> data = orderService.searchOrderByNotesAll("%" + orderNotes + "%");
         List<Map<String,Object>> result = new ArrayList<>();
         for(Object obj : data) {
         	Object[] row = (Object[])obj;

@@ -275,6 +275,8 @@ let newapp = Vue.createApp({
 			});			
 		}
 	},
-	mounted() {		
+	mounted() {	
+		var imageElement = document.getElementById("myImage");					
+		imageElement.src  = contextPath+"/pic/members/Photo_Default.png";	
 	},
 }).mount("#app");

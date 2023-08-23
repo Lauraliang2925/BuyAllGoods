@@ -23,7 +23,17 @@ public class PageController {
 	public String home1(Model model, HttpSession seesion,
 			@RequestParam(name = "login", required = false) String login) {
 
-		if (login != null && login.compareTo("in") == 0) {
+//		System.out.println("/ UserId="+ seesion.getAttribute("UserId"));
+//		System.out.println("/ RoleId="+ seesion.getAttribute("RoleId"));
+//		System.out.println("/ UserName="+ seesion.getAttribute("UserName"));
+//		System.out.println("/ PhotoPath="+ seesion.getAttribute("PhotoPath"));
+
+		if (login != null && login.compareTo("out") == 0) {
+			// 執行登出
+			seesion.setAttribute("UserName", null);
+		}
+
+		if (seesion.getAttribute("UserName") != null) {
 			model.addAttribute("membersId", seesion.getAttribute("UserId"));
 			model.addAttribute("roleId", seesion.getAttribute("RoleId"));
 
@@ -37,12 +47,18 @@ public class PageController {
 //			System.out.println("home1_photoPath="+seesion.getAttribute("PhotoPath"));
 
 		} else {
+
+			seesion.setAttribute("UserName", null);
+			seesion.setAttribute("UserId", null);
+			seesion.setAttribute("RoleId", null);
+			seesion.setAttribute("PhotoPath", null);
+
 			model.addAttribute("membersId", null);
 			model.addAttribute("roleId", null);
 
-			model.addAttribute("userName", "");
+			model.addAttribute("userName", null);
 			model.addAttribute("photoPath", "/pic/members/Photo_Default.png");
-			System.out.println("home1_userName_logout=" + model.getAttribute("UserName"));
+//			System.out.println("home1_userName_logout=" + model.getAttribute("UserName"));
 //			System.out.println("home1_photoPath_out="+model.getAttribute("PhotoPath"));
 
 		}
@@ -130,32 +146,56 @@ public class PageController {
 	// 正融-----開始
 
 	@GetMapping("/categories-edit")
-	public String categoriesEdit() {
+	public String categoriesEdit(Model model, HttpSession seesion) {
+		model.addAttribute("userName",
+				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
+		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
+				: seesion.getAttribute("PhotoPath"));
 		return "/categories/categories-edit";
 	}
 
 	@GetMapping("/product-edit")
-	public String productEdit() {
+	public String productEdit(Model model, HttpSession seesion) {
+		model.addAttribute("userName",
+				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
+		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
+				: seesion.getAttribute("PhotoPath"));
 		return "/product/product-edit";
 	}
 
 	@GetMapping("/product-list")
-	public String productList() {
+	public String productList(Model model, HttpSession seesion) {
+		model.addAttribute("userName",
+				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
+		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
+				: seesion.getAttribute("PhotoPath"));
 		return "/product/product-list";
 	}
 
 	@GetMapping("/product-add")
-	public String productAdd() {
+	public String productAdd(Model model, HttpSession seesion) {
+		model.addAttribute("userName",
+				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
+		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
+				: seesion.getAttribute("PhotoPath"));
 		return "/product/product-add";
 	}
 
 	@GetMapping("/product-singlePage")
-	public String productSinglePage() {
+	public String productSinglePage(Model model, HttpSession seesion) {
+		model.addAttribute("userName",
+				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
+		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
+				: seesion.getAttribute("PhotoPath"));
 		return "/product/product-singlePage";
 	}
 
 	@GetMapping("/product-search")
-	public String productSearch() {
+	public String productSearch(Model model, HttpSession seesion) {
+		model.addAttribute("userName",
+				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
+		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
+				: seesion.getAttribute("PhotoPath"));
 		return "/product/product-search";
 	}
 
@@ -215,6 +255,14 @@ public class PageController {
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 
 		return "/Order/OrderSuppliers";
+	}
+
+	@GetMapping("/OrderDetailSuppliers")
+	public String OrderDetailSupploers(Model model, HttpSession session) {
+		model.addAttribute("userName", session.getAttribute("UserName"));
+		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
+
+		return "/OrderDetail/OrderDetailSuppliers";
 	}
 	// 任凱 --- 結束
 }

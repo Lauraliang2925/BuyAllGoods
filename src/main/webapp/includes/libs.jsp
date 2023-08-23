@@ -15,6 +15,8 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
 />
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
 <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js"></script>
 
 <script src="https://www.unpkg.com/jquery@3.7.0/dist/jquery.js"></script>
@@ -39,6 +41,4 @@
 
 <script src="https://unpkg.com/vuejs-paginate-next@latest/dist/vuejs-paginate-next.umd.js"></script>
 
-
-
-
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>

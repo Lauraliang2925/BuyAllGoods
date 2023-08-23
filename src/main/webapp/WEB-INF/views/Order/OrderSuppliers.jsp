@@ -79,6 +79,7 @@
                             <th>物流狀態</th>
                             <th>預計到貨日期</th>
                             <th>實際到貨日期</th>
+                            <th>確認商品</th>
                         </tr>
                     </thead>
                     <tbody class="table-light">
@@ -156,7 +157,7 @@
                         <!-- test end -->
                         <!-- 3455 -->
                         <tr v-for="item in orderDetailBySuppliers" :key="item.order_detail_id" class="align-middle">
-                            <template v-if="item.order_status === '訂單完成' && item.track_shipment === '已送達' && item.estimated_arrival !== null && item.delivered_arrival !== null">
+                            <template v-if="item.order_status === '訂單完成' && item.track_shipment === '已送達' && item.estimated_arrival !== null && item.delivered_arrival !== null || item.order_status === '取消' || item.order_status === '退貨完成'">
                                 <td>
                                     <div hidden>{{item.suppliers_id}}{{item.order_detail_id}}</div>
                                     {{item.order_id}}
@@ -169,6 +170,7 @@
                                 <td class="text-success">{{item.track_shipment}}</td>
                                 <td>{{item.estimated_arrival}}</td>
                                 <td class="text-primary">{{item.delivered_arrival}}</td>
+                                <td></td>
                             </template>
                             <template v-else>
                                 <td>
@@ -217,6 +219,11 @@
                                             v-model="item.delivered_arrival"
                                             @change="updateOrderDetailBySuppliers(item)">
                                     </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-dark" @click="redirectToOrderDetail(item.order_id)">
+                                        <i class="bi bi-search text-warning"></i> 查看
+                                    </button>
                                 </td>
                             </template>
                         </tr>

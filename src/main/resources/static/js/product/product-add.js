@@ -70,6 +70,7 @@ const app = Vue.createApp({
   },
 
   methods: {
+
     //確認有效期限，不得早於系統日
     checkExpiryDate: function () {
       const today = new Date(); // 系統日
@@ -257,7 +258,7 @@ const app = Vue.createApp({
           '<div class="text-center"><i class="fa-solid fa-spinner fa-spin-pulse"></i> loading...</div>',
         closeButton: false,
       });
-
+      this.staffId  = localStorage.getItem("MembersId");
       // 收集資料 start
       if (this.categoriesId === "") {
         this.categoriesId = null;
@@ -316,11 +317,13 @@ const app = Vue.createApp({
       if (this.discount === "") {
         this.discount = 0;
       }
-      if (this.staffId === "") {
-        this.staffId = 1;
-      }
+      // if (this.staffId === "") {
+      //   this.staffId = this.staffId;
+      // }
+
       // 收集資料 end
 
+      console.log("staffId: "+this.staffId)
       let request = {
         categoriesId: this.categoriesId,
         contractsId: this.contractsId,

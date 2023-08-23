@@ -36,9 +36,9 @@ const app = Vue.createApp({
             }
             axios.post(contextPath + '/suppliers/findSupplier',request)
             .then((response)=>{
-                console.log(response.data)
+                // console.log(response.data)
                 let suppliersId = response.data.suppliersId
-                console.log(suppliersId)
+                // console.log(suppliersId)
                 // console.log(vm.suppliers_id)
 
                 // axios.post(contextPath + '/api/page/orders/detail/dataBySuppliersId/' + vm.suppliers_id)
@@ -157,6 +157,11 @@ const app = Vue.createApp({
                     bootbox.hideAll();
                 }, 500)
             })
+        },
+        redirectToOrderDetail(order_id) {
+            const url = contextPath + '/OrderDetailSuppliers?order_id=' + order_id;
+            console.log(url)
+            window.location.href = url;
         },
     }
 })

@@ -42,6 +42,7 @@ const app = Vue.createApp({
             membersId: "",
             MemberId: localStorage.getItem('MembersId'),
             RoleId: localStorage.getItem('RoleId'),
+            roleId: "",
 
 
             // // 分頁功能所需參數
@@ -84,17 +85,18 @@ const app = Vue.createApp({
             // }
 
             if(vm.MemberId != null && vm.RoleId === '3'){
+                // console.log("12=",vm.MemberId)
                 // axios.post(contextPath + '/api/page/orders/members/' + vm.tt_number)
                 axios.post(contextPath + '/api/page/orders/members/' + vm.MemberId)
                     .then((response) => {
                         // console.log(response.data)
                         vm.OrdersWhereMemberData = response.data
                         vm.backupOrdersData = response.data
-                        vm.order_id = response.data.order_id
-                        vm.members_id = response.data.members_id
-                        vm.total_amount = response.data.total_amount
-                        vm.order_notes = response.data.order_notes
-                        vm.order_status = response.data.order_status
+                        // vm.order_id = response.data.order_id
+                        // vm.members_id = response.data.members_id
+                        // vm.total_amount = response.data.total_amount
+                        // vm.order_notes = response.data.order_notes
+                        // vm.order_status = response.data.order_status
                         // console.log(response.data)
                         // const dateTimeString = response.data.placed
                         // vm.placed = vm.formatDate(dateTimeString);
@@ -137,14 +139,26 @@ const app = Vue.createApp({
             let vm = this
             vm.isShowTable = true
             vm.isShowCard = false
+            vm.roleId = localStorage.getItem('RoleId')
 
-            if (vm.selectedStatus !== '所有訂單') {
-                vm.OrdersWhereMemberData = vm.backupOrdersData.filter(item => item.orderStatus === vm.selectedStatus);
-                if (vm.OrdersWhereMemberData.length === 0) {
-                    vm.isShowTable = false
+            if(vm.roleId === '3'){
+                if (vm.selectedStatus !== '所有訂單') {
+                    vm.OrdersWhereMemberData = vm.backupOrdersData.filter(item => item.order_status === vm.selectedStatus);
+                    if (vm.OrdersWhereMemberData.length === 0) {
+                        vm.isShowTable = false
+                    }
+                } else {
+                    vm.OrdersWhereMemberData = vm.backupOrdersData
                 }
-            } else {
-                vm.OrdersWhereMemberData = vm.backupOrdersData
+            }else if(vm.roleId === '1'){
+                if (vm.selectedStatus !== '所有訂單') {
+                    vm.OrdersWhereMemberData = vm.backupOrdersData.filter(item => item.orderStatus === vm.selectedStatus);
+                    if (vm.OrdersWhereMemberData.length === 0) {
+                        vm.isShowTable = false
+                    }
+                } else {
+                    vm.OrdersWhereMemberData = vm.backupOrdersData
+                }
             }
         },
         selectOrderId(orderId) {
@@ -175,6 +189,8 @@ const app = Vue.createApp({
             vm.disableButton = false
             vm.cancel = false
             vm.data404 = true
+            vm.membersId = localStorage.getItem('MembersId')
+            vm.roleId = localStorage.getItem('RoleId')
 
             // 判斷輸入是否包含標點符號
             const punctuations = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;
@@ -184,23 +200,43 @@ const app = Vue.createApp({
                 return; // 停止執行
             }
 
+            // console.log(vm.roleId)
 
-            axios.post(contextPath + '/api/page/orders/searchByNotes2/' + searchInputValue)
-                .then((response) => {
-                    // console.log(response.data)
-                    vm.searchResult = response.data
-                    vm.searchResult.forEach(order => {
-                        order.placed = vm.formatDate(order.placed);
-                    });
-                    if (vm.searchResult.length === 0) {
-                        vm.isShowTable = false
-
-                    }
-
-                })
-                .catch((error) => {
-                    console.error("資料請求失敗：", error);
-                })
+            if(vm.roleId === '3'){
+                axios.post(contextPath + '/api/page/orders/searchByNotes2/' + searchInputValue + '/' +vm.membersId)
+                    .then((response) => {
+                        // console.log(response.data)
+                        vm.searchResult = response.data
+                        vm.searchResult.forEach(order => {
+                            order.placed = vm.formatDate(order.placed);
+                        });
+                        if (vm.searchResult.length === 0) {
+                            vm.isShowTable = false
+    
+                        }
+    
+                    })
+                    .catch((error) => {
+                        console.error("資料請求失敗：", error);
+                    })
+            }else if(vm.roleId === '1'){
+                axios.post(contextPath + '/api/page/orders/searchByNotesAll/' + searchInputValue)
+                    .then((response) => {
+                        // console.log(response.data)
+                        vm.searchResult = response.data
+                        vm.searchResult.forEach(order => {
+                            order.placed = vm.formatDate(order.placed);
+                        });
+                        if (vm.searchResult.length === 0) {
+                            vm.isShowTable = false
+    
+                        }
+    
+                    })
+                    .catch((error) => {
+                        console.error("資料請求失敗：", error);
+                    })
+            }
         },
         modifyOrderStatusReturn() {
             let vm = this

@@ -28,8 +28,12 @@ public interface OrderRepository extends JpaRepository<OrderBean, Integer> {
 //	public List<OrderBean> searchOrderByNotes(@Param("order_notes")String order_notes);
 //	
 	@Query(nativeQuery = true,
-			value = "select * from orders where order_notes like CONCAT('%', :order_notes, '%')")
-	public List<Object[]> searchOrderByNotes2(@Param("order_notes")String orderNotes);
+			value = "select * from orders where order_notes like CONCAT('%', :order_notes, '%') and members_id = :members_id")
+	public List<Object[]> searchOrderByNotes2(@Param("order_notes")String orderNotes, @Param("members_id")Integer membersId);
+	
+	@Query(nativeQuery = true,
+			value = "select * from orders where order_notes like CONCAT('%', :order_notes, '%') ")
+	public List<Object[]> searchOrderByNotesAll(@Param("order_notes")String orderNotes);
 	
 	@Query("from OrderBean where orderNotes like %:orderNotes% ")
 	List<OrderBean> searchOrderByNotes(@Param("orderNotes")String orderNotes);

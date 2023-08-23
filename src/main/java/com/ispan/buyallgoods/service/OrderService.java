@@ -8,15 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ispan.buyallgoods.model.OrderBean;
+import com.ispan.buyallgoods.model.OrderDetailBean;
+import com.ispan.buyallgoods.repository.OrderDetailRepository;
 import com.ispan.buyallgoods.repository.OrderRepository;
 
 @Service
+//@Transactional(rollbackFor = {Exception.class})
 public class OrderService {
 
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private OrderDetailRepository orderDetailRepository;
 
 	public List<OrderBean> findAllOrders() {
 		return orderRepository.findAll();
@@ -101,13 +108,33 @@ public class OrderService {
         return orderRepository.searchOrderByNotes(orderNotes);
     }
     
-    public List<Object[]> searchOrderByNotes2(String orderNotes) {
-        return orderRepository.searchOrderByNotes2(orderNotes);
+    public List<Object[]> searchOrderByNotes2(String orderNotes, Integer membersId) {
+        return orderRepository.searchOrderByNotes2(orderNotes, membersId);
+    }
+    
+    public List<Object[]> searchOrderByNotesAll(String orderNotes) {
+        return orderRepository.searchOrderByNotesAll(orderNotes);
     }
     
 	public Page<OrderBean> findAll(Pageable pageable) {
 		return orderRepository.findAll(pageable);
 
 	}
+	
+	@Transactional
+	public OrderBean createOrderWithDetails(OrderBean orderBean, List<OrderDetailBean> orderDetailBeans) {
+        OrderBean createdOrder = orderRepository.save(orderBean);
+
+        for (OrderDetailBean detail : orderDetailBeans) {
+            try {
+                detail.setOrderId(createdOrder.getOrderId());
+                orderDetailRepository.save(detail);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create OrderDetailBean", e);
+            }
+        }
+
+        return createdOrder;
+    }
 
 }

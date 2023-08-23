@@ -193,7 +193,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                       class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
                     >
                       <div class="fs-4 text-danger">
-                        價格:$ {{ product.sellingPrice * product.discount }}
+                        價格:$ {{ Math.floor(product.sellingPrice * product.discount) }}
                       </div>
                       <div class="d-flex flex-wrap align-items-center">
                         數量<input
@@ -242,15 +242,10 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               ></paginate>
               <!-- 我是分頁 -->
             </div>
-
           </div>
           <!-- 中間商品內容結束 -->
         </div>
       </div>
-
-
-
-
     </div>
 
     <%@ include file="/WEB-INF/views/toolbar/footer.jsp" %>

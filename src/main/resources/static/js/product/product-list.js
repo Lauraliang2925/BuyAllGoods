@@ -53,6 +53,12 @@ const app = Vue.createApp({
       if(this.roleId==2){
         this.findSuppliersByMembersId(this.membersId);
       }
+      if(this.roleId==1){
+        this.fullData(); 
+        this.FindAllSuppliers();
+        this.FindAllContracts();
+        this.FindAllcategories();
+      }
       
     },
        //查詢全部的廠商有哪些，for廠商名稱的填寫欄位
@@ -356,10 +362,7 @@ const app = Vue.createApp({
   },
   mounted: function () {     
     
-    this.fullData(); 
-    this.FindAllSuppliers();
-    this.FindAllContracts();
-    this.FindAllcategories();
+  
     this.getUserID();
 
   
