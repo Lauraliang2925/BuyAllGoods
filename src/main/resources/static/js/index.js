@@ -2,7 +2,6 @@
 const index = Vue.createApp({
   components: {
     paginate: VuejsPaginateNext,
-    'star-rating': VueStarRating.default,
   },
   data: function () {
     return {
