@@ -25,8 +25,8 @@ public class CategoriesController {
 
 	@Autowired
 	CategoriesService categoriesService;
-	
-	@GetMapping("/categories/findCategoriesIdByName/{name}" )
+
+	@GetMapping("/categories/findCategoriesIdByName/{name}")
 	public Map<String, Object> findCategoriesIdByName(@PathVariable(name = "name") String name) {
 		Map<String, Object> responseJson = new HashMap<>();
 		Integer findByCategoriesName = categoriesService.findCategoriesIdByName(name);
@@ -34,7 +34,7 @@ public class CategoriesController {
 		return responseJson;
 	}
 
-	@PostMapping("/categories/{name}" )
+	@PostMapping("/categories/{name}")
 	public Map<String, Object> checkExistsName(@PathVariable(name = "name") String name) {
 		Map<String, Object> responseJson = new HashMap<>();
 
@@ -48,16 +48,15 @@ public class CategoriesController {
 		return responseJson;
 	}
 
-	
-	//使用categoriesId 尋找一筆分類
+	// 使用categoriesId 尋找一筆分類
 	@PostMapping("/categories/findById")
 	public Map<String, Object> findById(@RequestBody Categories categories) {
 
 		Categories ExistCategories = categoriesService.findById(categories.getCategoriesId());
-		
+
 		Map<String, Object> responseJson = new HashMap<>();
 
-		if (ExistCategories==null) {
+		if (ExistCategories == null) {
 			responseJson.put("message", "查詢失敗，此分類不存在");
 			responseJson.put("success", false);
 		} else {
@@ -65,18 +64,37 @@ public class CategoriesController {
 			responseJson.put("message", "查詢成功");
 			responseJson.put("success", true);
 		}
-		return responseJson;		
-	
+		return responseJson;
+
+	}
+
+	// 使用categoriesId 尋找一筆分類
+	@GetMapping("/categories/{id}")
+	public Map<String, Object> findCategoriesById(@PathVariable(name = "id") Integer id) {
+
+		Categories ExistCategories = categoriesService.findById(id);
+
+		Map<String, Object> responseJson = new HashMap<>();
+
+		if (ExistCategories == null) {
+			responseJson.put("message", "查詢失敗，此分類不存在");
+			responseJson.put("success", false);
+		} else {
+			responseJson.put("categories", ExistCategories);
+			responseJson.put("message", "查詢成功");
+			responseJson.put("success", true);
+		}
+		return responseJson;
+
 	}
 
 //	有分頁功能
 	@GetMapping("/categories/findAll")
-	public Map<String, Object> findAll(@RequestParam("current") int current,
-            @RequestParam("rows") int rows) {
-		
-		//spring boot 分頁API
-		Pageable pageable = PageRequest.of((current-1), rows);
-		
+	public Map<String, Object> findAll(@RequestParam("current") int current, @RequestParam("rows") int rows) {
+
+		// spring boot 分頁API
+		Pageable pageable = PageRequest.of((current - 1), rows);
+
 		Page<Categories> pages = categoriesService.findAll(pageable);
 		List<Categories> list = pages.getContent();
 		long count = pages.getTotalElements();
@@ -87,13 +105,11 @@ public class CategoriesController {
 
 		return responseJson;
 	}
-	
-	
-	
+
 //	沒有分頁功能
 	@GetMapping("/categories/fullData")
-	public Map<String, Object> fullData() {		
-	
+	public Map<String, Object> fullData() {
+
 		List<Categories> list = categoriesService.fullData();
 //		long count = categoriesService.count();
 
@@ -104,7 +120,6 @@ public class CategoriesController {
 		return responseJson;
 	}
 
-	
 	@PostMapping("/categories/insert")
 	public Map<String, Object> insert(@RequestBody Categories categories) {
 

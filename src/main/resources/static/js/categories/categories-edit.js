@@ -159,8 +159,9 @@ const app = Vue.createApp({
 			this.isShowSelect = true;
 			this.isShowModify = false; 
 			
-			vm.categoriesId = response.data.categoriesId;
-			vm.nameById = response.data.name;
+			vm.categoriesId = response.data.categories.categoriesId;
+			vm.nameById = response.data.categories.name;
+			console.log(response.data.categories.categoriesId)
   
 			setTimeout(function () {
 			  bootbox.hideAll();
