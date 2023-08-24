@@ -377,6 +377,8 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               class="col-form-control col-sm-8"
               id="discount	"
               v-model="discount"
+              min="0"
+              max="1"
             />
           </div>
 
@@ -394,12 +396,6 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               />
             </div>
           </div>
-
-          <!-- <div class="mb-3 row">
-                          <label for="createdDate" class="col-form-label col-sm-4">新增日期</label>
-                          <input type="date" class="col-form-control col-sm-8" id="createdDate"
-                          v-model="createdDate" readonly>
-                        </div> -->
 
           <div class="container gap-2 py-3 d-flex justify-content-around">
             <a href="<c:url value='/product-list'></c:url>">
