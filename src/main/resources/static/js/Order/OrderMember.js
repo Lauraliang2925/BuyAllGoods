@@ -351,7 +351,7 @@ const app = Vue.createApp({
                     for (const item of vm.getInnerJoinData) {
                         const order_status = item.order_status;
 
-                        if (order_status === '取消' || order_status === '退貨完成' || order_status === '申請退貨中') {
+                        if (order_status === '取消' || order_status === '退貨完成' || order_status === '申請退貨中' || order_status === '訂單完成') {
                             vm.disableButton = true
                             vm.cancel = true
                         }

@@ -114,7 +114,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               <th scope="col">分類名稱</th>
               <th scope="col">廠商名稱</th>
               <th scope="col">合約編號</th>
-              <th v-if="roleId==1" scope="col">詳細資訊</th>
+              <th scope="col" v-if="roleId==1">詳細資訊</th>
             </tr>
           </thead>
           <!--~~~~~~~~~~界接後端(用迴圈產出清單)~~~~~~~-->

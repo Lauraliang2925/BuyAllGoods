@@ -265,9 +265,9 @@ let newapp = Vue.createApp({
 			//畫面載入指定圖片
 			dom.imgSrcVue = imgSrc;     			
 			//console.log("mounted_dom.imgSrcVue=",dom.imgSrcVue)
-			if(roleId==="2"){
+			if(roleId==="1"){
 				dom.showMemberRow = true;
-				console.log("mounted_dom.showMemberRow="+dom.showMemberRow)
+				//console.log("mounted_dom.showMemberRow="+dom.showMemberRow)
 			}			    
 		});
 	},
