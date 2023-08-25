@@ -1,5 +1,7 @@
 const app = Vue.createApp({
-  components: {},
+  components: {
+    'star-rating': VueStarRating.default,
+  },
   data: function () {
     return {
       contextPath: contextPath,
