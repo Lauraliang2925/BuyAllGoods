@@ -107,6 +107,13 @@
                                                 v-show="!cancel">取消訂單</button>
                                             <button class="btn btn btn-dark mb-2 btn-lg" v-if="index === 0"
                                                 v-show="cancel" disabled>取消訂單</button>
+                                                <button
+                                                class="btn btn-outline-danger mb-2 mt-3 btn-lg"
+                                                v-if="index === 0 && isShowReviewButton"
+                                                @click="redirectToOrderDetail(item.order_id)"
+                                              >
+                                                評價商品
+                                              </button>
                                             <button class="btn btn-outline-success btn-lg"
                                                 @click="findAllOrdersWhereMember" v-if="index === 0">返回</button>
                                         </div>
