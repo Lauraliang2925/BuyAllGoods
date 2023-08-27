@@ -160,6 +160,8 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 v-for="product in products"
                 :key="product.productsId"
               >
+
+
                 <div class="card shadow-sm">
                   <button
                     class="btn btn-link"
@@ -188,6 +190,23 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                     <p class="card-text container fs-4 text-center">
                       {{ product.name }}
                     </p>
+                    <div>
+                      <star-rating
+                      :increment="0.1"
+                      :max-rating="5"
+                      star-size="25"
+                      :animate="false"
+                      :active-color="['#ae0000','orange']"
+                      :active-border-color="['#F6546A','#a8c3c0']"
+                      :border-width="4"
+                      :star-points="[23,2, 14,17, 0,19, 10,34, 7,50, 23,43, 38,50, 36,34, 46,19, 31,17]"
+                      :active-on-click="true"
+                      :clearable="true"
+                      :padding="3"
+                      :rating="product.rating"
+                      :read-only="true"
+                    ></star-rating>
+                    </div>
                     <div
                       style="padding: 15px"
                       class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"

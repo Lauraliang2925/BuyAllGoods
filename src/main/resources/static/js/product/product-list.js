@@ -43,6 +43,8 @@ const app = Vue.createApp({
       roleId:null,
       isShowSearchBar:false,
       showPaginateForS:false,
+
+      averageRatings: {},
     };
   },
 
@@ -101,6 +103,7 @@ const app = Vue.createApp({
         });
     },
 
+
     //使用categoriesId 尋找一筆分類名稱
     findCategoriesNameById: function (categoriesId) {          
      
@@ -122,6 +125,8 @@ const app = Vue.createApp({
             // 如果这个请求的结果在一次 Vue.js 的循环渲染中会多次调用，
             // 你可以使用 $forceUpdate() 来强制更新视图
             vm.$forceUpdate();
+
+
           })
           .catch(function (error) {
             console.error("資料請求失敗：", error);

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.ispan.buyallgoods.model.Categories;
 import com.ispan.buyallgoods.model.Members;
 import com.ispan.buyallgoods.repository.MembersRepository;
 
@@ -105,7 +106,7 @@ public class MembersService {
 			return error;
 		}	
 	}
-	
+
 	public List<Members> findMembersAll() {
 		List<Members> membersAll = membersRepository.findAll();				
 		return membersAll;		

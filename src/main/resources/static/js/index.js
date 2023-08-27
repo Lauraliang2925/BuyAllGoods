@@ -48,6 +48,10 @@ const index = Vue.createApp({
       membersId: "",
       productQuantities: {}, // 以商品ID为键，数量为值的对象
       quantity: "",
+
+      calculateRating:"",
+      productsAvgRatings: {},
+      rating:"",
     };
   },
 
@@ -131,6 +135,7 @@ const index = Vue.createApp({
         .get(contextPath + "/categories/fullData")
         .then(function (response) {
           vm.categories = response.data.list;
+          
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -142,6 +147,35 @@ const index = Vue.createApp({
       this.findVaildByCategoriesId(this.categoriesId, page);
     },
 
+    calculateAvgRating: function (productsId, index) {
+      
+
+      if (this.productsAvgRatings[productsId]) {
+        // 如果已經獲取過該會員代號，直接使用緩存的值
+        this.rating = this.productsAvgRatings[productsId];
+      } else {
+        // 否則發起請求獲取會員代號
+        let request = {
+          productsId: productsId,
+        };
+        let vm = this;
+        axios
+        .get(contextPath + "/review/findAvgRatingByProductId/" + productsId, {
+          params: request,
+        })
+          .then(function (response) {
+            console.log("productsAvgRatings= " + response.data.calculateRating);
+            vm.products[index].rating = response.data.calculateRating; // 存入對應的 product 中
+        
+          })
+          .catch(function (error) {
+            console.error("資料請求失敗：", error);
+          });
+      }
+
+    },
+    
+   
     //	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
     findVaildByCategoriesId: function (categoriesId, page) {
       if (page) {
@@ -166,6 +200,10 @@ const index = Vue.createApp({
         .then(function (response) {
           vm.products = response;
           vm.products = response.data.list;
+
+          for (var i = 0; i < vm.products.length; i++) {
+            vm.calculateAvgRating(vm.products[i].productsId, i);
+          }
     
           // Update the discount values based on discountEndDate
           let currentDate = new Date();

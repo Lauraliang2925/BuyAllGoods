@@ -1,6 +1,7 @@
 const app = Vue.createApp({
   components: {
-    'star-rating': VueStarRating.default,
+    "star-rating": VueStarRating.default,
+    paginate: VuejsPaginateNext,
   },
   data: function () {
     return {
@@ -29,7 +30,6 @@ const app = Vue.createApp({
       discountEndDate: "",
       discount: "",
       staffId: "",
-      createdDate: "",
 
       categoriesName: "",
 
@@ -39,6 +39,28 @@ const app = Vue.createApp({
       quantity: "",
 
       isShowDiscountDate: true,
+
+      // 分頁功能所需參數
+      start: 0, //起始資料index (from 0)
+      rows: 2, //每頁顯示資料數量
+      pages: 0, //總分頁數量
+      current: 1, //目前頁面 (from 1)
+      lastPageRows: 0, //最後一頁資料數量
+
+      reviewId: "",
+      orderDetailId: "",
+      rating: 0,
+      comment: "",
+      likesCount: 0,
+      createdDate: "",
+
+      members: "",
+      memberNames: [],
+      photoPath: "",
+      memberPhotoPath: "",
+      memberName: "",
+
+      calculateRating: 0,
     };
   },
   computed: {},
@@ -115,6 +137,7 @@ const app = Vue.createApp({
       window.location.href = contextPath + "/?categoriesName=" + name;
     },
     findById: function (productsId) {
+      this.selectReviewByProductsId(productsId);
       let vm = this;
       axios
         .get(contextPath + "/product/" + productsId)
@@ -155,9 +178,6 @@ const app = Vue.createApp({
             vm.discount = 1;
             vm.isShowDiscountDate = false;
           }
-
-          // 當畫面一載入時，自動顯示當前圖片
-          vm.previewUrl = contextPath + "/pic/product/" + vm.name + ".jpg"; // 設定 this.previewUrl
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -214,6 +234,83 @@ const app = Vue.createApp({
 
         const countdownElement = document.getElementById("countdown");
         countdownElement.innerHTML = `${days} 天 ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
+      }
+    },
+    // 顯示所有評價
+    selectReviewByProductsId: function (productsId, page) {
+      // 在點選分頁(page from 1)時，呼叫出顯示的資料
+      if (page) {
+        // 當點選指定分頁時的動作
+        this.start = (page - 1) * this.rows;
+        this.current = page;
+      } else {
+        // 未點選指定分頁時的動作(預設為第一頁)
+        this.start = 0;
+        this.current = 1;
+      }
+
+      // 要使用spring boot 的pagable API，所需參數有current(目前頁面)，以及rows(每頁顯示資料數量)
+      // 但是current在pagable API預設起始值為0!! 因此傳入後端controller後要再-1，需特別注意
+      let request = {
+        productsId: this.productsId,
+        current: this.current,
+        rows: this.rows,
+      };
+
+      let vm = this;
+      // 使用 Axios 進行 API 請求，獲取資料庫中的分類資料
+      axios
+        .get(contextPath + "/review/findAllByProductsId/" + productsId, {
+          params: request, // 将请求参数作为 params 对象
+        })
+        .then(function (response) {
+          vm.products = response.data.list;
+          // console.log(vm.products);
+          let count = response.data.count;
+          vm.pages = Math.ceil(count / vm.rows);
+          vm.lastPageRows = count % vm.rows;
+
+          // 計算平均rating
+          vm.calculateRating = response.data.calculateRating;
+          // console.log("calculateRating: "+vm.calculateRating);
+
+          // console.log(vm.products[0].membersId)
+          for (var i = 0; i < vm.products.length; i++) {
+            vm.findMemberNameById(vm.products[i].membersId, i);
+          }
+        })
+        .catch(function (error) {
+          console.error("資料請求失敗：", error);
+        });
+    },
+
+    // 這段方法可以確保點擊分頁按鈕時，傳遞的參數是page而不是categoriesId!!!!!!!!!!
+    handlePaginationClick(page) {
+      this.selectReviewByProductsId(this.productsId, page);
+    },
+    findMemberNameById: function (membersId, index) {
+      if (this.memberNames[membersId]) {
+        // 如果已經獲取過該會員代號，直接使用緩存的值
+        this.memberName = this.memberNames[membersId];
+        this.memberPhotoPath =
+          contextPath + "/pic/members/" + this.memberPhotoPath[membersId];
+      } else {
+        // 否則發起請求獲取會員代號
+        let request = {
+          membersId: membersId,
+        };
+        let vm = this;
+        axios
+          .post(contextPath + "/members/findByMembersId", request)
+          .then(function (response) {
+            // console.log("photoPath= " + response.data.list.photoPath);
+            vm.products[index].memberName = response.data.list.userName; // 存入對應的 product 中
+            vm.products[index].memberPhotoPath =
+              contextPath + "/pic/members/" + response.data.list.photoPath; // 存入對應的 product 中
+          })
+          .catch(function (error) {
+            console.error("資料請求失敗：", error);
+          });
       }
     },
   },

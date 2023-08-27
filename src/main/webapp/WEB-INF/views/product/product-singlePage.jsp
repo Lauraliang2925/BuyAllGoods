@@ -12,7 +12,7 @@ file="/includes/libs.jsp"%>
 
   <style>
     /* 調整預覽圖片顯示的高度 */
-    .productImg {
+    .memberPhotoImg {
       height: 100px;
     }
   </style>
@@ -86,10 +86,25 @@ file="/includes/libs.jsp"%>
 
         <!-- 右側商品敘述起始 -->
         <div class="bg-light card-body py-5 container">
-          <div class="container d-flex justify-content-around">
-            <div class="container fs-3 fw-bold mb-2">商品名稱: {{ name }}</div>
+          <div class="mb-3">
+            <star-rating
+              :increment="0.1"
+              :max-rating="5"
+              star-size="40"
+              :animate="false"
+              :active-color="['#ae0000','orange']"
+              :active-border-color="['#F6546A','#a8c3c0']"
+              :border-width="4"
+              :star-points="[23,2, 14,17, 0,19, 10,34, 7,50, 23,43, 38,50, 36,34, 46,19, 31,17]"
+              :active-on-click="true"
+              :clearable="true"
+              :padding="3"
+              :rating="calculateRating"
+              :read-only="true"
+            ></star-rating>
           </div>
-          <div class="container">商品編號: {{ productsId }}</div>
+          <div class="fs-3 fw-bold mb-2">商品名稱: {{ name }}</div>
+          <div class="">商品編號: {{ productsId }}</div>
           <br />
           <div
             class="d-flex container fs-9 text-danger"
@@ -210,140 +225,151 @@ file="/includes/libs.jsp"%>
         </div>
         <!-- 右側商品敘述結束 -->
       </div>
-      <br />
 
       <!-- 留言板樣式 -->
 
-      <div class="py-5 bg-light container border p-3 rounded col-sm-6">
-        <div class="d-flex justify-content-start"></div>
-        <!-- 商品評價標題 -->
-        <h4 class="mb-4">商品評價</h4>
-        <hr />
-        <!-- 商品售價 -->
-        <div class="mb-3 row">
-          <label for="sellingPrice" class="col-form-label col-sm-4"
-            >商品售價</label
-          >
-          <div class="col-sm-8">
-            <input
-              type="number"
-              class="form-control"
-              id="sellingPrice"
-              v-model="sellingPrice"
-            />
-          </div>
-        </div>
-
-        <!-- 商品規格 -->
-        <div class="mb-3">
-          <label for="productsSpecification" class="form-label">商品規格</label>
-          <textarea
-            class="form-control"
-            id="productsSpecification"
-            v-model="productsSpecification"
-          ></textarea>
-        </div>
-
-        <!-- 販售開始日期 -->
-        <div class="mb-3 row">
-          <label for="sellingStartDate" class="col-form-label col-sm-4"
-            >販售開始日期</label
-          >
-          <div class="col-sm-8">
-            <input
-              type="date"
-              class="form-control"
-              id="sellingStartDate"
-              v-model="sellingStartDate"
-              @blur="checkSellingStartDate()"
-            />
-            <span id="" class="form-text" style="color: red">{{
-              sellingStartDateMessage
-            }}</span>
-          </div>
-        </div>
-
-        <!-- 新增人員（隱藏） -->
+      <div
+        class="mb-3 py-3 bg-light container border p-3 rounded col-sm-6"
+        v-for="product in products"
+        :key="product.productsId"
+      >
+        <!-- 評價編號（隱藏） -->
         <div class="mb-3 row" hidden>
-          <label for="staffId" class="col-sm-4 col-form-label">新增人員</label>
+          <label for="reviewId" class="col-sm-4 col-form-label">評價編號</label>
           <div class="col-sm-8">
             <input
               type="text"
               readonly
               class="form-control-plaintext"
-              id="staffId"
-              v-model="staffId"
+              id="reviewId"
+              :value="product.reviewId"
+            />
+          </div>
+        </div>
+        <!-- 會員編號（隱藏） -->
+
+        <div class="mb-3 row" hidden>
+          <label for="membersId" class="col-sm-4 col-form-label"
+            >會員編號</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="text"
+              readonly
+              class="form-control-plaintext"
+              id="membersId"
+              :value="product.membersId"
             />
           </div>
         </div>
 
-        <!-- 按鈕 -->
-        <div class="container gap-2 py-3 d-flex justify-content-around">
-          <a href="<c:url value='/product-list'></c:url>">
-            <button class="btn btn-outline-primary" type="button">
-              回到商品清單
-            </button>
-          </a>
-
-          <button
-            class="btn btn-outline-primary"
-            type="button"
-            @click="create()"
+        <!-- 產品編號（隱藏） -->
+        <div class="mb-3 row" hidden>
+          <label for="productsId" class="col-sm-4 col-form-label"
+            >產品編號</label
           >
-            確定新增
-          </button>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              readonly
+              class="form-control-plaintext"
+              id="productsId"
+              :value="product.productsId"
+            />
+          </div>
+        </div>
+        <!-- 訂單細節編號（隱藏） -->
+        <div class="mb-3 row" hidden>
+          <label for="orderDetailId" class="col-sm-4 col-form-label"
+            >訂單細節編號</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="text"
+              readonly
+              class="form-control-plaintext"
+              id="orderDetailId"
+              :value="product.orderDetailId"
+            />
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <div>
+            <star-rating
+              :increment="1"
+              :max-rating="5"
+              star-size="30"
+              :animate="false"
+              :active-color="['#ae0000','orange']"
+              :active-border-color="['#F6546A','#a8c3c0']"
+              :border-width="4"
+              :star-points="[23,2, 14,17, 0,19, 10,34, 7,50, 23,43, 38,50, 36,34, 46,19, 31,17]"
+              :active-on-click="true"
+              :clearable="true"
+              :padding="3"
+              :rating="product.rating"
+              :read-only="true"
+            ></star-rating>
+          </div>
+        </div>
+
+        <div class="d-flex mb-3">
+          <div>
+            <img
+              :src="product.memberPhotoPath"
+              alt="Preview"
+              class="memberPhotoImg"
+            />
+          </div>
+
+          <div class="mx-3 row">
+            <label for="membersId" class=""></label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                readonly
+                class="form-control-plaintext"
+                id="membersId"
+                :value="product.memberName"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- 商品評價標題 -->
+
+        <!-- 詳細原因及說明 -->
+        <div class="mb-3">
+          <label for="comment" class="form-label">詳細原因及說明: </label>
+          {{ product.comment == NULL ? "N/A" : product.comment }}
+        </div>
+        <div class="mb-3">
+          日期：{{
+            product.createdDate.substring(0, 10) +
+              " " +
+              product.createdDate.substring(11, 19)
+          }}
         </div>
       </div>
       <!-- 留言板樣式結束 -->
 
-      <!-- 留言板樣式1開始 -->
-
-      <div class="row mt-3">
-        <div class="col-md-12 d-flex justify-content-center">
-          <div class="card card-lg" style="width: 800px">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <div class="fs-4">商品評價</div>
-				<div>
-					<star-rating
-					  v-bind:increment="0.1"
-					  v-bind:max-rating="5"
-					  inactive-color="#000"
-					  active-color="orange"
-					  v-bind:star-size="30"
-					>
-					</star-rating>
-				  </div>
-              </div>
-           
-              <hr />
-              <div class="d-flex mt-3">
-                <div class="col">
-                  <image
-                    class="productImg"
-                    src="/buyallgoods/pic/product/洗衣機.jpg"
-                  ></image>
-                </div>
-                <div class="col">洗衣機</div>
-                <div class="col">數量: 2</div>
-                <div class="col">
-                  <i class="bi bi-currency-dollar"></i> 25610
-                </div>
-              </div>
-            </div>
-            <div class="container text-end mb-3">
-              共有 <span class="text-danger" id="count">1</span> 項商品，數量
-              <span class="text-danger" id="quantity">2</span> 個，訂單總額:
-              <span class="text-danger"
-                ><i class="bi bi-currency-dollar" id="price">51220</i>
-              </span>
-            </div>
-          </div>
-        </div>
+      <div class="container d-flex justify-content-center">
+        <!-- 我是分頁 -->
+        <paginate
+          first-last-button="true"
+          first-button-text="&lt;&lt;"
+          last-button-text="&gt;&gt;"
+          prev-text="&lt;"
+          next-text="&gt;"
+          :page-count="pages"
+          :initial-page="current"
+          :click-handler="handlePaginationClick"
+        ></paginate>
+        <!-- 我是分頁 -->
       </div>
-      <!-- 留言板樣式1結束 -->
 
-      <div class="py-5 d-flex justify-content-end">
+      <br />
+
+      <div class="py-3 d-flex justify-content-end">
         <button class="btn btn-outline-success" @click="goBack">
           回到上一頁
         </button>

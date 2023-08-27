@@ -199,6 +199,15 @@ public class PageController {
 		return "/product/product-search";
 	}
 
+	
+	@GetMapping("/review-product")
+	public String reviewProduct(Model model, HttpSession seesion) {
+		model.addAttribute("userName",
+				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
+		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
+				: seesion.getAttribute("PhotoPath"));
+		return "/review/review-product";
+	}
 	// 正融-----結束
 
 	// 任凱 --- 開始
