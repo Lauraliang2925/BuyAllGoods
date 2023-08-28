@@ -61,13 +61,94 @@ const app = Vue.createApp({
       memberName: "",
 
       calculateRating: 0,
+
+      userLoggedIn: false,
+      likeCounts: 0,
+      liked: false,
     };
   },
   computed: {},
   methods: {
     getUserID: function () {
       let membersId = localStorage.getItem("MembersId");
+      let roleId = localStorage.getItem("RoleId");
+      // console.log("membersId:"+membersId)
+      // console.log("roleId:"+roleId)
+      if (roleId === "3") {
+        this.userLoggedIn = true;
+      } else {
+        this.userLoggedIn = false;
+      }
       return membersId;
+    },
+    fetchLikeCounts() {
+      let vm = this;
+      axios
+        .get("/api/likeCounts")
+        .then(function (response) {
+          vm.likeCounts = response.data.count;
+        })
+        .catch(function (error) {
+          console.error("Error fetching like counts", error);
+        });
+    },
+    toggleLike: function (reviewId) {
+      let vm = this;
+      // console.log("reviewId:"+reviewId)
+      // console.log("membersId:"+this.getUserID())
+      // 在一般會員登入狀態下才能點擊按讚/收回按鈕
+      if (vm.userLoggedIn) {
+        let request = {
+          reviewId: reviewId,
+          membersId: vm.getUserID(),
+        };
+
+        if (vm.liked) {
+          // 用户已点赞，执行取消点赞逻辑
+          axios
+            .delete(contextPath + "/liked/delete", {
+              params: request, // 将请求参数作为 params 对象
+            })
+            .then(function (response) {
+              vm.liked = false;
+              // console.log(response.data.message)
+              // console.log(response.data.count)
+              vm.likeCounts = response.data.count;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
+            })
+            .catch(function (error) {
+              console.error("Error unliking", error);
+            });
+        } else {
+          // 用户未点赞，执行点赞逻辑
+          axios
+            .post(contextPath + "/liked/insert", request)
+            .then(function (response) {
+              vm.liked = true;
+              // console.log(response.data.message)
+              // console.log(response.data.count)
+              vm.likeCounts = response.data.count;
+
+            })
+            .catch(function (error) {
+              console.error("Error liking", error);
+            });
+        }
+      }
     },
     addFavorites: function (productsId) {
       let request = {
@@ -322,6 +403,7 @@ const app = Vue.createApp({
     this.findById(productsId);
     this.findCategoryIdByProductsId(productsId);
     this.getUserID();
+    this.fetchLikeCounts(product.reviewId);
   },
 });
 app.mount("#app");

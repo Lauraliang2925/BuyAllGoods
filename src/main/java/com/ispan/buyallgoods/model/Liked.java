@@ -11,9 +11,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
-@Table(name = "like")
+@Table(name = "liked")
 @Entity
-public class Like {
+public class Liked {
 
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Like {
 //FK
 	    @Column(name = "members_id")
 	    private Integer membersId;
-
+	    
 
 	    @Column(name = "created_date", nullable = false, insertable = false)
 	    private java.time.LocalDateTime createdDate;

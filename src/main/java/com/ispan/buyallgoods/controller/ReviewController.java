@@ -10,10 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ispan.buyallgoods.model.Product;
 import com.ispan.buyallgoods.model.Review;
 import com.ispan.buyallgoods.service.ReviewService;
 
@@ -72,4 +74,20 @@ public class ReviewController {
 		System.out.println(calculateRating);
 		return responseJson;
 	}
+	
+	//更新評論的讚數
+		@PutMapping("/review/updeteLikesCount/{id}")
+		public Map<String, Object> updeteLikesCount(@PathVariable(value = "id") Integer id, @RequestBody Review review) {
+
+			Map<String, Object> responseJson = new HashMap<>();
+			if (reviewService.updeteLikesCount(id, review) == null) {
+				responseJson.put("message", "更新資料失敗");
+				responseJson.put("success", false);
+			} else {
+				responseJson.put("message", "更新資料成功");
+				responseJson.put("success", true);
+			}
+			return responseJson;
+
+		}
 }

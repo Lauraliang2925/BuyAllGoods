@@ -1,12 +1,14 @@
 package com.ispan.buyallgoods.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ispan.buyallgoods.model.Product;
 import com.ispan.buyallgoods.model.Review;
 import com.ispan.buyallgoods.repository.ReviewRepository;
 
@@ -36,6 +38,15 @@ public class ReviewService {
 //	使用商品ID尋找此商品底下所有評論並計算平均分數
 	public Double calAvgRatingByProductId(Integer productsId) {
 		return reviewRepository.calAvgRatingByProductId(productsId);
+	}
+	
+	public Review updeteLikesCount(Integer id, Review review) {
+		Optional<Review> optional = reviewRepository.findById(id);
+		if (optional.isPresent()) {
+			return reviewRepository.save(review);
+		} else {
+			return null;
+		}
 	}
 
 }

@@ -226,6 +226,9 @@ file="/includes/libs.jsp"%>
         <!-- 右側商品敘述結束 -->
       </div>
 
+
+
+
       <!-- 留言板樣式 -->
 
       <div
@@ -234,7 +237,7 @@ file="/includes/libs.jsp"%>
         :key="product.productsId"
       >
         <!-- 評價編號（隱藏） -->
-        <div class="mb-3 row" hidden>
+        <div class="mb-3 row" >
           <label for="reviewId" class="col-sm-4 col-form-label">評價編號</label>
           <div class="col-sm-8">
             <input
@@ -248,7 +251,7 @@ file="/includes/libs.jsp"%>
         </div>
         <!-- 會員編號（隱藏） -->
 
-        <div class="mb-3 row" hidden>
+        <div class="mb-3 row" >
           <label for="membersId" class="col-sm-4 col-form-label"
             >會員編號</label
           >
@@ -264,7 +267,7 @@ file="/includes/libs.jsp"%>
         </div>
 
         <!-- 產品編號（隱藏） -->
-        <div class="mb-3 row" hidden>
+        <div class="mb-3 row" >
           <label for="productsId" class="col-sm-4 col-form-label"
             >產品編號</label
           >
@@ -279,7 +282,7 @@ file="/includes/libs.jsp"%>
           </div>
         </div>
         <!-- 訂單細節編號（隱藏） -->
-        <div class="mb-3 row" hidden>
+        <div class="mb-3 row" >
           <label for="orderDetailId" class="col-sm-4 col-form-label"
             >訂單細節編號</label
           >
@@ -294,6 +297,7 @@ file="/includes/libs.jsp"%>
           </div>
         </div>
         <div class="d-flex justify-content-between mb-3">
+
           <div>
             <star-rating
               :increment="1"
@@ -310,6 +314,16 @@ file="/includes/libs.jsp"%>
               :rating="product.rating"
               :read-only="true"
             ></star-rating>
+          </div>
+
+          <!-- 會員登入可以按讚，只能按一次 -->
+          <div class="">
+            <button class="btn btn-light" :disabled="!userLoggedIn" @click="toggleLike(product.reviewId)">
+              {{ likeCounts }}
+              <i v-if="!liked" class="fa-regular fa-thumbs-up fa-bounce fa-xl"></i>
+              <i v-else class="fa-solid fa-thumbs-up fa-xl" ></i>
+            </button>
+            
           </div>
         </div>
 

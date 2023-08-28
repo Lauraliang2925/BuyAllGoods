@@ -190,7 +190,8 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                     <p class="card-text container fs-4 text-center">
                       {{ product.name }}
                     </p>
-                    <div>
+                    <!-- 評分的星星開始 -->
+                    <div class="justify-content-center d-flex ">
                       <star-rating
                       :increment="0.1"
                       :max-rating="5"
@@ -207,6 +208,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                       :read-only="true"
                     ></star-rating>
                     </div>
+                    <!-- 評分的星星結束 -->
                     <div
                       style="padding: 15px"
                       class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
