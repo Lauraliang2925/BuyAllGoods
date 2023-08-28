@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ispan.buyallgoods.model.Product;
 import com.ispan.buyallgoods.model.Review;
 import com.ispan.buyallgoods.repository.ReviewRepository;
 
@@ -34,24 +33,28 @@ public class ReviewService {
 	public long findCountByProductId(Integer productsId) {
 		return reviewRepository.findCountByProductId(productsId);
 	}
-	
+
 //	使用商品ID尋找此商品底下所有評論並計算平均分數
 	public Double calAvgRatingByProductId(Integer productsId) {
 		return reviewRepository.calAvgRatingByProductId(productsId);
 	}
-	
-	public Review updeteLikesCount(Integer id, Review review) {
-		Optional<Review> optional = reviewRepository.findById(id);
+
+//	使用reviewId尋找此商品底下指定評論
+	public Review findByReviewId(Integer reviewId) {
+		if (reviewId == null) {
+			return null;
+		}
+		return reviewRepository.findById(reviewId).get();
+	}
+
+//	使用reviewId update此商品底下指定評論
+	public Review update(Integer reviewId, Review review) {
+		Optional<Review> optional = reviewRepository.findById(reviewId);
 		if (optional.isPresent()) {
 			return reviewRepository.save(review);
 		} else {
 			return null;
 		}
-	}
-	
-//	使用reviewId尋找此商品底下所有評論讚數	
-	public long fetchLikeCounts(Integer reviewId) {
-		return reviewRepository.count();
 	}
 
 }

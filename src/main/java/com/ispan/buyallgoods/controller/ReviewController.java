@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ispan.buyallgoods.model.Product;
 import com.ispan.buyallgoods.model.Review;
 import com.ispan.buyallgoods.service.ReviewService;
 
@@ -60,44 +59,46 @@ public class ReviewController {
 		responseJson.put("calculateRating", calculateRating);
 		return responseJson;
 	}
-	
 
 //	使用商品ID尋找此商品底下所有評論的平均分數
 	@GetMapping("/review/findAvgRatingByProductId/{id}")
 	public Map<String, Object> findAllByProductsId(@PathVariable(value = "id") Integer id) {
 		if (id == null) {
 			return null;
-		}		
+		}
 		Double calculateRating = reviewService.calAvgRatingByProductId(id);
 		Map<String, Object> responseJson = new HashMap<>();
 		responseJson.put("calculateRating", calculateRating);
 		System.out.println(calculateRating);
 		return responseJson;
 	}
-	
-	@PostMapping("/review/fetchLikeCounts")
-	public Map<String, Object> fetchLikeCounts(@RequestBody Review review) {
 
+//	使用reviewId尋找此商品底下指定評論
+	@GetMapping("/review/findByReviewId/{id}")
+	public Map<String, Object> findByReviewId(@PathVariable(value = "id") Integer id) {
+		if (id == null) {
+			return null;
+		}
+		Review review = reviewService.findByReviewId(id);
 		Map<String, Object> responseJson = new HashMap<>();
-		long count = reviewService.fetchLikeCounts(review.getReviewId());
-			responseJson.put("message", "新增資料成功");
-			responseJson.put("count", count);
-		
+		responseJson.put("review", review);
 		return responseJson;
 	}
-	
-	//更新評論的讚數
-//		@PutMapping("/review/updeteLikesCount/{id}")
-//		public Map<String, Object> updeteLikesCount(@PathVariable(value = "id") Integer id, @RequestBody Review review) {
-//
-//			Map<String, Object> responseJson = new HashMap<>();
-//			if (reviewService.updeteLikesCount(id, review) == null) {
-//				responseJson.put("message", "更新資料失敗");
-//				responseJson.put("success", false);
-//			} else {
-//				responseJson.put("message", "更新資料成功");
-//				responseJson.put("success", true);
-//			}
-//			return responseJson;
-//		}
+
+//	使用reviewId update此商品底下指定評論
+	@PutMapping("/review/update/{id}")
+	public Map<String, Object> update(@PathVariable(value = "id") Integer id, @RequestBody Review review) {
+		Map<String, Object> responseJson = new HashMap<>();
+		if (reviewService.update(id, review) == null) {
+			responseJson.put("message", "更新資料失敗");
+			responseJson.put("success", false);
+		} else {
+			Review findByReviewId = reviewService.findByReviewId(id);
+			responseJson.put("message", "更新資料成功");
+			responseJson.put("success", true);
+			responseJson.put("findByReviewId", findByReviewId);
+		}
+		return responseJson;
+	}
+
 }

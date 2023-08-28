@@ -65,7 +65,7 @@ const app = Vue.createApp({
       userLoggedIn: false,
       likeCounts: 0,
       liked: false,
-      productLikeCounts: {}
+      productLikeCounts: {},
     };
   },
   computed: {},
@@ -82,24 +82,57 @@ const app = Vue.createApp({
       }
       return membersId;
     },
-    fetchLikeCounts(reviewId) {
-      // your fetchLikeCounts method to retrieve like counts
-      let request = {
-        reviewId: reviewId,
-      };
-      axios
-      .post(contextPath + "/review/fetchLikeCounts", request)
-      .then(function (response) {
-        // vm.liked = true;
-        // console.log(response.data.message)
-        console.log(response.data.count)
-        // vm.likeCounts = response.data.count;
 
-      })
-      .catch(function (error) {
-        console.error("Error liking", error);
-      });
+    findByReviewId: function (reviewId) {
+      let vm = this;
+      // 在一般會員登入狀態下才能點擊按讚/收回按鈕
+      if (vm.userLoggedIn) {
+        // findById
+        axios
+          .get(contextPath + "/review/findByReviewId/" + reviewId)
+          .then(function (response) {
+            vm.reviewId = response.data.review.reviewId;
+            vm.membersId = response.data.review.membersId;
+            vm.orderDetailId = response.data.review.orderDetailId;
+            vm.productsId = response.data.review.productsId;
+            vm.rating = response.data.review.rating;
+            vm.comment = response.data.review.comment;
+            vm.likesCount = response.data.review.likesCount + 1;
+            vm.createdDate = response.data.review.createdDate;
+            // console.log(response.data.review.reviewId)
+            // console.log(response.data.review.membersId)
+            // console.log(vm.likesCount)
 
+            let request = {
+              reviewId: vm.reviewId,
+              membersId: vm.membersId,
+              orderDetailId: vm.orderDetailId,
+              productsId: vm.productsId,
+              rating: vm.rating,
+              comment: vm.comment,
+              likesCount: vm.likesCount,
+              createdDate: vm.createdDate,
+            };
+
+            // let vm = this;
+            axios
+              .put(contextPath + "/review/update/" + reviewId, request)
+              .then(function (response) {
+                if (response.data.success) {
+                  vm.likeCounts=response.data.findByReviewId.likesCount
+                  console.log(response.data.message);
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              })
+              .finally(function () {});
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+          .finally(function () {});
+      }
     },
     toggleLike: function (reviewId) {
       let vm = this;
@@ -122,8 +155,6 @@ const app = Vue.createApp({
               vm.liked = false;
               // console.log(response.data.message)
               // console.log(response.data.count)
-              vm.likeCounts = response.data.count;
-
             })
             .catch(function (error) {
               console.error("Error unliking", error);
@@ -136,8 +167,7 @@ const app = Vue.createApp({
               vm.liked = true;
               // console.log(response.data.message)
               // console.log(response.data.count)
-              vm.likeCounts = response.data.count;
-
+              vm.findByReviewId(reviewId);
             })
             .catch(function (error) {
               console.error("Error liking", error);
@@ -398,16 +428,6 @@ const app = Vue.createApp({
     this.findById(productsId);
     this.findCategoryIdByProductsId(productsId);
     this.getUserID();
-
-     // Automatically fetch like counts for each product when the component is mounted
-     for (let i = 0; i < this.products.length; i++) {
-      const product = this.products[i];
-      const reviewId = product.reviewId;
-
-      this.fetchLikeCounts(reviewId).then(function(likeCount) {
-        this.$set(this.productLikeCounts, reviewId, likeCount);
-      }.bind(this));
-    }
   },
 });
 app.mount("#app");
