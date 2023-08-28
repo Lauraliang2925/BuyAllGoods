@@ -48,5 +48,10 @@ public class ReviewService {
 			return null;
 		}
 	}
+	
+//	使用reviewId尋找此商品底下所有評論讚數	
+	public long fetchLikeCounts(Integer reviewId) {
+		return reviewRepository.count();
+	}
 
 }

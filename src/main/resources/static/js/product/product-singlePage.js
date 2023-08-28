@@ -65,6 +65,7 @@ const app = Vue.createApp({
       userLoggedIn: false,
       likeCounts: 0,
       liked: false,
+      productLikeCounts: {}
     };
   },
   computed: {},
@@ -81,16 +82,24 @@ const app = Vue.createApp({
       }
       return membersId;
     },
-    fetchLikeCounts() {
-      let vm = this;
+    fetchLikeCounts(reviewId) {
+      // your fetchLikeCounts method to retrieve like counts
+      let request = {
+        reviewId: reviewId,
+      };
       axios
-        .get("/api/likeCounts")
-        .then(function (response) {
-          vm.likeCounts = response.data.count;
-        })
-        .catch(function (error) {
-          console.error("Error fetching like counts", error);
-        });
+      .post(contextPath + "/review/fetchLikeCounts", request)
+      .then(function (response) {
+        // vm.liked = true;
+        // console.log(response.data.message)
+        console.log(response.data.count)
+        // vm.likeCounts = response.data.count;
+
+      })
+      .catch(function (error) {
+        console.error("Error liking", error);
+      });
+
     },
     toggleLike: function (reviewId) {
       let vm = this;
@@ -115,20 +124,6 @@ const app = Vue.createApp({
               // console.log(response.data.count)
               vm.likeCounts = response.data.count;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-              
             })
             .catch(function (error) {
               console.error("Error unliking", error);
@@ -403,7 +398,16 @@ const app = Vue.createApp({
     this.findById(productsId);
     this.findCategoryIdByProductsId(productsId);
     this.getUserID();
-    this.fetchLikeCounts(product.reviewId);
+
+     // Automatically fetch like counts for each product when the component is mounted
+     for (let i = 0; i < this.products.length; i++) {
+      const product = this.products[i];
+      const reviewId = product.reviewId;
+
+      this.fetchLikeCounts(reviewId).then(function(likeCount) {
+        this.$set(this.productLikeCounts, reviewId, likeCount);
+      }.bind(this));
+    }
   },
 });
 app.mount("#app");
