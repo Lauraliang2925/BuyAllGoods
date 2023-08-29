@@ -160,9 +160,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                 v-for="product in products"
                 :key="product.productsId"
               >
-
-
-                <div class="card shadow-sm">
+                <div class="card shadow-sm h-100 d-flex flex-column">
                   <button
                     class="btn btn-link"
                     @click="showDetails(product.productsId)"
@@ -186,12 +184,12 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
                     </svg>
                   </button>
 
-                  <div class="card-body">
-                    <p class="card-text container fs-4 text-center">
+                  <div class="card-body d-flex flex-column">
+                    <p class="card-text container fs-4 text-center flex-grow-1">
                       {{ product.name }}
                     </p>
                     <!-- 評分的星星開始 -->
-                    <div class="justify-content-center d-flex ">
+                    <div class="d-flex align-items-center">
                       <star-rating
                       :increment="0.1"
                       :max-rating="5"

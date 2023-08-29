@@ -164,7 +164,7 @@ const index = Vue.createApp({
           params: request,
         })
           .then(function (response) {
-            console.log("productsAvgRatings= " + response.data.calculateRating);
+            // console.log("productsAvgRatings= " + response.data.calculateRating);
             vm.products[index].rating = response.data.calculateRating; // 存入對應的 product 中
         
           })
