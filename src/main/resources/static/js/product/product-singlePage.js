@@ -65,7 +65,6 @@ const app = Vue.createApp({
       memberLoggedIn: false,
       likeCounts: 0,
       liked: false,
-      
     };
   },
   computed: {},
@@ -77,10 +76,40 @@ const app = Vue.createApp({
       // console.log("roleId:"+roleId)
       if (roleId === "3") {
         this.memberLoggedIn = true;
+
+        // 若登入的是一般會員，去找按讚的紀錄
+        this.fetchUserLikedStatus();
       } else {
         this.memberLoggedIn = false;
       }
       return membersId;
+    },
+
+    fetchUserLikedStatus: function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      productsId = urlParams.get("productsId");
+      membersId = localStorage.getItem("MembersId");
+      console.log("Test membersId:" + membersId);
+      console.log("Test productsId:" + productsId);
+
+      let request = {
+        productsId: productsId,
+        membersId: membersId,
+      };
+
+      axios
+        .get(contextPath + "/liked/status", {
+          params: request, // 将请求参数作为 params 对象
+        })
+        .then(
+          function (response) {
+            this.userLikedStatus = response.data; // 假设返回的数据格式为 { reviewId1: true, reviewId2: false, ... }
+            this.applyLikedStatusToComments(); // 将点赞状态应用到评论上
+          }.bind(this)
+        )
+        .catch(function (error) {
+          console.error("Error fetching liked status", error);
+        });
     },
 
     findByReviewId: function (reviewId) {
@@ -100,7 +129,7 @@ const app = Vue.createApp({
               vm.rating = response.data.review.rating;
               vm.comment = response.data.review.comment;
               // like 數量-1
-              vm.likesCount = response.data.review.likesCount -1;
+              vm.likesCount = response.data.review.likesCount - 1;
               vm.createdDate = response.data.review.createdDate;
               // console.log(response.data.review.reviewId)
               // console.log(response.data.review.membersId)
@@ -125,7 +154,6 @@ const app = Vue.createApp({
                   if (response.data.success) {
                     vm.likeCounts = response.data.findByReviewId.likesCount;
                     console.log(response.data.message);
-                    
                   }
                 })
                 .catch(function (error) {
@@ -138,54 +166,54 @@ const app = Vue.createApp({
             })
             .finally(function () {});
         } else {
-                // findById
-        axios
-        .get(contextPath + "/review/findByReviewId/" + reviewId)
-        .then(function (response) {
-          vm.reviewId = response.data.review.reviewId;
-          vm.membersId = response.data.review.membersId;
-          vm.orderDetailId = response.data.review.orderDetailId;
-          vm.productsId = response.data.review.productsId;
-          vm.rating = response.data.review.rating;
-          vm.comment = response.data.review.comment;
-          // like 數量+1
-          vm.likesCount = response.data.review.likesCount + 1;
-          vm.createdDate = response.data.review.createdDate;
-          // console.log(response.data.review.reviewId)
-          // console.log(response.data.review.membersId)
-          // console.log(vm.likesCount)
-
-          // 將找到的data加入新增的like數後，執行update
-          let request = {
-            reviewId: vm.reviewId,
-            membersId: vm.membersId,
-            orderDetailId: vm.orderDetailId,
-            productsId: vm.productsId,
-            rating: vm.rating,
-            comment: vm.comment,
-            likesCount: vm.likesCount,
-            createdDate: vm.createdDate,
-          };
-
-          // let vm = this;
+          // findById
           axios
-            .put(contextPath + "/review/update/" + reviewId, request)
+            .get(contextPath + "/review/findByReviewId/" + reviewId)
             .then(function (response) {
-              if (response.data.success) {
-                vm.likeCounts=response.data.findByReviewId.likesCount
-               
-                console.log(response.data.message);
-              }
+              vm.reviewId = response.data.review.reviewId;
+              vm.membersId = response.data.review.membersId;
+              vm.orderDetailId = response.data.review.orderDetailId;
+              vm.productsId = response.data.review.productsId;
+              vm.rating = response.data.review.rating;
+              vm.comment = response.data.review.comment;
+              // like 數量+1
+              vm.likesCount = response.data.review.likesCount + 1;
+              vm.createdDate = response.data.review.createdDate;
+              // console.log(response.data.review.reviewId)
+              // console.log(response.data.review.membersId)
+              // console.log(vm.likesCount)
+
+              // 將找到的data加入新增的like數後，執行update
+              let request = {
+                reviewId: vm.reviewId,
+                membersId: vm.membersId,
+                orderDetailId: vm.orderDetailId,
+                productsId: vm.productsId,
+                rating: vm.rating,
+                comment: vm.comment,
+                likesCount: vm.likesCount,
+                createdDate: vm.createdDate,
+              };
+
+              // let vm = this;
+              axios
+                .put(contextPath + "/review/update/" + reviewId, request)
+                .then(function (response) {
+                  if (response.data.success) {
+                    vm.likeCounts = response.data.findByReviewId.likesCount;
+
+                    console.log(response.data.message);
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error);
+                })
+                .finally(function () {});
             })
             .catch(function (error) {
               console.log(error);
             })
             .finally(function () {});
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .finally(function () {});
         }
       }
     },
@@ -450,7 +478,7 @@ const app = Vue.createApp({
         });
     },
 
-    // 這段方法可以確保點擊分頁按鈕時，傳遞的參數是page而不是categoriesId!!!!!!!!!!
+    // 這段方法可以確保點擊分頁按鈕時，傳遞的參數是page而不是productsId!!!!!!!!!!
     handlePaginationClick(page) {
       this.selectReviewByProductsId(this.productsId, page);
     },

@@ -1,5 +1,7 @@
 package com.ispan.buyallgoods.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +38,17 @@ public class LikedService {
 	public Boolean isLikeExistByRIdAndMId(Integer reviewId, Integer membersId) {
 		if (reviewId != null && membersId != null) {
 			Long count = likeRepository.isLikeExistByRIdAndMId(reviewId, membersId);
-			
+			if(count>0) {
+//  已經按過讚
+				return true;
+			}
 		}
-		return null;
+//  還沒按過讚
+		return false;
 	}
+//	用reviewId和membersId尋找特定會員是否已經按特定評論讚	
+	 public List<Object[]> findLikedStatusForReviewIds(List<Integer> reviewIds, Integer membersId) {
+	        return likeRepository.findLikedStatusForReviewIds(reviewIds, membersId);
+	    }
 
 }

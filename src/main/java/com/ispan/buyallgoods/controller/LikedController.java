@@ -1,10 +1,14 @@
 package com.ispan.buyallgoods.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,6 +61,34 @@ public class LikedController {
 			responseJson.put("success", false);
 		}
 		return responseJson;
+	}
+	
+	
+//	確認不同登入會員於評論區的按讚狀態
+	@GetMapping("/liked/status")
+	public ResponseEntity<List<Object[]>> getLikedStatusForReviewIds(@RequestParam List<Integer> reviewId, @RequestParam Integer membersId) {
+	    List<Object[]> likedStatusList = likeService.findLikedStatusForReviewIds(reviewId, membersId);
+	    
+	    List<Object[]> responseList = new ArrayList<>();
+	    
+	    for (Integer oneReviewId : reviewId) {
+	        boolean liked = false;
+	        
+	        for (Object[] likedStatus : likedStatusList) {
+	            Integer statusReviewId = (Integer) likedStatus[0];
+	            Boolean statusValue = (Boolean) likedStatus[1];
+	            
+	            if (statusReviewId.equals(oneReviewId)) {
+	                liked = statusValue;
+	                break;
+	            }
+	        }
+	        
+	        Object[] responseArray = new Object[]{oneReviewId, liked};
+	        responseList.add(responseArray);
+	    }
+	    
+	    return ResponseEntity.ok(responseList);
 	}
 
 }
