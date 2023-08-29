@@ -318,7 +318,7 @@ file="/includes/libs.jsp"%>
 
           <!-- 會員登入可以按讚，只能按一次 -->
           <div class="">
-            <button class="btn btn-light" :disabled="!userLoggedIn" @click="toggleLike(product.reviewId)">
+            <button class="btn btn-light" :disabled="!memberLoggedIn" @click="toggleLike(product.reviewId)">
               {{ product.likesCount }}
               <i v-if="!liked" class="fa-regular fa-thumbs-up fa-bounce fa-xl"></i>
               <i v-else class="fa-solid fa-thumbs-up fa-xl" ></i>

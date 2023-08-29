@@ -62,7 +62,7 @@ const app = Vue.createApp({
 
       calculateRating: 0,
 
-      userLoggedIn: false,
+      memberLoggedIn: false,
       likeCounts: 0,
       liked: false,
       productLikeCounts: {},
@@ -76,9 +76,9 @@ const app = Vue.createApp({
       // console.log("membersId:"+membersId)
       // console.log("roleId:"+roleId)
       if (roleId === "3") {
-        this.userLoggedIn = true;
+        this.memberLoggedIn = true;
       } else {
-        this.userLoggedIn = false;
+        this.memberLoggedIn = false;
       }
       return membersId;
     },
@@ -86,52 +86,107 @@ const app = Vue.createApp({
     findByReviewId: function (reviewId) {
       let vm = this;
       // 在一般會員登入狀態下才能點擊按讚/收回按鈕
-      if (vm.userLoggedIn) {
-        // findById
+      if (vm.memberLoggedIn) {
+        if (!vm.liked) {
+          // findById
+          // 一般會員已點讚，執行收回(delete data)
+          axios
+            .get(contextPath + "/review/findByReviewId/" + reviewId)
+            .then(function (response) {
+              vm.reviewId = response.data.review.reviewId;
+              vm.membersId = response.data.review.membersId;
+              vm.orderDetailId = response.data.review.orderDetailId;
+              vm.productsId = response.data.review.productsId;
+              vm.rating = response.data.review.rating;
+              vm.comment = response.data.review.comment;
+              // like 數量-1
+              vm.likesCount = response.data.review.likesCount -1;
+              vm.createdDate = response.data.review.createdDate;
+              // console.log(response.data.review.reviewId)
+              // console.log(response.data.review.membersId)
+              // console.log(vm.likesCount)
+
+              // 將找到的data加入新增的like數後，執行update
+              let request = {
+                reviewId: vm.reviewId,
+                membersId: vm.membersId,
+                orderDetailId: vm.orderDetailId,
+                productsId: vm.productsId,
+                rating: vm.rating,
+                comment: vm.comment,
+                likesCount: vm.likesCount,
+                createdDate: vm.createdDate,
+              };
+
+              // let vm = this;
+              axios
+                .put(contextPath + "/review/update/" + reviewId, request)
+                .then(function (response) {
+                  if (response.data.success) {
+                    vm.likeCounts = response.data.findByReviewId.likesCount;
+                    console.log(response.data.message);
+                    
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error);
+                })
+                .finally(function () {});
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+            .finally(function () {});
+        } else {
+                // findById
         axios
-          .get(contextPath + "/review/findByReviewId/" + reviewId)
-          .then(function (response) {
-            vm.reviewId = response.data.review.reviewId;
-            vm.membersId = response.data.review.membersId;
-            vm.orderDetailId = response.data.review.orderDetailId;
-            vm.productsId = response.data.review.productsId;
-            vm.rating = response.data.review.rating;
-            vm.comment = response.data.review.comment;
-            vm.likesCount = response.data.review.likesCount + 1;
-            vm.createdDate = response.data.review.createdDate;
-            // console.log(response.data.review.reviewId)
-            // console.log(response.data.review.membersId)
-            // console.log(vm.likesCount)
+        .get(contextPath + "/review/findByReviewId/" + reviewId)
+        .then(function (response) {
+          vm.reviewId = response.data.review.reviewId;
+          vm.membersId = response.data.review.membersId;
+          vm.orderDetailId = response.data.review.orderDetailId;
+          vm.productsId = response.data.review.productsId;
+          vm.rating = response.data.review.rating;
+          vm.comment = response.data.review.comment;
+          // like 數量+1
+          vm.likesCount = response.data.review.likesCount + 1;
+          vm.createdDate = response.data.review.createdDate;
+          // console.log(response.data.review.reviewId)
+          // console.log(response.data.review.membersId)
+          // console.log(vm.likesCount)
 
-            let request = {
-              reviewId: vm.reviewId,
-              membersId: vm.membersId,
-              orderDetailId: vm.orderDetailId,
-              productsId: vm.productsId,
-              rating: vm.rating,
-              comment: vm.comment,
-              likesCount: vm.likesCount,
-              createdDate: vm.createdDate,
-            };
+          // 將找到的data加入新增的like數後，執行update
+          let request = {
+            reviewId: vm.reviewId,
+            membersId: vm.membersId,
+            orderDetailId: vm.orderDetailId,
+            productsId: vm.productsId,
+            rating: vm.rating,
+            comment: vm.comment,
+            likesCount: vm.likesCount,
+            createdDate: vm.createdDate,
+          };
 
-            // let vm = this;
-            axios
-              .put(contextPath + "/review/update/" + reviewId, request)
-              .then(function (response) {
-                if (response.data.success) {
-                  vm.likeCounts=response.data.findByReviewId.likesCount
-                  console.log(response.data.message);
-                }
-              })
-              .catch(function (error) {
-                console.log(error);
-              })
-              .finally(function () {});
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .finally(function () {});
+          // let vm = this;
+          axios
+            .put(contextPath + "/review/update/" + reviewId, request)
+            .then(function (response) {
+              if (response.data.success) {
+                vm.likeCounts=response.data.findByReviewId.likesCount
+               
+                console.log(response.data.message);
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+            .finally(function () {});
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .finally(function () {});
+        }
       }
     },
     toggleLike: function (reviewId) {
@@ -139,14 +194,14 @@ const app = Vue.createApp({
       // console.log("reviewId:"+reviewId)
       // console.log("membersId:"+this.getUserID())
       // 在一般會員登入狀態下才能點擊按讚/收回按鈕
-      if (vm.userLoggedIn) {
+      if (vm.memberLoggedIn) {
         let request = {
           reviewId: reviewId,
           membersId: vm.getUserID(),
         };
 
         if (vm.liked) {
-          // 用户已点赞，执行取消点赞逻辑
+          // 一般會員已點讚，執行收回(delete data)
           axios
             .delete(contextPath + "/liked/delete", {
               params: request, // 将请求参数作为 params 对象
@@ -155,18 +210,23 @@ const app = Vue.createApp({
               vm.liked = false;
               // console.log(response.data.message)
               // console.log(response.data.count)
+
+              // 找到相對應的評價
+              vm.findByReviewId(reviewId);
             })
             .catch(function (error) {
               console.error("Error unliking", error);
             });
         } else {
-          // 用户未点赞，执行点赞逻辑
+          // 一般會員未點讚，執行點讚(insert data)
           axios
             .post(contextPath + "/liked/insert", request)
             .then(function (response) {
               vm.liked = true;
               // console.log(response.data.message)
               // console.log(response.data.count)
+
+              // 找到相對應的評價
               vm.findByReviewId(reviewId);
             })
             .catch(function (error) {
