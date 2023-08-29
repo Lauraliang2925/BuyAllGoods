@@ -65,7 +65,7 @@ const app = Vue.createApp({
       memberLoggedIn: false,
       likeCounts: 0,
       liked: false,
-      productLikeCounts: {},
+      
     };
   },
   computed: {},

@@ -17,6 +17,10 @@ public interface LikedRepository extends JpaRepository<Liked, Integer> {
 //	使用reviewId尋找底下所有like數量
 	@Query("SELECT COUNT(l) FROM Liked l WHERE l.reviewId = :reviewId")
 	Long findCountByReviewId(@Param("reviewId") Integer reviewId);
+	
+//	用reviewId和membersId尋找特定會員是否已經按特定評論讚
+	@Query("SELECT COUNT(l) FROM Liked l WHERE reviewId = :reviewId AND membersId = :membersId")
+	Long isLikeExistByRIdAndMId(@Param("reviewId") Integer reviewId,@Param("membersId") Integer membersId);
 
 
 }

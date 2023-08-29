@@ -19,7 +19,7 @@ public class LikedService {
 		}
 		return null;
 	}
-
+//	用reviewId和membersId尋找需要收回的like
 	public Integer deleteByReviewIdAndMembersId(Integer reviewId, Integer membersId) {
 		if (reviewId != null && membersId != null) {
 		return likeRepository.deleteByReviewIdAndMembersId(reviewId, membersId);
@@ -30,6 +30,15 @@ public class LikedService {
 //	使用商品ID尋找此商品底下所有評論數量
 	public long findCountByProductId(Integer reviewId) {
 		return likeRepository.findCountByReviewId(reviewId);
+	}
+	
+//	用reviewId和membersId尋找特定會員是否已經按特定評論讚
+	public Boolean isLikeExistByRIdAndMId(Integer reviewId, Integer membersId) {
+		if (reviewId != null && membersId != null) {
+			Long count = likeRepository.isLikeExistByRIdAndMId(reviewId, membersId);
+			
+		}
+		return null;
 	}
 
 }
