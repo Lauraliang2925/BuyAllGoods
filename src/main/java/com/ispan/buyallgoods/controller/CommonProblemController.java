@@ -94,6 +94,4 @@ public class CommonProblemController {
 		return responseJson;
 	}
 
-
-
 }

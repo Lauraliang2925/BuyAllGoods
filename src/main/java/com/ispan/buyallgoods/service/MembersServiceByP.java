@@ -78,5 +78,13 @@ public class MembersServiceByP {
 		return responseJSON;
 	}
 	
-
+	public String getUserName(Integer membersId) {
+		Optional<Members> findById = membersRepository.findById(membersId);
+		if(findById.isEmpty()) {
+			return null;
+		}
+		Members members = findById.get();
+		String userName = members.getUserName();
+		return userName;		
+	}
 }
