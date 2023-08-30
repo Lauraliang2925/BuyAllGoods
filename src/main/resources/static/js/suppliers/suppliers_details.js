@@ -220,8 +220,7 @@ const app = Vue.createApp({
         this.findBoss === "" ||
         this.findContactPerson === "" ||
         this.findPhoneNumber === "" ||
-        this.findEmail === "" ||
-        this.findRemarks === ""
+        this.findEmail === ""
       ) {
         bootbox.alert({
           title: "提醒！",

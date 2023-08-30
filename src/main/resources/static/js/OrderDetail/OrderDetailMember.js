@@ -60,9 +60,7 @@ const app = Vue.createApp({
       window.location.href =
         contextPath + "/review-product?productsId=" + productsId+"&orderDetailId="+orderDetailId;
     },
-    findAllReview: function(){
 
-    },
   },
 });
 app.mount("#app");

@@ -30,9 +30,16 @@ const app = Vue.createApp({
     };
   },
   methods: {
+    //一鍵新增
+    autoADD: function () {
+      (this.findContractNumber = "ABC-0001-001"),
+        (this.findContractTitle = "恐龍百科全書販售合約"),
+        (this.findAmount = "300000");
+    },
+
     //簽約日不早於系統日
     checkStartDate: function (suppliersId) {
-      console.log("確認日期")
+      console.log("確認日期");
       if (suppliersId === "") {
       } else {
         let p = this;
@@ -58,7 +65,7 @@ const app = Vue.createApp({
             if (startDate < suppliersStartDate) {
               p.overSigningDateMessage =
                 "合約起日不得早於廠商簽約日，廠商簽約日：" +
-                formatDate(suppliersStartDate); 
+                formatDate(suppliersStartDate);
             } else {
               p.overSigningDateMessage = ""; // 清空消息
             }

@@ -114,6 +114,9 @@
 								href="<c:url value='/showAddContractsPage'></c:url>">新增合約</a></li>
 							<li v-if="isShowManagerButton"><hr class="dropdown-divider" /></li>
 							<li v-if="isShowManagerButton"><a class="dropdown-item" href="<c:url value='/members/list'></c:url>">會員列表</a></li>							
+							<li v-if="isShowQABtn"><hr class="dropdown-divider" /></li>
+							<li v-if="isShowQABtn"><a class="dropdown-item"
+								href="<c:url value='/goProblems'></c:url>">問題QA</a></li>
 						</ul></li>
 				</ul>
 			</div>

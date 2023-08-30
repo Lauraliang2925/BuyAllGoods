@@ -16,12 +16,12 @@
    
        <footer class="py-3 my-4">
            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-               <li class="nav-item">
-                   <a href="#" class="nav-link px-2 text-muted">回首頁</a>
-               </li>
-               <li class="nav-item">
-                   <a href="#" class="nav-link px-2 text-muted">常見問題</a>
-               </li>
+            <li class="nav-item">
+                <a href="<c:url value='/'/>" class="nav-link px-2 text-muted">回首頁</a>
+            </li>
+            <li class="nav-item">
+                <a href="<c:url value='/goProblems'></c:url>" class="nav-link px-2 text-muted">常見問題</a>
+            </li>
                <li class="nav-item">
                    <a href="#" class="nav-link px-2 text-muted">客服中心</a>
                </li>

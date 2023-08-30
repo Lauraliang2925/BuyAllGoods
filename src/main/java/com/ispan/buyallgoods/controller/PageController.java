@@ -68,6 +68,9 @@ public class PageController {
 
 	@RequestMapping("/showAddSupplierPage")
 	public String showAddSupplierPage(Model model, HttpSession seesion) {
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -78,6 +81,9 @@ public class PageController {
 
 	@RequestMapping("/showSupplierPage")
 	public String showSupplierPage(Model model, HttpSession seesion) {
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -88,6 +94,9 @@ public class PageController {
 
 	@RequestMapping("/showAddContractsPage")
 	public String showAddContractsPage(Model model, HttpSession seesion) {
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -99,6 +108,10 @@ public class PageController {
 	@RequestMapping("/showSuppliersDetailsPage")
 	public String showSuppliersDetailsPage(HttpSession seesion,
 			@RequestParam(name = "suppliersId", required = false) String suppliersId, Model model) {
+		
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("suppliersId", suppliersId);
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
@@ -111,6 +124,10 @@ public class PageController {
 	@RequestMapping("/showContractsDetailsPage")
 	public String showContractsDetailsPage(HttpSession seesion,
 			@RequestParam(name = "contractsId", required = false) String contractsId, Model model) {
+		
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -122,6 +139,10 @@ public class PageController {
 	@RequestMapping("/goAddContracts")
 	public String goAddContracts(HttpSession seesion,
 			@RequestParam(name = "suppliersId", required = false) String suppliersId, Model model) {
+		
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("suppliersId", suppliersId);
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
@@ -133,12 +154,30 @@ public class PageController {
 
 	@RequestMapping("/goLogin")
 	public String goLogin(Model model, HttpSession seesion) {
+		
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
 				: seesion.getAttribute("PhotoPath"));
 
 		return "members/login";
+	}
+	
+	@RequestMapping("/goProblems")
+	public String goProblems(Model model, HttpSession seesion) {
+		
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
+		model.addAttribute("userName",
+				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
+		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
+				: seesion.getAttribute("PhotoPath"));
+
+		return "problem/problems";
 	}
 
 	// 渝平-----結束
@@ -147,6 +186,10 @@ public class PageController {
 
 	@GetMapping("/categories-edit")
 	public String categoriesEdit(Model model, HttpSession seesion) {
+		
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -156,6 +199,10 @@ public class PageController {
 
 	@GetMapping("/product-edit")
 	public String productEdit(Model model, HttpSession seesion) {
+		
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -165,6 +212,9 @@ public class PageController {
 
 	@GetMapping("/product-list")
 	public String productList(Model model, HttpSession seesion) {
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -174,6 +224,9 @@ public class PageController {
 
 	@GetMapping("/product-add")
 	public String productAdd(Model model, HttpSession seesion) {
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -183,6 +236,9 @@ public class PageController {
 
 	@GetMapping("/product-singlePage")
 	public String productSinglePage(Model model, HttpSession seesion) {
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -192,6 +248,9 @@ public class PageController {
 
 	@GetMapping("/product-search")
 	public String productSearch(Model model, HttpSession seesion) {
+		model.addAttribute("membersId", seesion.getAttribute("UserId"));
+		model.addAttribute("roleId", seesion.getAttribute("RoleId"));
+		
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
 		model.addAttribute("photoPath", (seesion.getAttribute("PhotoPath") == null) ? "/pic/members/Photo_Default.png"
@@ -199,8 +258,7 @@ public class PageController {
 		return "/product/product-search";
 	}
 
-	
-	@GetMapping("/review-product")
+@GetMapping("/review-product")
 	public String reviewProduct(Model model, HttpSession seesion) {
 		model.addAttribute("userName",
 				(seesion.getAttribute("UserName") == null) ? "" : seesion.getAttribute("UserName"));
@@ -208,6 +266,7 @@ public class PageController {
 				: seesion.getAttribute("PhotoPath"));
 		return "/review/review-product";
 	}
+
 	// 正融-----結束
 
 	// 任凱 --- 開始
@@ -215,6 +274,9 @@ public class PageController {
 	@GetMapping("/ShoppingCartMember")
 	public String ShoppingCartMember(Model model, HttpSession session) {
 
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));
+		
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 
@@ -224,6 +286,9 @@ public class PageController {
 	@GetMapping("/FavoriteMember")
 	public String FavoriteList(Model model, HttpSession session) {
 
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));
+		
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 
@@ -233,6 +298,9 @@ public class PageController {
 	@GetMapping("/OrderMember")
 	public String Order(Model model, HttpSession session) {
 
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));
+	
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 
@@ -241,7 +309,9 @@ public class PageController {
 
 	@GetMapping("/ShoppingCartNext")
 	public String ShoppingCartNext(Model model, HttpSession session) {
-
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));
+		
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 
@@ -250,7 +320,9 @@ public class PageController {
 
 	@GetMapping("/OrderDetailMember")
 	public String OrderDetail(Model model, HttpSession session) {
-
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));
+		
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 
@@ -259,7 +331,9 @@ public class PageController {
 
 	@GetMapping("/OrderSuppliers")
 	public String OrderBySuppliers(Model model, HttpSession session) {
-
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));
+		
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 
@@ -268,6 +342,9 @@ public class PageController {
 
 	@GetMapping("/OrderDetailSuppliers")
 	public String OrderDetailSupploers(Model model, HttpSession session) {
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));
+		
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 

@@ -34,6 +34,12 @@ const app = Vue.createApp({
     };
   },
   methods: {
+     //一鍵新增
+     autoADD: function () {
+      (this.findContractNumber = "ABC-0001-002"),
+        (this.findContractTitle = "十萬個為甚麼書籍販售合約"),
+        (this.findAmount = "100000");
+    },
     //簽約日不早於系統日
     checkStartDate: function (suppliersId) {
       let p = this;

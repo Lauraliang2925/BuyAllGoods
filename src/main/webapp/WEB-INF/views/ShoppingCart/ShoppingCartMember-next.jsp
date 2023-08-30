@@ -22,29 +22,10 @@
                             <h4>付款方式</h4>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="flexRadioDefault"
-                                    id="flexRadioDefault1" data-bs-toggle="collapse" href="#collapseExample"
-                                    role="button" aria-expanded="false" aria-controls="collapseExample">
-                                <label class="form-check-label" for="flexRadioDefault1">
+                                    id="flexRadioDefault2" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
                                     信用卡
                                 </label>
-                            </div>
-                            <div class="collapse" id="collapseExample">
-                                <div class="input-group mb-3 mt-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-default">持卡人：</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input"
-                                        aria-describedby="inputGroup-sizing-default">
-                                </div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="inputGroup-sizing-default">信用卡號：</span>
-                                    <input type="text" class="form-control" maxlength="4">
-                                    <span class="input-group-text">-</span>
-                                    <input type="text" class="form-control" maxlength="4">
-                                    <span class="input-group-text">-</span>
-                                    <input type="text" class="form-control" maxlength="4">
-                                    <span class="input-group-text">-</span>
-                                    <input type="text" class="form-control" maxlength="4">
-                                </div>
-                                ....
                             </div>
                         </div>
                     </div>

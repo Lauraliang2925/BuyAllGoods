@@ -12,10 +12,15 @@
 <title>廠商登錄</title>
 
 <style>
+.autoADD {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+}
 </style>
 </head>
 <body style="padding-top: 9%">
-<%@ include file="../toolbar/navbar.jsp"%>
+	<%@ include file="../toolbar/navbar.jsp"%>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~form~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 	<div class="container" id="app">
@@ -224,6 +229,12 @@
 		<div style="text-align: center; margin-top: 10px; margin-bottom: 10px">
 			<button class="btn btn-outline-success" @click="callAddSuppliers()">新增</button>
 		</div>
+
+		<!-- 一鍵填入 -->
+		<div>
+			<button class="autoADD btn btn-outline-warning" @click="autoADD()">一鍵填入</button>
+		</div>
+
 	</div>
 
 

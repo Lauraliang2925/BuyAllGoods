@@ -124,6 +124,9 @@ public class MembersController {
 	@GetMapping("/members/addmember")
 	public String addMemberPage(Model model,HttpSession session) {
 		
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));		
+		
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
 		
@@ -325,8 +328,13 @@ public class MembersController {
 	@GetMapping({"/members/list"})
     public String memberslist(Model model,HttpSession session) {
 		
+		model.addAttribute("membersId", session.getAttribute("UserId"));
+		model.addAttribute("roleId", session.getAttribute("RoleId"));		
+		
 		model.addAttribute("userName", session.getAttribute("UserName"));
 		model.addAttribute("photoPath", session.getAttribute("PhotoPath"));
+		
+		
 		
 		
 //		System.out.println("memberslist="+session.getAttribute("UserName")); 

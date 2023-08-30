@@ -34,6 +34,20 @@ const app = Vue.createApp({
     };
   },
   methods: {
+    //一鍵新增
+    autoADD: function () {
+      (this.findSuppliersName = "統一企業(股)公司"),
+        (this.findTaxId = "73251209"),
+        (this.findPhone = "028786-6888"),
+        (this.findAddress = "臺北市松山區東興路8樓地下一樓"),
+        (this.findLogistics = "黑貓宅配"),
+        (this.findBoss = "羅阿明"),
+        (this.findContactPerson = "陳小花"),
+        (this.findPhoneNumber = "0987866888"),
+        (this.findEmail = "flower123@ggg.com"),
+        (this.findRemarks = "合約預計於2023/9/1簽訂");
+    },
+
     //簽約日不早於系統日
     checkSigningDate: function () {
       const today = new Date(); // 获取当前系统日期
@@ -188,7 +202,7 @@ const app = Vue.createApp({
                   pika.findRemarks = "";
                   pika.signingDateMessage = "";
                   pika.contractEndDateMessage = "";
-                  pika.reply= "請選擇會員帳號";
+                  pika.reply = "請選擇會員帳號";
                 }
               },
             });

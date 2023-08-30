@@ -12,24 +12,16 @@
 <title>合約登錄</title>
 
 <style>
-fieldset {
-	width: 500px;
-	margin: 15px;
-	border-radius: 20px;
-	margin: auto;
-	text-align: center;
-}
-
-legend {
-	font-size: 18px;
-	display: inline-block;
-	padding: 15px 10px;
+.autoADD {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
 }
 </style>
 </head>
 
 <body style="padding-top: 9%">
-<%@ include file="../toolbar/navbar.jsp"%>
+	<%@ include file="../toolbar/navbar.jsp"%>
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~form~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 	<div class="container" id="app">
@@ -80,7 +72,7 @@ legend {
 			</div>
 			<div class="col-auto text-center">
 				<input type="date" id="" class="form-control" required
-					v-model="findStartDate" @blur="checkStartDate(findSuppliersId)"/>
+					v-model="findStartDate" @blur="checkStartDate(findSuppliersId)" />
 			</div>
 			<div class="col-auto text-center">
 				<span id="" class="form-text" style="color: red">
@@ -96,14 +88,17 @@ legend {
 			</div>
 			<div class="col-auto text-center">
 				<input type="date" id="" class="form-control" required
-					v-model="findEndDate" @blur="checkEndDate(findSuppliersId)"/>
+					v-model="findEndDate" @blur="checkEndDate(findSuppliersId)" />
 			</div>
 			<div class="col-auto text-center">
-				<span id="" class="form-text" style="color: red" v-if="endDateMessage!=''&&overSupplierEndDateMessage!=''">
-					1.{{endDateMessage}} 2.{{overSupplierEndDateMessage}}</span>
-				<span id="" class="form-text" style="color: red" v-if="endDateMessage==''&&overSupplierEndDateMessage!=''">
-					{{overSupplierEndDateMessage}}</span>
-				<span id="" class="form-text" style="color: red" v-if="endDateMessage!=''&&overSupplierEndDateMessage==''">
+				<span id="" class="form-text" style="color: red"
+					v-if="endDateMessage!=''&&overSupplierEndDateMessage!=''">
+					1.{{endDateMessage}} 2.{{overSupplierEndDateMessage}}</span> <span id=""
+					class="form-text" style="color: red"
+					v-if="endDateMessage==''&&overSupplierEndDateMessage!=''">
+					{{overSupplierEndDateMessage}}</span> <span id="" class="form-text"
+					style="color: red"
+					v-if="endDateMessage!=''&&overSupplierEndDateMessage==''">
 					{{endDateMessage}}</span>
 			</div>
 		</div>
@@ -134,6 +129,11 @@ legend {
 
 		<div style="text-align: center; margin-top: 10px; margin-bottom: 10px">
 			<button class="btn btn-outline-success" @click="callAddContracts()">新增</button>
+		</div>
+
+		<!-- 一鍵填入 -->
+		<div>
+			<button class="autoADD btn btn-outline-warning" @click="autoADD()">一鍵填入</button>
 		</div>
 	</div>
 
