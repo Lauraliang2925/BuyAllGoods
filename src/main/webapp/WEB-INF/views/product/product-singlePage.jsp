@@ -237,7 +237,7 @@ file="/includes/libs.jsp"%>
         :key="product.productsId"
       >
         <!-- 評價編號（隱藏） -->
-        <div class="mb-3 row" >
+        <div class="mb-3 row" hidden>
           <label for="reviewId" class="col-sm-4 col-form-label">評價編號</label>
           <div class="col-sm-8">
             <input
@@ -251,7 +251,7 @@ file="/includes/libs.jsp"%>
         </div>
         <!-- 會員編號（隱藏） -->
 
-        <div class="mb-3 row" >
+        <div class="mb-3 row" hidden>
           <label for="membersId" class="col-sm-4 col-form-label"
             >會員編號</label
           >
@@ -267,7 +267,7 @@ file="/includes/libs.jsp"%>
         </div>
 
         <!-- 產品編號（隱藏） -->
-        <div class="mb-3 row" >
+        <div class="mb-3 row" hidden>
           <label for="productsId" class="col-sm-4 col-form-label"
             >產品編號</label
           >
@@ -282,7 +282,7 @@ file="/includes/libs.jsp"%>
           </div>
         </div>
         <!-- 訂單細節編號（隱藏） -->
-        <div class="mb-3 row" >
+        <div class="mb-3 row" hidden>
           <label for="orderDetailId" class="col-sm-4 col-form-label"
             >訂單細節編號</label
           >
@@ -298,7 +298,7 @@ file="/includes/libs.jsp"%>
         </div>
         <div class="d-flex justify-content-between mb-3">
 
-          <div>
+          <div >
             <star-rating
               :increment="1"
               :max-rating="5"
@@ -317,14 +317,14 @@ file="/includes/libs.jsp"%>
           </div>
 
           <!-- 會員登入可以按讚，只能按一次 -->
-          <div class="">
+          <!-- <div class="">
             <button class="btn btn-light" :disabled="!userLoggedIn" @click="toggleLike(product.reviewId)">
               {{ product.likesCount }}
               <i v-if="!liked" class="fa-regular fa-thumbs-up fa-bounce fa-xl"></i>
               <i v-else class="fa-solid fa-thumbs-up fa-xl" ></i>
             </button>
             
-          </div>
+          </div> -->
         </div>
 
         <div class="d-flex mb-3">
@@ -366,7 +366,7 @@ file="/includes/libs.jsp"%>
       </div>
       <!-- 留言板樣式結束 -->
 
-      <div class="container d-flex justify-content-center">
+      <div class="container d-flex justify-content-center" v-if="isShowPaginate">
         <!-- 我是分頁 -->
         <paginate
           first-last-button="true"

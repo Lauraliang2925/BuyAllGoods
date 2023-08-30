@@ -62,10 +62,12 @@ const app = Vue.createApp({
 
       calculateRating: 0,
 
-      userLoggedIn: false,
-      likeCounts: 0,
-      liked: false,
-      productLikeCounts: {},
+      isShowPaginate:false,
+
+      // userLoggedIn: false,
+      // likeCounts: 0,
+      // liked: false,
+      // productLikeCounts: {},
     };
   },
   computed: {},
@@ -73,108 +75,10 @@ const app = Vue.createApp({
     getUserID: function () {
       let membersId = localStorage.getItem("MembersId");
       let roleId = localStorage.getItem("RoleId");
-      // console.log("membersId:"+membersId)
-      // console.log("roleId:"+roleId)
-      if (roleId === "3") {
-        this.userLoggedIn = true;
-      } else {
-        this.userLoggedIn = false;
-      }
       return membersId;
     },
 
-    findByReviewId: function (reviewId) {
-      let vm = this;
-      // 在一般會員登入狀態下才能點擊按讚/收回按鈕
-      if (vm.userLoggedIn) {
-        // findById
-        axios
-          .get(contextPath + "/review/findByReviewId/" + reviewId)
-          .then(function (response) {
-            vm.reviewId = response.data.review.reviewId;
-            vm.membersId = response.data.review.membersId;
-            vm.orderDetailId = response.data.review.orderDetailId;
-            vm.productsId = response.data.review.productsId;
-            vm.rating = response.data.review.rating;
-            vm.comment = response.data.review.comment;
-            vm.likesCount = response.data.review.likesCount + 1;
-            vm.createdDate = response.data.review.createdDate;
-            // console.log(response.data.review.reviewId)
-            // console.log(response.data.review.membersId)
-            // console.log(vm.likesCount)
-
-            let request = {
-              reviewId: vm.reviewId,
-              membersId: vm.membersId,
-              orderDetailId: vm.orderDetailId,
-              productsId: vm.productsId,
-              rating: vm.rating,
-              comment: vm.comment,
-              likesCount: vm.likesCount,
-              createdDate: vm.createdDate,
-            };
-
-            // let vm = this;
-            axios
-              .put(contextPath + "/review/update/" + reviewId, request)
-              .then(function (response) {
-                if (response.data.success) {
-                  vm.likeCounts=response.data.findByReviewId.likesCount
-                  console.log(response.data.message);
-                }
-              })
-              .catch(function (error) {
-                console.log(error);
-              })
-              .finally(function () {});
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .finally(function () {});
-      }
-    },
-    toggleLike: function (reviewId) {
-      let vm = this;
-      // console.log("reviewId:"+reviewId)
-      // console.log("membersId:"+this.getUserID())
-      // 在一般會員登入狀態下才能點擊按讚/收回按鈕
-      if (vm.userLoggedIn) {
-        let request = {
-          reviewId: reviewId,
-          membersId: vm.getUserID(),
-        };
-
-        if (vm.liked) {
-          // 用户已点赞，执行取消点赞逻辑
-          axios
-            .delete(contextPath + "/liked/delete", {
-              params: request, // 将请求参数作为 params 对象
-            })
-            .then(function (response) {
-              vm.liked = false;
-              // console.log(response.data.message)
-              // console.log(response.data.count)
-            })
-            .catch(function (error) {
-              console.error("Error unliking", error);
-            });
-        } else {
-          // 用户未点赞，执行点赞逻辑
-          axios
-            .post(contextPath + "/liked/insert", request)
-            .then(function (response) {
-              vm.liked = true;
-              // console.log(response.data.message)
-              // console.log(response.data.count)
-              vm.findByReviewId(reviewId);
-            })
-            .catch(function (error) {
-              console.error("Error liking", error);
-            });
-        }
-      }
-    },
+  
     addFavorites: function (productsId) {
       let request = {
         productsId: productsId,
@@ -371,6 +275,9 @@ const app = Vue.createApp({
         })
         .then(function (response) {
           vm.products = response.data.list;
+          if(vm.products.length>0){
+            vm.isShowPaginate=true
+          }
           // console.log(vm.products);
           let count = response.data.count;
           vm.pages = Math.ceil(count / vm.rows);
