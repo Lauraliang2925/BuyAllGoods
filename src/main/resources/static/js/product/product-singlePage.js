@@ -89,9 +89,9 @@ const app = Vue.createApp({
         .post(contextPath + "/api/page/favorites/checkin", request)
         .then(function (response) {
           if (response.data.success) {
-            alert(response.data.message);
+            alert("已將商品加入收藏清單");
           } else {
-            alert(response.data.message);
+            alert("收藏清單已經有重複商品");
           }
         })
         .catch(function (error) {
@@ -120,9 +120,10 @@ const app = Vue.createApp({
         .post(contextPath + "/api/page/shoppingcarts/checkin", request)
         .then(function (response) {
           if (response.data.success) {
-            alert(response.data.message);
+            alert("成功加入購物車");
+            location.reload();
           } else {
-            alert(response.data.message);
+            alert("購物車已經有重複商品");
           }
         })
         .catch(function (error) {
