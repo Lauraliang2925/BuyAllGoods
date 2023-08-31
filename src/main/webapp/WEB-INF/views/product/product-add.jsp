@@ -366,6 +366,10 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
             <button class="btn btn-outline-primary" type="button" @click="create()">
               確定新增
             </button>
+
+            <button class="btn btn-outline-info" type="button" @click="fastCreate()">
+              一鍵填入
+            </button>
           </div>
         </div>
         <!-- 商品表格結束 -->

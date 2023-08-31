@@ -70,7 +70,6 @@ const app = Vue.createApp({
   },
 
   methods: {
-
     //確認有效期限，不得早於系統日
     checkExpiryDate: function () {
       const today = new Date(); // 系統日
@@ -252,13 +251,41 @@ const app = Vue.createApp({
           console.error("資料請求失敗：", error);
         });
     },
+
+    // 一鍵新增用
+    fastCreate: function () {
+      this.staffId = localStorage.getItem("MembersId");
+      // 收集資料 start
+     
+        this.categoriesId=2,
+        this.contractsId= 2
+        this.name= "iPad 9",
+        this.productsSpecification= "10.2吋, WiFi,256G",
+        this.productsDescription= "螢幕：10.2 吋, 容量：256GB, 晶片： A13 仿生晶片",
+        this.imagePath= this.imagePath,
+        this.sellingPrice= 14490,
+        this.cost= 30000,
+        this.lowestPrice= 30000,
+        this.total= 500,
+        this.orderQuantity= this.orderQuantity,
+        this.soldQuantity= this.soldQuantity,
+        this.suppliersId= 1,
+        this.expiryDate= "2028-08-31",
+        this.sellingStartDate= "2023-08-31",
+        this.sellingStopDate= "2023-12-31",
+        this.discountStartDate= "2023-10-31",
+        this.discountEndDate= "2023-12-31",
+        this.discount= 0.9,
+        this.staffId= this.staffId
+
+    },
     create: function () {
       bootbox.dialog({
         message:
           '<div class="text-center"><i class="fa-solid fa-spinner fa-spin-pulse"></i> loading...</div>',
         closeButton: false,
       });
-      this.staffId  = localStorage.getItem("MembersId");
+      this.staffId = localStorage.getItem("MembersId");
       // 收集資料 start
       if (this.categoriesId === "") {
         this.categoriesId = null;
@@ -323,7 +350,7 @@ const app = Vue.createApp({
 
       // 收集資料 end
 
-      console.log("staffId: "+this.staffId)
+      console.log("staffId: " + this.staffId);
       let request = {
         categoriesId: this.categoriesId,
         contractsId: this.contractsId,
@@ -480,7 +507,11 @@ const app = Vue.createApp({
           reader.readAsDataURL(file);
         }
       } else {
-        alert("請輸入商品名稱");
+        // alert("請輸入商品名稱");
+        Swal.fire({
+          icon: "error",
+          title: "請輸入商品名稱",
+        });
       }
     },
 
@@ -492,22 +523,38 @@ const app = Vue.createApp({
         this.selectedFile = null;
         this.previewUrl = contextPath + "/pic/product/noImage.jpg";
       } else {
-        alert("請選擇圖片");
+        // alert("請選擇圖片");
+        Swal.fire({
+          icon: "error",
+          title: "請選擇圖片",
+        });
       }
     },
     checkFile: function (uploadFiles) {
       if (uploadFiles.length == 0) {
-        alert("請選擇檔案");
+        // alert("請選擇檔案");
+        Swal.fire({
+          icon: "error",
+          title: "請選擇檔案",
+        });
         return false;
       }
       if (this.name.length === 0) {
-        alert("請輸入商品名稱");
+        // alert("請輸入商品名稱");
+        Swal.fire({
+          icon: "error",
+          title: "請輸入商品名稱",
+        });
         return false;
       }
 
       let uploadFile = uploadFiles[0];
       if (uploadFile.size > 10000000) {
-        alert("檔案大小超出限制(10M)");
+        // alert("檔案大小超出限制(10M)");
+        Swal.fire({
+          icon: "error",
+          title: "檔案大小超出限制(10M)",
+        });
         return false;
       }
       return true;
@@ -541,14 +588,27 @@ const app = Vue.createApp({
             // console.log("contextPath="+contextPath)
             vm.files = [];
             vm.desc = null;
-            alert("上傳成功");
+            // alert("上傳成功");
+            Swal.fire({
+              icon: "success",
+              title: "上傳成功",
+            });
+            
           } else {
-            alert("商品名稱不能重複");
+            // alert("商品名稱不能重複");
+            Swal.fire({
+              icon: "error",
+              title: "商品名稱不能重複",
+            });
           }
         })
         .catch(function (error) {
           // console.log(contextPath + "/product/single-file");
-          alert(error);
+          // alert(error);
+          Swal.fire({
+            icon: "error",
+            title: error,
+          });
         })
         .finally(function () {});
     },

@@ -1,8 +1,7 @@
-
 const index = Vue.createApp({
   components: {
     paginate: VuejsPaginateNext,
-    'star-rating': VueStarRating.default,
+    "star-rating": VueStarRating.default,
   },
   data: function () {
     return {
@@ -49,9 +48,9 @@ const index = Vue.createApp({
       productQuantities: {}, // 以商品ID为键，数量为值的对象
       quantity: "",
 
-      calculateRating:"",
+      calculateRating: "",
       productsAvgRatings: {},
-      rating:"",
+      rating: "",
     };
   },
 
@@ -61,6 +60,21 @@ const index = Vue.createApp({
       return membersId;
     },
     addFavorites: function (productsId) {
+      membersId = this.getUserID();
+      if (membersId == null) {
+        Swal.fire({
+          icon: "warning",
+          text: "請先登入",
+          showCancelButton: true,
+        }).then(function (result) {
+          if (result.value) {
+            //轉至登入頁面
+            window.location.href = contextPath + "/goLogin";
+          } 
+        });
+
+        return;
+      }
       let request = {
         productsId: productsId,
         membersId: this.getUserID(),
@@ -70,25 +84,52 @@ const index = Vue.createApp({
         .post(contextPath + "/api/page/favorites/checkin", request)
         .then(function (response) {
           if (response.data.success) {
-            alert(response.data.message);
+            // alert("已將商品加入收藏清單");
+            Swal.fire({
+              icon: "success",
+              title: "已將商品加入收藏清單",
+              showConfirmButton: false,
+              timer: 1500,
+            });
           } else {
-            alert(response.data.message);
+            Swal.fire({
+              icon: "warning",
+              text: "收藏清單已經有重複商品",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            // alert("收藏清單已經有重複商品");
           }
         })
         .catch(function (error) {
           alert("請先登入");
+
           console.error("資料請求失敗：", error);
         });
     },
     addShoppingcarts: function (productsId) {
       membersId = this.getUserID();
       if (membersId == null) {
-        alert("請先登入");
+        Swal.fire({
+          icon: "warning",
+          text: "請先登入",
+          showCancelButton: true,
+        }).then(function (result) {
+          if (result.value) {
+            //轉至登入頁面
+            window.location.href = contextPath + "/goLogin";
+          } 
+        });
+
         return;
       }
       let quantity = this.productQuantities[productsId]; // 获取该商品的数量
       if (quantity === undefined || quantity <= 0) {
-        alert("請選擇有效的商品數量!");
+        // alert("請選擇有效的商品數量!");
+        Swal.fire({
+          icon: "error",
+          title: "請選擇有效的商品數量!",
+        });
         return;
       }
 
@@ -103,9 +144,27 @@ const index = Vue.createApp({
         .post(contextPath + "/api/page/shoppingcarts/checkin", request)
         .then(function (response) {
           if (response.data.success) {
-            alert(response.data.message);
+            // alert("成功加入購物車");
+            Swal.fire({
+              icon: "success",
+              title: "成功加入購物車",
+            }).then(function (result) {
+              if (result.value) {
+                upadateLocalStoraageByMembersId();
+                // location.reload();
+              } else {
+                upadateLocalStoraageByMembersId();
+                // location.reload();
+              }
+            });
           } else {
-            alert(response.data.message);
+            Swal.fire({
+              icon: "warning",
+              text: "購物車已經有重複商品",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            // alert("購物車已經有重複商品");
           }
         })
         .catch(function (error) {
@@ -135,7 +194,6 @@ const index = Vue.createApp({
         .get(contextPath + "/categories/fullData")
         .then(function (response) {
           vm.categories = response.data.list;
-          
         })
         .catch(function (error) {
           console.error("資料請求失敗：", error);
@@ -148,8 +206,6 @@ const index = Vue.createApp({
     },
 
     calculateAvgRating: function (productsId, index) {
-      
-
       if (this.productsAvgRatings[productsId]) {
         // 如果已經獲取過該會員代號，直接使用緩存的值
         this.rating = this.productsAvgRatings[productsId];
@@ -160,22 +216,19 @@ const index = Vue.createApp({
         };
         let vm = this;
         axios
-        .get(contextPath + "/review/findAvgRatingByProductId/" + productsId, {
-          params: request,
-        })
+          .get(contextPath + "/review/findAvgRatingByProductId/" + productsId, {
+            params: request,
+          })
           .then(function (response) {
             // console.log("productsAvgRatings= " + response.data.calculateRating);
             vm.products[index].rating = response.data.calculateRating; // 存入對應的 product 中
-        
           })
           .catch(function (error) {
             console.error("資料請求失敗：", error);
           });
       }
-
     },
-    
-   
+
     //	使用分類ID尋找底下"販售中"商品 (還要加上分頁功能)
     findVaildByCategoriesId: function (categoriesId, page) {
       if (page) {
@@ -204,7 +257,7 @@ const index = Vue.createApp({
           for (var i = 0; i < vm.products.length; i++) {
             vm.calculateAvgRating(vm.products[i].productsId, i);
           }
-    
+
           // Update the discount values based on discountEndDate
           let currentDate = new Date();
           for (let product of vm.products) {
@@ -240,6 +293,36 @@ const index = Vue.createApp({
       // 帶著選定的productsId跳轉至個別商品頁面
       window.location.href =
         contextPath + "/product-singlePage?productsId=" + productsId;
+    },
+
+    // 當登入從 localStorage 拿到 MemberId 來判斷哪位使用者
+    upadateLocalStoraageByMembersId() {
+      let storedMemberId = localStorage.getItem("MembersId");
+      if (storedMemberId === null || storedMemberId) {
+        axios
+          .get(
+            contextPathNav + `/api/page/shoppingcarts/count/${storedMemberId}`
+          )
+          .then((response) => {
+            let cartCount = response.data;
+            updateCartBadge(cartCount);
+            localStorage.setItem("count", cartCount);
+          })
+          .catch((error) => {
+            updateCartBadge(0);
+            localStorage.setItem("count", 0);
+          });
+      } else {
+        updateCartBadge(0);
+        localStorage.setItem("count", 0);
+      }
+    },
+    updateCartBadge(cartCount) {
+      const cartBadge = document.getElementById("cart");
+      if (cartBadge) {
+        cartBadge.textContent = cartCount;
+        localStorage.setItem("count", cartCount);
+      }
     },
   },
   mounted: function () {

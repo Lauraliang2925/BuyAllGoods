@@ -1,4 +1,5 @@
 
+upadateLocalStoraageByMembersId()
 // 當登入從 localStorage 拿到 MemberId 來判斷哪位使用者
 function upadateLocalStoraageByMembersId() {
 	let storedMemberId = localStorage.getItem('MembersId')

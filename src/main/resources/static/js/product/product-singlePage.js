@@ -80,6 +80,21 @@ const app = Vue.createApp({
 
   
     addFavorites: function (productsId) {
+      membersId = this.getUserID();
+      if (membersId == null) {
+        Swal.fire({
+          icon: "warning",
+          text: "請先登入",
+          showCancelButton: true,
+        }).then(function (result) {
+          if (result.value) {
+            //轉至登入頁面
+            window.location.href = contextPath + "/goLogin";
+          } 
+        });
+
+        return;
+      }
       let request = {
         productsId: productsId,
         membersId: this.getUserID(),
@@ -89,9 +104,21 @@ const app = Vue.createApp({
         .post(contextPath + "/api/page/favorites/checkin", request)
         .then(function (response) {
           if (response.data.success) {
-            alert("已將商品加入收藏清單");
+            // alert("已將商品加入收藏清單");
+            Swal.fire({
+              icon: "success",
+              title: "已將商品加入收藏清單",
+              showConfirmButton: false,
+              timer: 1500,
+            });
           } else {
-            alert("收藏清單已經有重複商品");
+            Swal.fire({
+              icon: "warning",
+              text: "收藏清單已經有重複商品",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            // alert("收藏清單已經有重複商品");
           }
         })
         .catch(function (error) {
@@ -103,11 +130,25 @@ const app = Vue.createApp({
       let quantity = this.quantity;
       membersId = this.getUserID();
       if (membersId == null) {
-        alert("請先登入");
+        Swal.fire({
+          icon: "warning",
+          text: "請先登入",
+          showCancelButton: true,
+        }).then(function (result) {
+          if (result.value) {
+            //轉至登入頁面
+            window.location.href = contextPath + "/goLogin";
+          }
+        });
+
         return;
       }
       if (quantity === undefined || quantity <= 0) {
-        alert("請選擇有效的商品數量!");
+        // alert("請選擇有效的商品數量!");
+        Swal.fire({
+          icon: "error",
+          title: "請選擇有效的商品數量!",
+        });
         return;
       }
       let request = {
@@ -120,10 +161,27 @@ const app = Vue.createApp({
         .post(contextPath + "/api/page/shoppingcarts/checkin", request)
         .then(function (response) {
           if (response.data.success) {
-            alert("成功加入購物車");
-            location.reload();
+            // alert("成功加入購物車");
+            Swal.fire({
+              icon: "success",
+              title: "成功加入購物車",
+            }).then(function (result) {
+              if (result.value) {
+                upadateLocalStoraageByMembersId();
+                // location.reload();
+              } else {
+                upadateLocalStoraageByMembersId();
+                // location.reload();
+              }
+            });
           } else {
-            alert("購物車已經有重複商品");
+            Swal.fire({
+              icon: "warning",
+              text: "購物車已經有重複商品",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            // alert("購物車已經有重複商品");
           }
         })
         .catch(function (error) {

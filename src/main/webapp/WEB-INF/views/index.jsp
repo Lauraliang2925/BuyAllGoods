@@ -9,6 +9,8 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>首頁</title>
+
+
   </head>
 
   <body style="padding-top: 8%">
@@ -261,6 +263,8 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
               ></paginate>
               <!-- 我是分頁 -->
             </div>
+
+
           </div>
           <!-- 中間商品內容結束 -->
         </div>
@@ -276,4 +280,7 @@ uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/includes/libs.jsp"
     type="text/javascript"
     src="<c:url value='/js/index.js'></c:url>"
   ></script>
+
+
+
 </html>
