@@ -11,8 +11,8 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
-@Table(name = "liked")
-@Entity
+//@Table(name = "liked")
+//@Entity
 public class Liked {
 
 	 @Id
